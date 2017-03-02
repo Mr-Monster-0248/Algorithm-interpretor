@@ -1,0 +1,23 @@
+var
+	integer p, q
+	string message, color
+	boolean isBlue, isOdd
+begin
+	p <- 2
+	p
+
+	q <- p * 3
+	q
+
+	color <- "blue"
+	color
+
+	message <- color + " is a color"
+	message
+
+	isBlue <- true
+	isBlue
+
+	isOdd <- isBlue and false
+	isOdd
+end

@@ -1,0 +1,7 @@
+10
+Hello
+true
+11
+Hello!
+false
+Hello: p = 10, isOk = true

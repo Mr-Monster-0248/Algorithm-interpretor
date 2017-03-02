@@ -1,0 +1,12 @@
+2
+2
+6
+6
+blue
+blue
+blue is a color
+blue is a color
+true
+true
+false
+false

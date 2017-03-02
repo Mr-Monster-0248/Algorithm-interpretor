@@ -1,0 +1,15 @@
+1
+1 + 2
+1 + 2 - 3
+4 * 5 / 3
+5 % 2
+
+"Hello"
+"Hello" + " world"
+"Hello" + " world" + "!"
+
+false
+true or false
+true and true and false
+not false
+

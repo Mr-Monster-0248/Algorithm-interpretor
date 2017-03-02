@@ -1,0 +1,22 @@
+var 
+	integer p
+	string message
+	boolean isOk
+begin
+	write("please input p:")
+	read(p)
+	write("please input message:")
+	read(message)
+	write("please input isOk:")
+	read(isOk)
+
+	write(p)
+	write(message)
+	write(isOk)
+
+	write(p + 1)
+	write(message + "!")
+	write(isOK and false)
+
+	write(message + ": p = " + p + ", isOk = " + isOk)
+end

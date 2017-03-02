@@ -1,0 +1,11 @@
+var
+	integer value
+	string message
+	boolean isOK
+begin
+	value <- 10
+	isOK <- value = 10
+	message <- "value = " + value
+	message <- message + ", isOk = " + isOk
+	"message: " + message 
+end

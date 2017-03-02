@@ -1,0 +1,5 @@
+please input p:
+please input message:
+please input isOk:
+...
+ouput depends on input values

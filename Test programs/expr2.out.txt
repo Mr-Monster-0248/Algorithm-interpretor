@@ -1,0 +1,7 @@
+14
+10
+120
+2
+true
+false
+true

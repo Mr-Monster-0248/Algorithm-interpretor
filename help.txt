@@ -1,0 +1,26 @@
+				=== Manual ===
+
+	Short description:
+		This program is an interpreter of the algorithmic language.
+		This program allows you to perform fast instructions
+
+
+	How to use our program?
+		- Please be careful of the syntax, use the algorithmic syntax seen
+		  in the chapter one of the Algorithmic courses.
+		- ">>> " invites you to write an instruction
+		- If you are using the program as an algorithmic file interpreter and
+		  that a syntax error has been made, it will be displayed so that it 
+		  is easier to see the exact error.
+		- If you are using the program as a line by line interpreter and a
+		  syntax error is made, it will be displayed so that it is easier to
+		  see where the error has been made
+
+	Special commands:
+		- "help": display this help window
+		- "exit": quit the interpreter
+		- "clear" or "cls": clear the screen
+
+
+
+
