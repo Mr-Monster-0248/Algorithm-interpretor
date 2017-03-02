@@ -1,12 +1,7 @@
- #####		#####	#####	 ####	######	######	 #####	 #######		   #    #		 #####
-#	  #		#	 #	#	 #	#	 #	   #	#		#	  #	 	#			##########		#	  #
-#			#####	#####	#	 #	   #	###		#		    #			  #    #		   ###
-#	  #		#		#	#	#	 #	#  #	#		#	  #	    #			##########		#	  #
- #####		#		#	 #	 ####	 ##		######	 #####	    #			 #    #			 #####	
-
-
-											Thibault LEPEZ
-												 and
-											Camille BRIAND
+		Algorithmic interpretor
+				  by
+			Thibault LEPEZ
+				 and
+			Camille BRIAND
 
 
