@@ -108,7 +108,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	if(*types != NULL)
 		free(*types);
 
-	printf("Balise de bite\n");
+	printf("Balise de bite\n");   
 	if(*elements != NULL)
 		free(*elements);
 
