@@ -2,7 +2,7 @@
 	#define DEF_CONSTANTS
 
 	//Replace #define WINDOWS by #define LINUX if you are working with linux
-	#define WINDOWS
+	#define LINUX
 
 
 	//Variable structure to store different data about each variable
