@@ -99,20 +99,16 @@ void check_variable_type(char** elements, int** types, int i)
 int get_line_elements(const char* line, char*** elements, int** types, int* position) //Returns 0 if syntax error
 {
 	int i = 0, j = 1, k = 1;
-	
-
-	printf("Balise 1\n");
-
 
 	//Erasing the previous arrays (if there were previous arrays)
-	if(*types != NULL)
-		free(*types);
-
-	printf("Balise de bite\n");   
-	if(*elements != NULL)
+	if (*types != NULL)
+	{
+		for (i = 0; i < (*types)[0]; i++)
+			free((*elements)[i]);
 		free(*elements);
 
-	printf("nouvelle balise 1\n");
+		free(*types);
+	}
 
 	//Allocating memory for new arrays
 	*types = (int*) malloc(sizeof(int));
