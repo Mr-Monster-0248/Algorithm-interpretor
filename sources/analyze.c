@@ -101,18 +101,14 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	int i = 0, j = 1, k = 1;
 	
 
-	printf("Balise 1\n");
-
 
 	//Erasing the previous arrays (if there were previous arrays)
 	if(*types != NULL)
 		free(*types);
-
-	printf("Balise de bite\n");   
+  
 	if(*elements != NULL)
 		free(*elements);
 
-	printf("nouvelle balise 1\n");
 
 	//Allocating memory for new arrays
 	*types = (int*) malloc(sizeof(int));
@@ -130,16 +126,13 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	check_alloc((*elements)[0]);
 	sprintf((*elements)[0], "<<<");
 
-	printf("Nouvelle balise 2\n");
 
 	while (line[i] != '\0')
 	{
-		printf("Balise 2\n");
 
 		//If an operator was found
 		if ( ( (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%' || line[i] == ':' || line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
 		{
-			printf("Balise 3: operator\n");
 
 			if (i < 2)
 			{
@@ -166,7 +159,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		//If a "word" beginning by a number (1, 2, 3...) or by  was found
 		if ( (line[i] >= 48 && line[i] <= 57) || (line[i] == '-' && line[i + 1] != '\0' && line[i + 1] >= 48 && line[i + 1] <= 57) )
 		{
-			printf("Balise 3: number\n");
 
 
 			(*elements)[j] = (char*) malloc(2 * sizeof(char)); //Allocating memory to store this number appart the original line
