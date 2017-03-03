@@ -126,16 +126,13 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	check_alloc((*elements)[0]);
 	sprintf((*elements)[0], "<<<");
 
-	printf("Nouvelle balise 2\n");
 
 	while (line[i] != '\0')
 	{
-		printf("Balise 2\n");
 
 		//If an operator was found
 		if ( ( (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%' || line[i] == ':' || line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
 		{
-			printf("Balise 3: operator\n");
 
 			if (i < 2)
 			{
@@ -162,7 +159,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		//If a "word" beginning by a number (1, 2, 3...) or by  was found
 		if ( (line[i] >= 48 && line[i] <= 57) || (line[i] == '-' && line[i + 1] != '\0' && line[i + 1] >= 48 && line[i + 1] <= 57) )
 		{
-			printf("Balise 3: number\n");
 
 
 			(*elements)[j] = (char*) malloc(2 * sizeof(char)); //Allocating memory to store this number appart the original line
@@ -250,7 +246,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		//If a "word" beginning by a letter (a,b,c,...,A,B,C,...) was found
 		if ( ( (line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122) ) && line[i] != '\0')
 		{
-			printf("Balise 3: word\n");
 
 			(*elements)[j] = (char*) malloc(2 * sizeof(char)); //Allocating memory to store this letter appart the original line
 			check_alloc((*elements)[j]);
@@ -281,7 +276,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		//If a "word" beginning by " was found (if a string delimited by "" was found)
 		if (line[i] == '"' && line[i+1] != '\0')
 		{
-			printf("Balise 3: string\n");
 
 			(*elements)[j] = (char*) malloc(3 * sizeof(char)); //Allocating memory to store this string appart the original line
 			check_alloc((*elements)[j]);
