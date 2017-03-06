@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 						printf("Declaration error on element %d\n\n", i);
 
 				if(is_operation(types))
-					printf("C UNE OP BITCH\n");
+					printf("this is an operation\n");
 
 				
 
