@@ -100,19 +100,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 {
 	int i = 0, j = 1, k = 1;
 
-	/*
-		The following commented lines caused a crash of the program on UNIX based systems
-	*/
-	//Erasing the previous arrays (if there were previous arrays)
-	/*if (*types != NULL)
-	{
-		for (i = 0; i <= (*types)[0]; i++)
-			free((*elements)[i]);
-		free(*elements);
-
-		free(*types);
-	}*/
-
 	//Allocating memory for new arrays
 	*types = (int*) malloc(sizeof(int));
 	check_alloc(*types);

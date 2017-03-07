@@ -139,3 +139,29 @@ int check_special_command(const char* line)
 
 	return 0;
 }
+
+
+//Function to free 2D array
+void free_2D_char_array(char*** array, const int subs)
+{
+	int i = 0;
+
+	for (i = 0; i < subs; i++)
+		free((*array)[i]);
+
+	free(*array);
+
+	*array = NULL;
+}
+
+
+//Function that safely free memory
+void safe_free(void** pointer)
+{
+	if (*pointer != NULL)
+	{
+		free(*pointer);
+
+		*pointer = NULL;
+	}
+}
