@@ -281,3 +281,18 @@ int eval_bool_expr(char* lValue, const int lValueType, char* rValue, const int r
 
 
 }
+
+//Function witch give a value of priority for each operator
+int chech_operator_priority(char* operator)
+{
+	if(strcmp(operator, "*") == 0)
+		return 2;
+	else if (strcmp(operator, "/") == 0)
+		return 2;
+	else if (strcmp(operator, "+") == 0)
+		return 1;
+	else if (strcmp(operator, "-") == 0)
+		return 1;
+	else
+		return 0;
+}
