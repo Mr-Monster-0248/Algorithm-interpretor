@@ -146,3 +146,5 @@ int chech_operator_priority(char* operator)
 	else
 		return 0;
 }
+
+int highest
