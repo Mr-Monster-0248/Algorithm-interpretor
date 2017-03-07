@@ -153,15 +153,3 @@ void free_2D_char_array(char*** array, const int subs)
 
 	*array = NULL;
 }
-
-
-//Function that safely free memory
-void safe_free(void** pointer)
-{
-	if (*pointer != NULL)
-	{
-		free(*pointer);
-
-		*pointer = NULL;
-	}
-}

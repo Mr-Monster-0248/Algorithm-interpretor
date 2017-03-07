@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 					printf("ERROR: STRUCTURAL ERROR\nThere is an error of structure in that line!\n\n");
 					
 					free_2D_char_array(&elements, types[0]);
-					safe_free(types);
+					free(types);
 
 					continue;
 				}
@@ -61,14 +61,14 @@ int main(int argc, char** argv)
 				if (exitProgram == 1)
 				{
 					free_2D_char_array(&elements, types[0]);
-					safe_free(types);
+					free(types);
 
 					continue;
 				}
 				if (exitProgram == 2)
 				{
 					free_2D_char_array(&elements, types[0]);
-					safe_free(types);
+					free(types);
 
 					break;
 				}
@@ -89,7 +89,7 @@ int main(int argc, char** argv)
 
 				//Freeing memory previously allocated before exiting or starting a new lap
 				free_2D_char_array(&elements, types[0]);
-				safe_free(types);
+				free(types);
 
 			} while (TRUE);
 
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
 
 	free(elements);
 	free(var_table);
-	safe_free(types);
+	free(types);
 
 	return EXIT_SUCCESS;
 }

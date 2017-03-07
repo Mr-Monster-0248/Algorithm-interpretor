@@ -26,7 +26,4 @@
 	//Function to free 2D array
 	void free_2D_char_array(char*** array, const int subs);
 
-	//Function that safely free memory
-	void safe_free(void** pointer);
-
 #endif
