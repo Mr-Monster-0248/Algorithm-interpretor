@@ -1,4 +1,4 @@
-				=== C Project: Algorithmic language interpreter ===
+		=== C Project: Algorithmic language interpreter ===
 
 
 This project's aim is to understand the algorithmic language directly in order to be able to implement an interpreter of this language.
