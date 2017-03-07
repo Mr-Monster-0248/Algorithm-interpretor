@@ -36,8 +36,7 @@ int is_forbidden(const char* instruction) //Return 1 if allowed
 
 
 //Function that checks if a given variable name is usable
-/*
-	RETURN VALUES
+/* RETURN VALUES
 	0 = not usable (name is forbidden)
 	1 = usable, a variable has already this name
 	2 = usable, no variable has already this name
@@ -82,8 +81,7 @@ void check_variable_type(char** elements, int** types, int i)
 
 
 //Function that divides the string into substrings (one for each element of the line)
-/*
-	Types:
+/* Types:
 	0 = declaration error
 	1 = int
 	2 = float
