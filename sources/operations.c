@@ -252,38 +252,66 @@ static int eval_bool_string(char* lString, char* rString, const int comparator)
 }
 
 
+//Function that performs the boolean comparison between two booleans
 static int eval_bool(const int lBool, const int rBool, const int comparator)
 {
 	switch(comparator)
 	{
 		case 6: // AND
+			if (lBool && rBool)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 7: // OR
+			if (lBool || rBool)
+				return TRUE;
+			return FALSE;
+			break;
+
+		default:
+			return BOOLEAN_ERROR_CODE;
+			break;
 
 	}
 }
 
 
-
 //Function to evaluate a boolean expression
-/*
-	RETURN VALUES:
-	   BOOLEAN_ERROR_CODE = ERROR
-		0 = FALSE
-		1 = TRUE
+/* RETURN VALUES:
+	BOOLEAN_ERROR_CODE = ERROR
+	0 = FALSE
+	1 = TRUE
 */
 int eval_bool_expr(char* lValue, const int lValueType, char* rValue, const int rValueType, const int comparatorID)
 {
 
 	//Checking if the two elements are comparable
-	if (lValueType != rValueType)
+	if ((lValueType != rValueType) || lValueType > 3 || rValueType > 3)
 		return BOOLEAN_ERROR_CODE; //ERROR: CANNOT PERFORM COMPARISON BETWEEN TWO ELEMENTS OF DIFFERENT TYPES
 
+	switch(lValueType)
+	{
+		case 1:
+			return eval_bool_int(convertTo_int(lValue), convertTo_int(rValue), comparatorID);
+			break;
 
+		case 2:
+			return eval_bool_float(convertTo_float(lValue), convertTo_float(rValue), comparatorID);
+			break;
 
+		case 3:
+			return eval_bool_string(lValue, rValue, comparatorID);
+			break;
 
+		default:
+			return BOOLEAN_ERROR_CODE;
+			break;
+	}
 }
 
 //Function witch give a value of priority for each operator
-int chech_operator_priority(char* operator)
+int check_operator_priority(char* operator)
 {
 	if(strcmp(operator, "*") == 0)
 		return 2;

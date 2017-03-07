@@ -14,9 +14,7 @@
 	void read_file(const char* pathToFile);
 
 	//Function that checks whether the user entered a special command or not
-	/*
-		RETURN VALUES
-
+	/* RETURN VALUES
 		0 = no special command
 		1 = continue
 		2 = exit
