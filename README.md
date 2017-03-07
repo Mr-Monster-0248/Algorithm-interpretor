@@ -7,8 +7,8 @@ Our project must be able to be compiled on Windows (7, 8 & 10) and Linux (Ubuntu
 <ul>
 <li>To do so, the user who wants to compile the program has to change a #define in constants.h in the headers folder.
 	<ul>
-	<li>If working with a Windows OS, the user must write `#define WINDOWS` and delete `#define LINUX`</li>
-	<li>If working with a UNIX based OS, the user must write `#define LINUX` and delete `#define WINDOWS`</li>
+	<li>If working with a Windows OS, the user must write <code>#define WINDOWS</code> and delete <code>#define LINUX</code></li>
+	<li>If working with a UNIX based OS, the user must write <code>#define LINUX</code> and delete <code>#define WINDOWS</code></li>
 	</ul>
 </li>
 </ul>
