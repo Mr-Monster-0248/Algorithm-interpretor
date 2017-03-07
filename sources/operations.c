@@ -79,7 +79,7 @@ float float_addition(const char* lValue, const char* rValue)
 
 
 //Function that check if the line is an operation 
-int is_operation(int* types) //return 1 if it's an operation
+int is_operation(int* types) //Return 1 if it's an operation
 {
 	int i, test = 0;
 
@@ -129,5 +129,155 @@ void store_variable(Variable** var_table, char* varName, char* varValue, const i
 	check_alloc((*var_table)[size].value);
 	sprintf((*var_table)[size].name, "%s", NAME__END_VARTABLE);
 	sprintf((*var_table)[size].value, "%s", VALUE__END_VARTABLE);
+}
+
+
+//Function that performs the boolean comparison between two integers
+static int eval_bool_int(const int lValue, const int rValue, const int comparator)
+{
+	switch(comparator)
+	{
+		case 0: // =
+			if (lValue == rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 1: // !=
+			if (lValue != rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 2: // <=
+			if (lValue <= rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 3: // >=
+			if (lValue >= rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 4: // <
+			if (lValue < rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 5: // >
+			if (lValue > rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		default:
+			return BOOLEAN_ERROR_CODE;
+			break;
+	}
+}
+
+
+//Function that performs the boolean comparison between two floats
+static int eval_bool_float(const float lValue, const float rValue, const int comparator)
+{
+	switch(comparator)
+	{
+		case 0: // =
+			if (lValue == rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 1: // !=
+			if (lValue != rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 2: // <=
+			if (lValue <= rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 3: // >=
+			if (lValue >= rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 4: // <
+			if (lValue < rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 5: // >
+			if (lValue > rValue)
+				return TRUE;
+			return FALSE;
+			break;
+
+		default:
+			return BOOLEAN_ERROR_CODE;
+			break;
+	}
+}
+
+
+//Function that performs the boolean comparison between two strings
+static int eval_bool_string(char* lString, char* rString, const int comparator)
+{
+	switch(comparator)
+	{
+		case 0: // =
+			if (strcmp(lString, rString == 0))
+				return TRUE;
+			return FALSE;
+			break;
+
+		case 1: // !=
+			if (strcmp(lString, rString) != 0)
+				return TRUE;
+			return FALSE;
+			break;
+
+		default:
+			return BOOLEAN_ERROR_CODE;
+			break;
+	}
+}
+
+
+static int eval_bool(const int lBool, const int rBool, const int comparator)
+{
+	switch(comparator)
+	{
+		case 6: // AND
+
+	}
+}
+
+
+
+//Function to evaluate a boolean expression
+/*
+	RETURN VALUES:
+	   BOOLEAN_ERROR_CODE = ERROR
+		0 = FALSE
+		1 = TRUE
+*/
+int eval_bool_expr(char* lValue, const int lValueType, char* rValue, const int rValueType, const int comparatorID)
+{
+
+	//Checking if the two elements are comparable
+	if (lValueType != rValueType)
+		return BOOLEAN_ERROR_CODE; //ERROR: CANNOT PERFORM COMPARISON BETWEEN TWO ELEMENTS OF DIFFERENT TYPES
+
+
+
 
 }
