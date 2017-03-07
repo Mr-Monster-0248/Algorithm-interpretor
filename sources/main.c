@@ -73,6 +73,9 @@ int main(int argc, char** argv)
 				display_elements(elements, types);
 
 
+				//Freeing memory preivously allocated before exiting or starting a new lap
+				free(elements);
+				free(types);
 
 			} while (TRUE);
 
