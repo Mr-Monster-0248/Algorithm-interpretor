@@ -93,6 +93,7 @@ void check_variable_type(char** elements, int** types, int i)
 	6 = new float variable
 	7 = new string variable
 	8 = variable
+	9 = comparator
 
 	The number of elements is stored in types at subscript 0 ( (*types)[0] = number of elements )
 */
@@ -121,7 +122,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	{
 
 		//If an operator was found
-		if ( ( (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%' || line[i] == ':' || line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
+		if ( ( (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%') && line[i+1] == ' ' && line[i+2] != '\0'))
 		{
 
 			if (i < 2)
@@ -144,6 +145,32 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 			//Setting type of element to 5 (operator)
 			(*types)[j++] = 4;
+		}
+
+		//If an comparator was found
+		if ( ( (line[i] == ':' || line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
+		{
+
+			if (i < 2)
+			{
+				*position = i;
+				return 0;
+			}
+
+			(*types)[0]++; //Incrementing the number of elements
+
+			(*elements)[j] = (char*) malloc(2 * sizeof(char));
+			check_alloc((*elements)[j]);
+
+			*types = (int*) realloc(*types, (j+1) * sizeof(int));
+			check_alloc(*types);
+
+			//Storing the character in a string
+			(*elements)[j][0] = line[i];
+			(*elements)[j][1] = '\0';
+
+			//Setting type of element to 5 (operator)
+			(*types)[j++] = 9;
 		}
 
 		//If a "word" beginning by a number (1, 2, 3...) or by  was found

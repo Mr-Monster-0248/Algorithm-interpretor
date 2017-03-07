@@ -131,3 +131,18 @@ void store_variable(Variable** var_table, char* varName, char* varValue, const i
 	sprintf((*var_table)[size].value, "%s", VALUE__END_VARTABLE);
 
 }
+
+//Function witch give a value of priority for each operator
+int chech_operator_priority(char* operator)
+{
+	if(strcmp(operator, "*") == 0)
+		return 2;
+	else if (strcmp(operator, "/") == 0)
+		return 2;
+	else if (strcmp(operator, "+") == 0)
+		return 1;
+	else if (strcmp(operator, "-") == 0)
+		return 1;
+	else
+		return 0;
+}
