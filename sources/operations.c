@@ -234,7 +234,7 @@ static int eval_bool_string(char* lString, char* rString, const int comparator)
 	switch(comparator)
 	{
 		case 0: // =
-			if (strcmp(lString, rString == 0))
+			if (strcmp(lString, rString) == 0)
 				return TRUE;
 			return FALSE;
 			break;

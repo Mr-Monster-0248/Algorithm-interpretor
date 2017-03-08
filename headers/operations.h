@@ -25,17 +25,20 @@
 	//Function that stores a new variable in the array of all variables
 	void store_variable(Variable** var_table, char* varName, char* varValue, const int varType);
 
-	//Function that performs the boolean comparison between two integers
-	static int eval_bool_int(const int lValue, const int rValue, const int comparator);
+	/*
+		//Function that performs the boolean comparison between two integers
+		static int eval_bool_int(const int lValue, const int rValue, const int comparator);
 
-	//Function that performs the boolean comparison between two floats
-	static int eval_bool_float(const float lValue, const float rValue, const int comparator);
+		//Function that performs the boolean comparison between two floats
+		static int eval_bool_float(const float lValue, const float rValue, const int comparator);
 
-	//Function that performs the boolean comparison between two strings
-	static int eval_bool_string(char* lString, char* rString, const int comparator);
+		//Function that performs the boolean comparison between two strings
+		static int eval_bool_string(char* lString, char* rString, const int comparator);
 
-	//Function that performs the boolean comparison between two booleans
-	static int eval_bool(const int lBool, const int rBool, const int comparator);
+		//Function that performs the boolean comparison between two booleans
+		static int eval_bool(const int lBool, const int rBool, const int comparator);
+	*/
+
 
 	//Function to evaluate a boolean expression
 	/* RETURN VALUES:
