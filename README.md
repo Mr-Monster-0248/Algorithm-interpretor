@@ -1,4 +1,4 @@
-<h1>		C Project: Algorithmic language interpreter </h1>
+<h1>C Project: Algorithmic language interpreter </h1>
 
 
 This project's aim is to understand the algorithmic language directly in order to be able to implement an interpreter of this language.
@@ -18,8 +18,8 @@ The executable ExeTest which is provided was obtained by compiling all the sourc
 <li>The exact command used was (located on the project's main folder): <code>gcc sources/*.c -o ExeTest -Wall</code></li>
 </ul>
 
-If you see any mistake on our code, or a more efficient way to do it, please leave a message in the "Issues" or "Projects" sections.
-
+---------------------------------------
+If you see any mistake on our code, or a more efficient way to do it, please feel free to leave a message in the "Issues" or "Projects" sections.
 
 OpenClassrooms.com C forum associated post: </br>
 https://openclassrooms.com/forum/sujet/fuites-memoire-debug-avec-valgrind
