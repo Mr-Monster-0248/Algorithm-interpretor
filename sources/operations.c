@@ -333,6 +333,8 @@ int highest_priority_operator(int* types) //return the index of the highest oper
 	for(i = 1; i <= types[0]; i++)
 	{
 		if(types[i] == 4)
+			break;
 	}
 
+	return 0;
 }

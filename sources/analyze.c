@@ -333,12 +333,12 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		check_variable_type(*elements, types, j);
 
 	//Checking if the structure of the line is correct
-	if (j >= 2)
+	if (j >= 2) //If at least two elements
 		for (i = 0; i < j - 1; i++)
 			if ((*types)[i] == (*types)[i+1])
 				return 2;
-		if ((*types)[j] == 4)
-			return 2;
+	if ((*types)[j] == 4)
+		return 2;
 
 	return 1;
 }

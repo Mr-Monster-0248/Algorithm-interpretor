@@ -142,12 +142,10 @@ int check_special_command(const char* line)
 
 
 //Function to free 2D array
-void free_2D_char_array(char*** array, const int subs)
+void free_2D_char_array(char*** array, int subs)
 {
-	int i = 0;
-
-	for (i = 0; i < subs; i++)
-		free((*array)[i]);
+	for (subs; subs > 0; subs--)
+		free((*array)[subs]);
 
 	free(*array);
 
