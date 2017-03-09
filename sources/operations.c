@@ -326,14 +326,16 @@ int check_operator_priority(char* operator)
 }
 
 //Function witch find the operator with the highest priority (if it exist)
-int highest_priority_operator(int* types) //return the index of the highest operator and return 0 if there is no highest
+int highest_priority_operator(int* types, char** elements) //return the index of the highest operator and return 0 if there is no highest
 {
-	int i = 0, highestOp = types[2], secondHighestOp, index;
+	int i = 0, highestOp, secondHighestOp = 1, index;
 
 	for(i = 1; i <= types[0]; i++)
 	{
-		if(types[i] == 4)
-			break;
+		if(types[i] == 4 && check_operator_priority(elements[i]) > secondHighestOp)
+		{
+			
+		}
 	}
 
 	return 0;
