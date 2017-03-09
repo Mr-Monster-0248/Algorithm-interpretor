@@ -92,17 +92,9 @@ void check_variable_type(char** elements, int** types, int i)
 	7 = new string variable
 	8 = variable
 	9 = comparator
+   10 = element between parentheses
 
 	The number of elements is stored in types at subscript 0 ( (*types)[0] = number of elements )
-*/
-/* VALGRIND ERRORS
-
-	#1: Solved
-		Not enough space was allocated to store the string "<<<" and the '\0' character
-
-	#2: Not solved
-
-
 */
 int get_line_elements(const char* line, char*** elements, int** types, int* position) //Returns 0 if syntax error
 {
@@ -112,7 +104,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	*types = (int*) malloc(sizeof(int));
 	check_alloc(*types);
 
-	*elements = (char**) malloc(sizeof(char*)); //ERRORS DETECTED BY VALGRIND (ERRORS all but #1) ==> ALLOC
+	*elements = (char**) malloc(sizeof(char*));
 	check_alloc(*elements);
 
 
@@ -286,8 +278,8 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			check_alloc(*elements);
 
 
-			(*elements)[j] = (char*) malloc(2 * sizeof(char)); //Allocating memory to store this letter appart the original line //ERROR DETECTED BY VALGRIND HERE (ERROR #2) (WRITE ERROR)
-			check_alloc((*elements)[j]); //ERROR DETECTED BY VALGRIND (ERROR #3) (READ ERROR)
+			(*elements)[j] = (char*) malloc(2 * sizeof(char));
+			check_alloc((*elements)[j]);
 
 			*types = (int*) realloc(*types, (j+1) * sizeof(int)); //Allocating memory to store this letter type
 			check_alloc(*types);
@@ -300,11 +292,11 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 			while (line[i] != ' ' && ( (line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122) || ( (line[i] >= 48) && (line[i] <= 57) ) || line[i] == '_' ) && line[i] != '\0' && line[i] != ':')
 			{
-				(*elements)[j] = (char*) realloc((*elements)[j], k++ * sizeof(char)); //ERRORS DETECTED BY VALGRIND (ERRORS #4 #5) (READ ERROR + WRITE ERROR)
-				check_alloc((*elements)[j]); //ERROR DETECTED BY VALGRIND (ERROR #6) (READ ERROR)
+				(*elements)[j] = (char*) realloc((*elements)[j], k++ * sizeof(char));
+				check_alloc((*elements)[j]);
 
-				(*elements)[j][k - 2] =  '\0'; //ERROR DETECTED BY VALGRIND (ERROR #7) (READ ERROR)
-				(*elements)[j][k - 3] = line[i++]; //ERROR DETECTED BY VALGRIND (ERROR #8) (READ ERROR)
+				(*elements)[j][k - 2] =  '\0'; 
+				(*elements)[j][k - 3] = line[i++];
 			}
 
 			(*types)[j] = 8;
@@ -317,7 +309,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		{
 
 			//Reallocating memory for the first dimension
-			*elements = (char**) realloc(*elements, j * sizeof(char*));
+			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
 			check_alloc(*elements);
 
 			(*elements)[j] = (char*) malloc(3 * sizeof(char)); //Allocating memory to store this string appart the original line
@@ -353,11 +345,50 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			(*types)[j++] = 3; //Setting the element's type to string
 		}
 
+		//If elements in parentheses were found
+		if (line[i] == 40 /* ASCII 40 = "(" */ && line[i+1] != '\0')
+		{
+			//Reallocating memory for the first dimension
+			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
+			check_alloc(*elements);
+
+			(*elements)[j] = (char*) malloc(3 * sizeof(char)); //Allocating memory to store this element appart the original line
+			check_alloc((*elements)[j]);
+
+			*types = (int*) realloc(*types, (j+1) * sizeof(int)); //Allocating memory to store this element's type
+			check_alloc(*types);
+			(*types)[j] = 0; //Setting the type code to error by default
+
+			k = 2;
+			(*elements)[j][0] = line[++i];
+			(*elements)[j][1] = '\0';
+
+
+			while(line[i] != 41 /* ASCII 41 = ")" */ && line[i] != '\0')
+			{
+				(*elements)[j] = (char*) realloc((*elements)[j], k++ * sizeof(char));
+				check_alloc((*elements)[j]);
+
+				//Storing the message
+				(*elements)[j][k - 2] = '\0';
+				(*elements)[j][k - 3] = line[i++];
+			}
+
+			if (line[i] == '\0') //Syntax error, no closing ", returning 0
+			{
+				*position = i;
+				return 0;
+			}
+
+			(*types)[0] += 1; //Incrementing the number of elements
+
+			(*types)[j++] = 10; //Setting the element's type to string
+		}
 
 		i++;
 	}
 
-	if((*types)[j-1] == 8 && j > 2 && strcmp((*elements)[j-2], ":") == 0) //ERROR DETECTED BY VALGRIND (ERROR #9) (READ ERROR)
+	if((*types)[j-1] == 8 && j > 2 && strcmp((*elements)[j-2], ":") == 0)
 		check_variable_type(*elements, types, j);
 
 	//Checking if the structure of the line is correct
