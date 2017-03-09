@@ -58,8 +58,6 @@ int main(int argc, char** argv)
 					printf("ERROR: STRUCTURAL ERROR\nThere is an error of structure in that line!\n\n");
 					
 					free_2D_char_array(&elements, types[0]);
-					
-					printf("Balise de bite\n");
 
 					display_elements(elements, types);
 

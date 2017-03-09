@@ -95,6 +95,15 @@ void check_variable_type(char** elements, int** types, int i)
 
 	The number of elements is stored in types at subscript 0 ( (*types)[0] = number of elements )
 */
+/* VALGRIND ERRORS
+
+	#1: Solved
+		Not enough space was allocated to store the string "<<<" and the '\0' character
+
+	#2: Not solved
+
+
+*/
 int get_line_elements(const char* line, char*** elements, int** types, int* position) //Returns 0 if syntax error
 {
 	int i = 0, j = 1, k = 1;
@@ -103,7 +112,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	*types = (int*) malloc(sizeof(int));
 	check_alloc(*types);
 
-	*elements = (char**) malloc(sizeof(char*)); //ERROR DETECTED BY VALGRIND (ERRORS all but #1) ==> ALLOC
+	*elements = (char**) malloc(sizeof(char*)); //ERRORS DETECTED BY VALGRIND (ERRORS all but #1) ==> ALLOC
 	check_alloc(*elements);
 
 
@@ -111,9 +120,10 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	(*types)[0] = 0;
 
 	//Initializing the first element to "<<<" since the first subscript (0) of types contains the total number of elements
-	(*elements)[0] = (char*) malloc(2 * sizeof(char)); //ERROR DETECTED BY VALGRIND (ERROR #1) ==> ALLOC
+	(*elements)[0] = (char*) malloc(4 * sizeof(char));
 	check_alloc((*elements)[0]);
-	strcpy((*elements)[0], "<<<"); //ERROR DETECTED BY VALGRIND (ERROR #1) (WRITE ERROR)
+	
+	strcpy((*elements)[0], "<<<");
 
 
 	while (line[i] != '\0')
@@ -131,6 +141,10 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 			(*types)[0]++; //Incrementing the number of elements
 
+			//Reallocating memory for the first dimension
+			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
+			check_alloc(*elements);
+
 			(*elements)[j] = (char*) malloc(2 * sizeof(char));
 			check_alloc((*elements)[j]);
 
@@ -145,7 +159,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			(*types)[j++] = 4;
 		}
 
-		//If an comparator was found
+		//If a comparator was found
 		if ( ( (line[i] == ':' || line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
 		{
 
@@ -156,6 +170,10 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			}
 
 			(*types)[0]++; //Incrementing the number of elements
+
+			//Reallocating memory for the first dimension
+			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
+			check_alloc(*elements);
 
 			(*elements)[j] = (char*) malloc(2 * sizeof(char));
 			check_alloc((*elements)[j]);
@@ -174,7 +192,9 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		//If a "word" beginning by a number (1, 2, 3...) or by  was found
 		if ( (line[i] >= 48 && line[i] <= 57) || (line[i] == '-' && line[i + 1] != '\0' && line[i + 1] >= 48 && line[i + 1] <= 57) )
 		{
-
+			//Reallocating memory for the first dimension
+			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
+			check_alloc(*elements);
 
 			(*elements)[j] = (char*) malloc(2 * sizeof(char)); //Allocating memory to store this number appart the original line
 			check_alloc((*elements)[j]);
@@ -261,6 +281,10 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		//If a "word" beginning by a letter (a,b,c,...,A,B,C,...) was found
 		if ( ( (line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122) ) && line[i] != '\0')
 		{
+			//Reallocating memory for the first dimension
+			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
+			check_alloc(*elements);
+
 
 			(*elements)[j] = (char*) malloc(2 * sizeof(char)); //Allocating memory to store this letter appart the original line //ERROR DETECTED BY VALGRIND HERE (ERROR #2) (WRITE ERROR)
 			check_alloc((*elements)[j]); //ERROR DETECTED BY VALGRIND (ERROR #3) (READ ERROR)
@@ -292,6 +316,10 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		if (line[i] == '"' && line[i+1] != '\0')
 		{
 
+			//Reallocating memory for the first dimension
+			*elements = (char**) realloc(*elements, j * sizeof(char*));
+			check_alloc(*elements);
+
 			(*elements)[j] = (char*) malloc(3 * sizeof(char)); //Allocating memory to store this string appart the original line
 			check_alloc((*elements)[j]);
 
@@ -320,7 +348,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 				return 0;
 			}
 
-			(*types)[0]++; //Incrementing the number of elements
+			(*types)[0] += 1; //Incrementing the number of elements
 
 			(*types)[j++] = 3; //Setting the element's type to string
 		}
