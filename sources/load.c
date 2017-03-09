@@ -147,7 +147,7 @@ void free_2D_char_array(char*** array, int subs)
 	for (subs; subs >= 0; subs--)
 		free((*array)[subs]);
 
-	//free(*array);
+	free(*array);
 
 	*array = NULL;
 }
