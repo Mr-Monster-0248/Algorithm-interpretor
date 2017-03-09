@@ -52,13 +52,19 @@ int main(int argc, char** argv)
 				if ((getLineError = get_line_elements(line, &elements, &types, &position)) == 0)
 				{
 					disp_error(position);
+
+					free_2D_char_array(&elements, types[0]);
+
+					free(types);
+
+
 					continue;
 				} else if (getLineError == 2)
 				{
 					printf("ERROR: STRUCTURAL ERROR\n\n");
 					
 					display_elements(elements, types);
-					
+
 					free_2D_char_array(&elements, types[0]);
 
 					free(types);
