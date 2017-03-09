@@ -362,11 +362,13 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 	//Checking if the structure of the line is correct
 	if (j >= 2) //If at least two elements
+	{
 		for (i = 0; i < j - 1; i++)
 			if ((*types)[i] == (*types)[i+1])
 				return 2;
-	if ((*types)[j] == 4)
-		return 2;
+		if ((*types)[j-1] == 4)
+			return 2;
+	}
 
 	return 1;
 }
@@ -378,9 +380,9 @@ void display_elements(char** elements, int* types)
 	int i = 1;
 
 	for (i = 1; i <= types[0]; i++)
-	{
-		printf("Element %d = %s\t", i, elements[i]);
-		printf("type id: %d\n", types[i]);
+	{	
+		printf("Element %2d\tType id: %d\t", i, types[i]);
+		printf("read: %s\n", elements[i]);
 	}
 
 	printf("\n");

@@ -55,11 +55,11 @@ int main(int argc, char** argv)
 					continue;
 				} else if (getLineError == 2)
 				{
-					printf("ERROR: STRUCTURAL ERROR\nThere is an error of structure in that line!\n\n");
+					printf("ERROR: STRUCTURAL ERROR\n\n");
+					
+					display_elements(elements, types);
 					
 					free_2D_char_array(&elements, types[0]);
-
-					display_elements(elements, types);
 
 					free(types);
 
