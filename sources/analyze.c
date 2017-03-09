@@ -103,7 +103,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	*types = (int*) malloc(sizeof(int));
 	check_alloc(*types);
 
-	*elements = (char**) malloc(sizeof(char*));
+	*elements = (char**) malloc(sizeof(char*)); //ERROR DETECTED BY VALGRIND (ERRORS all but #1) ==> ALLOC
 	check_alloc(*elements);
 
 
@@ -111,9 +111,9 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	(*types)[0] = 0;
 
 	//Initializing the first element to "<<<" since the first subscript (0) of types contains the total number of elements
-	(*elements)[0] = (char*) malloc(2 * sizeof(char));
+	(*elements)[0] = (char*) malloc(2 * sizeof(char)); //ERROR DETECTED BY VALGRIND (ERROR #1) ==> ALLOC
 	check_alloc((*elements)[0]);
-	sprintf((*elements)[0], "<<<");
+	strcpy((*elements)[0], "<<<"); //ERROR DETECTED BY VALGRIND (ERROR #1) (WRITE ERROR)
 
 
 	while (line[i] != '\0')
@@ -262,8 +262,8 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		if ( ( (line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122) ) && line[i] != '\0')
 		{
 
-			(*elements)[j] = (char*) malloc(2 * sizeof(char)); //Allocating memory to store this letter appart the original line
-			check_alloc((*elements)[j]);
+			(*elements)[j] = (char*) malloc(2 * sizeof(char)); //Allocating memory to store this letter appart the original line //ERROR DETECTED BY VALGRIND HERE (ERROR #2) (WRITE ERROR)
+			check_alloc((*elements)[j]); //ERROR DETECTED BY VALGRIND (ERROR #3) (READ ERROR)
 
 			*types = (int*) realloc(*types, (j+1) * sizeof(int)); //Allocating memory to store this letter type
 			check_alloc(*types);
@@ -276,11 +276,11 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 			while (line[i] != ' ' && ( (line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122) || ( (line[i] >= 48) && (line[i] <= 57) ) || line[i] == '_' ) && line[i] != '\0' && line[i] != ':')
 			{
-				(*elements)[j] = (char*) realloc((*elements)[j], k++ * sizeof(char));
-				check_alloc((*elements)[j]);
+				(*elements)[j] = (char*) realloc((*elements)[j], k++ * sizeof(char)); //ERRORS DETECTED BY VALGRIND (ERRORS #4 #5) (READ ERROR + WRITE ERROR)
+				check_alloc((*elements)[j]); //ERROR DETECTED BY VALGRIND (ERROR #6) (READ ERROR)
 
-				(*elements)[j][k - 2] =  '\0';
-				(*elements)[j][k - 3] = line[i++];
+				(*elements)[j][k - 2] =  '\0'; //ERROR DETECTED BY VALGRIND (ERROR #7) (READ ERROR)
+				(*elements)[j][k - 3] = line[i++]; //ERROR DETECTED BY VALGRIND (ERROR #8) (READ ERROR)
 			}
 
 			(*types)[j] = 8;
@@ -329,7 +329,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		i++;
 	}
 
-	if((*types)[j-1] == 8 && j > 2 && strcmp((*elements)[j-2], ":") == 0)
+	if((*types)[j-1] == 8 && j > 2 && strcmp((*elements)[j-2], ":") == 0) //ERROR DETECTED BY VALGRIND (ERROR #9) (READ ERROR)
 		check_variable_type(*elements, types, j);
 
 	//Checking if the structure of the line is correct
