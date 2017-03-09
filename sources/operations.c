@@ -369,16 +369,7 @@ int check_operator_priority(char* operator)
 }
 
 //Function witch find the operator with the highest priority (if it exist)
-<<<<<<< HEAD
 int highest_priority_operator(char** elements, int* types) //return the index of the highest operator and return 0 if there is no highest
-=======
-/*#######################################################################################
-#																						#
-#	JE COMMENTE ÇA EN ATTENDANT QUE TU Y RETOUCHES PARCE QUE ÇA CRÉÉ PLEIN DE WARNINGS	#
-#																						#
-#########################################################################################*/
-/*int highest_priority_operator(int* types, char** elements) //return the index of the highest operator and return 0 if there is no highest
->>>>>>> 31c8e4224a403e828621f820da5ccecf6bf63a38
 {
 	int i = 0, secondHighestOp = 1;
 
@@ -392,8 +383,6 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 
 	return 0;
 }
-<<<<<<< HEAD
-
 
 //Function that finaly compute this f*** operation
 int compute__int_operation(char** elements, int* types)
@@ -411,7 +400,3 @@ int compute__int_operation(char** elements, int* types)
 
 
 }
-
-=======
-*/
->>>>>>> 31c8e4224a403e828621f820da5ccecf6bf63a38
