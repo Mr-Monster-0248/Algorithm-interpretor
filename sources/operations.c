@@ -79,16 +79,27 @@ float float_addition(const char* lValue, const char* rValue)
 
 
 //Function that check if the line is an operation 
-int is_operation(int* types) //Return 1 if it's an operation
+int is_operation(int* types) //Return 1 if it's an int operation 2 if it's a float operation
 {
 	int i, test = 0;
+	int isAFloat = FALSE;
 
 	for(i = 1; i <= types[0]; i++)
-		if((i % 2 == 1 && types[i] == 1) || (i % 2 == 0 && types[i] == 4))
+		if( (i % 2 == 1 && ((types[i] == 1) || (types[i] == 2))) || (i % 2 == 0 && types[i] == 4) )
+		{
 			test++;
+			if(types[i] == 2)
+				isAFloat = TRUE;
+		}
 
-	if(test >= types[0] && types[types[0]] == 1 && test > 2)
-		return 1;
+	if(test >= types[0] && ((types[types[0]] == 1) || (types[types[0]] == 2)) && test > 2)
+	{
+		printf("test float = %d\n", isAFloat);
+		if(isAFloat == TRUE)
+			return 2;
+		else
+			return 1;
+	}
 	else
 		return 0;
 }
@@ -334,9 +345,10 @@ int highest_priority_operator(int* types, char** elements) //return the index of
 	{
 		if(types[i] == 4 && check_operator_priority(elements[i]) > secondHighestOp)
 		{
-			
+			return i;
 		}
 	}
 
 	return 0;
 }
+

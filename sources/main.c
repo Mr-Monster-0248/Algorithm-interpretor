@@ -77,8 +77,11 @@ int main(int argc, char** argv)
 					if(types[i] == 0)
 						printf("Declaration error on element %d\n\n", i);
 
-				if(is_operation(types))
-					printf("this is an operation\n");
+				if(is_operation(types) == 1)
+					printf("this is an int operation\n");
+				
+				if(is_operation(types) == 2)
+					printf("this is a float operation\n");
 
 				
 
