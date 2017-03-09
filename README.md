@@ -22,7 +22,7 @@ The executable ExeTest which is provided was obtained by compiling all the sourc
 If you see any mistake on our code, or a more efficient way to do it, please feel free to leave a message in the "Issues" or "Projects" sections.
 
 OpenClassrooms.com C forum associated post: </br>
-https://openclassrooms.com/forum/sujet/fuites-memoire-debug-avec-valgrind
+https://openclassrooms.com/forum/sujet/free-d-un-tableau-de-string
 
 
 Thanks
