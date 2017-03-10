@@ -122,7 +122,6 @@ int is_operation(int* types) //Return 1 if it's an int operation 2 if it's a flo
 
 	if(test >= types[0] && ((types[types[0]] == 1) || (types[types[0]] == 2)) && test > 2)
 	{
-		printf("test float = %d\n", isAFloat);
 		if(isAFloat == TRUE)
 			return 2;
 		else
