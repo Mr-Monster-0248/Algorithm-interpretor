@@ -98,7 +98,7 @@ void check_variable_type(char** elements, int** types, int i)
 */
 int get_line_elements(const char* line, char*** elements, int** types, int* position) //Returns 0 if syntax error
 {
-	int i = 0, j = 1, k = 1;
+	int i = 0, j = 1, k = 1, oParentheses = 0;
 
 	//Allocating memory for new arrays
 	*types = (int*) malloc(sizeof(int));
@@ -348,6 +348,8 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		//If elements in parentheses were found
 		if (line[i] == 40 /* ASCII 40 = "(" */ && line[i+1] != '\0')
 		{
+			oParentheses++;
+
 			//Reallocating memory for the first dimension
 			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
 			check_alloc(*elements);
@@ -364,8 +366,15 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			(*elements)[j][1] = '\0';
 
 
-			while(line[i] != 41 /* ASCII 41 = ")" */ && line[i] != '\0')
+			while(oParentheses > 0 && line[i] != '\0')
 			{
+				if (line[i] == 40) // New oppening parenthese
+					oParentheses++;
+
+				if (line[i] == 41) // New closing parenthese
+					if (--oParentheses == 0)
+						break;
+
 				(*elements)[j] = (char*) realloc((*elements)[j], k++ * sizeof(char));
 				check_alloc((*elements)[j]);
 
@@ -374,7 +383,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 				(*elements)[j][k - 3] = line[i++];
 			}
 
-			if (line[i] == '\0') //Syntax error, no closing ", returning 0
+			if (line[i] == '\0' && oParentheses > 0) //Syntax error, no closing ", returning 0
 			{
 				*position = i;
 				return 0;

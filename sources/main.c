@@ -23,79 +23,78 @@ int main(int argc, char** argv)
 	switch(mode)
 	{
 		case 1: //Direct line interpreter
-			printf("Welcome to the algorithmic interpreter\nType \"exit\" to exit the interpreter or \"help\" to see the manual\n\n");
-			
-			line = (char*) malloc(LINE_SIZE * sizeof(char));
-			check_alloc(line);
-
-			do
-			{
-				getLineError = 0;
-				exitProgram = 0;
+				printf("Welcome to the algorithmic interpreter\nType \"exit\" to exit the interpreter or \"help\" to see the manual\n\n");
 				
-				printf(">>> ");
+				line = (char*) malloc(LINE_SIZE * sizeof(char));
+				check_alloc(line);
 
-				fflush(stdin);
-				fgets(line, LINE_SIZE, stdin); //Getting the line entered by the user
-				del_newLine_char(line);
-
-
-				//Checking if the user entered a special command
-				exitProgram = check_special_command(line);
-				if (exitProgram == 1)
-					continue;
-				if (exitProgram == 2)
-					break;
-			
-
-				//Getting the elements and their types in the line, continue processing only if no syntax error
-				if ((getLineError = get_line_elements(line, &elements, &types, &position)) == 0)
+				do
 				{
-					disp_error(position);
-
-					free_2D_char_array(&elements, types[0]);
-
-					free(types);
-
-
-					continue;
-				} else if (getLineError == 2)
-				{
-					printf("ERROR: STRUCTURAL ERROR\n\n");
+					getLineError = 0;
+					exitProgram = 0;
 					
+					printf(">>> ");
+
+					fflush(stdin);
+					fgets(line, LINE_SIZE, stdin); //Getting the line entered by the user
+					del_newLine_char(line);
+
+
+					//Checking if the user entered a special command
+					exitProgram = check_special_command(line);
+					if (exitProgram == 1)
+						continue;
+					if (exitProgram == 2)
+						break;
+				
+
+					//Getting the elements and their types in the line, continue processing only if no syntax error
+					if ((getLineError = get_line_elements(line, &elements, &types, &position)) == 0)
+					{
+						disp_error(position);
+
+						free_2D_char_array(&elements, types[0]);
+
+						free(types);
+
+
+						continue;
+					} else if (getLineError == 2)
+					{
+						printf("ERROR: STRUCTURAL ERROR\n\n");
+						
+						display_elements(elements, types);
+
+						free_2D_char_array(&elements, types[0]);
+
+						free(types);
+
+						continue;
+					}
+
+					
+					for(i = 1; i < types[0]; i++)
+						if(types[i] == 0)
+							printf("Declaration error on element %d\n\n", i);
+
+					if(is_operation(types) == 1)
+						printf("this is an int operation\n");
+					
+					if(is_operation(types) == 2)
+						printf("this is a float operation\n");
+
+					
+
 					display_elements(elements, types);
 
-					free_2D_char_array(&elements, types[0]);
 
+					//Freeing memory previously allocated before exiting or starting a new lap
+					free_2D_char_array(&elements, types[0]);
 					free(types);
 
-					continue;
-				}
+				} while (TRUE);
 
-				
-				for(i = 1; i < types[0]; i++)
-					if(types[i] == 0)
-						printf("Declaration error on element %d\n\n", i);
-
-				if(is_operation(types) == 1)
-					printf("this is an int operation\n");
-				
-				if(is_operation(types) == 2)
-					printf("this is a float operation\n");
-
-				
-
-				display_elements(elements, types);
-
-
-				//Freeing memory previously allocated before exiting or starting a new lap
-				free_2D_char_array(&elements, types[0]);
-				free(types);
-
-			} while (TRUE);
-
-			free(line);
-
+				free(line);
 			break;
 
 

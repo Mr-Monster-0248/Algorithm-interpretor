@@ -34,6 +34,7 @@
 		7 = new string variable
 		8 = variable
 		9 = comparator
+	   10 = element between parentheses
 
 		The number of elements is stored in types at subscript 0 ( (*types)[0] = number of elements )
 	*/
