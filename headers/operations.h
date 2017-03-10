@@ -19,6 +19,21 @@
 	//Function that performs an addition of integers values (formatted to string)
 	int int_addition(const char* lValue, const char* rValue);
 
+	//Function that performs an multiplication of float values (formatted to string)
+	float float_multiplication(const char* lValue, const char* rValue);
+
+	//Function that performs an multiplication of integers values (formatted to string)
+	int int_multiplication(const char* lValue, const char* rValue);
+
+	//Function that performs an addition of float values (formatted to string)
+	float float_addition(const char* lValue, const char* rValue);
+
+	//Function that performs an subbstraction of integers values (formatted to string)
+	int int_subbstraction(const char* lValue, const char* rValue);
+
+	//Function that performs a division of integers values (formatted to string)
+	int int_division(const char* lValue, const char* rValue);
+
 	//Function that check if the line is an operation 
 	int is_operation(int* types); //return 1 if it's an operation
 

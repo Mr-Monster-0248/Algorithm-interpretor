@@ -63,6 +63,20 @@ int bool_to_int(const char* value)
 }
 
 
+//Function that performs an multiplication of integers values (formatted to string)
+int int_multiplication(const char* lValue, const char* rValue)
+{
+	return convertTo_int(lValue) * convertTo_int(rValue);
+}
+
+
+//Function that performs an multiplication of float values (formatted to string)
+float float_multiplication(const char* lValue, const char* rValue)
+{
+	return convertTo_float(lValue) * convertTo_float(rValue);
+}
+
+
 //Function that performs an addition of integers values (formatted to string)
 int int_addition(const char* lValue, const char* rValue)
 {
@@ -76,6 +90,20 @@ float float_addition(const char* lValue, const char* rValue)
 	return convertTo_float(lValue) + convertTo_float(rValue);
 }
 
+//Function that performs an subbstraction of integers values (formatted to string)
+int int_subbstraction(const char* lValue, const char* rValue)
+{
+	return convertTo_int(lValue) - convertTo_int(rValue);
+}
+
+//Function that performs a division of integers values (formatted to string)
+int int_division(const char* lValue, const char* rValue)
+{
+	if(rValue == 0)
+		return -1;
+
+	return convertTo_int(lValue) / convertTo_int(rValue);
+}
 
 
 //Function that check if the line is an operation 
@@ -94,7 +122,6 @@ int is_operation(int* types) //Return 1 if it's an int operation 2 if it's a flo
 
 	if(test >= types[0] && ((types[types[0]] == 1) || (types[types[0]] == 2)) && test > 2)
 	{
-		printf("test float = %d\n", isAFloat);
 		if(isAFloat == TRUE)
 			return 2;
 		else
@@ -328,6 +355,10 @@ int check_operator_priority(char* operator)
 		return 2;
 	else if (strcmp(operator, "/") == 0)
 		return 2;
+	/*
+	else if(strcmp(operator, 37) == 0) //this is for '%'
+		return 2;
+	*/
 	else if (strcmp(operator, "+") == 0)
 		return 1;
 	else if (strcmp(operator, "-") == 0)
@@ -337,14 +368,9 @@ int check_operator_priority(char* operator)
 }
 
 //Function witch find the operator with the highest priority (if it exist)
-/*#######################################################################################
-#																						#
-#	JE COMMENTE ÇA EN ATTENDANT QUE TU Y RETOUCHES PARCE QUE ÇA CRÉÉ PLEIN DE WARNINGS	#
-#																						#
-#########################################################################################*/
-/*int highest_priority_operator(int* types, char** elements) //return the index of the highest operator and return 0 if there is no highest
+int highest_priority_operator(char** elements, int* types) //return the index of the highest operator and return 0 if there is no highest
 {
-	int i = 0, highestOp, secondHighestOp = 1, index;
+	int i = 0, secondHighestOp = 1;
 
 	for(i = 1; i <= types[0]; i++)
 	{
@@ -356,4 +382,20 @@ int check_operator_priority(char* operator)
 
 	return 0;
 }
-*/
+
+//Function that finaly compute this f*** operation
+int compute__int_operation(char** elements, int* types)
+{
+	int i, res;
+
+	while(i = highest_priority_operator(elements, types) !=  0)
+	{
+		if(strcmp(elements[i], "*") == 0)
+			res = int_multiplication(elements[i - 1], elements[i + 1]);
+		if(strcmp(elements[i], "/") == 0)
+			res = int_addition(elements[i - 1], elements[i + 1]);
+	}
+
+
+
+}
