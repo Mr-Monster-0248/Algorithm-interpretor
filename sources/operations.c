@@ -355,10 +355,8 @@ int check_operator_priority(char* operator)
 		return 2;
 	else if (strcmp(operator, "/") == 0)
 		return 2;
-	/*
-	else if(strcmp(operator, 37) == 0) //this is for '%'
+	else if(operator[0] == '%')
 		return 2;
-	*/
 	else if (strcmp(operator, "+") == 0)
 		return 1;
 	else if (strcmp(operator, "-") == 0)
@@ -384,16 +382,18 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 }
 
 //Function that finaly compute this f*** operation
-int compute__int_operation(char** elements, int* types)
+int compute__int_operation(char*** elements, int* types)
 {
 	int i, res;
 
 	while(i = highest_priority_operator(elements, types) !=  0)
 	{
 		if(strcmp(elements[i], "*") == 0)
-			res = int_multiplication(elements[i - 1], elements[i + 1]);
+			(*elements)[i + 1] = int_multiplication((*elements)[i - 1], (*elements)[i + 1]);
 		if(strcmp(elements[i], "/") == 0)
-			res = int_addition(elements[i - 1], elements[i + 1]);
+			res = int_addition((*elements)[i - 1], (*elements)[i + 1]);
+
+
 	}
 
 
