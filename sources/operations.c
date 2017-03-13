@@ -386,14 +386,26 @@ int compute__int_operation(char*** elements, int* types)
 {
 	int i, res;
 
-	while(i = highest_priority_operator(elements, types) !=  0)
+	while(i = highest_priority_operator(elements, types) ==  2)
 	{
 		if(strcmp(elements[i], "*") == 0)
 			(*elements)[i + 1] = int_multiplication((*elements)[i - 1], (*elements)[i + 1]);
 		if(strcmp(elements[i], "/") == 0)
-			res = int_addition((*elements)[i - 1], (*elements)[i + 1]);
+			res = int_division((*elements)[i - 1], (*elements)[i + 1]);
 
+		shift_left(&elements, types, i+1);
+		shift_left(&elements, types, i);
+	}
 
+	while(i = highest_priority_operator(elements, types) ==  1)
+	{
+		if(strcmp(elements[i], "+") == 0)
+			(*elements)[i + 1] = int_addition((*elements)[i - 1], (*elements)[i + 1]);
+		if(strcmp(elements[i], "-") == 0)
+			res = int_subbstraction((*elements)[i - 1], (*elements)[i + 1]);
+
+		shift_left(&elements, types, i+1);
+		shift_left(&elements, types, i);
 	}
 
 
