@@ -153,7 +153,7 @@ void free_2D_char_array(char*** array, int subs)
 
 
 //Function that shifts all the value of an integer array to the left from a given subscript (which will be overwritten in the operation)
-void shift_left(int** array, int* arraySize, int shiftFrom)
+void shift_left__int_array(int** array, int* arraySize, int shiftFrom)
 {
 	int i = 0;
 
