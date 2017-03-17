@@ -399,8 +399,10 @@ void compute__int_operation(char*** elements, int** types)
 			sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
-		shift_left__string_array (elements, types[0], i);
-		shift_left__string_array (elements, types[0], i);
+		shift_left__string_array__number_not_changed(elements, types[0], i);
+		shift_left__string_array__number_not_changed(elements, types[0], i);
+		shift_left__int_array(types, types[0], i);
+		shift_left__int_array(types, types[0], i);
 	}
 
 	//After that, performing the lowest priority operations
@@ -413,7 +415,9 @@ void compute__int_operation(char*** elements, int** types)
 			sprintf((*elements)[i - 1], "%d", int_subbstraction((*elements)[i - 1], (*elements)[i + 1]));
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
-		shift_left__string_array (elements, types[0], i);
-		shift_left__string_array (elements, types[0], i);
+		shift_left__string_array__number_not_changed(elements, types[0], i);
+		shift_left__string_array__number_not_changed(elements, types[0], i);
+		shift_left__int_array(types, types[0], i);
+		shift_left__int_array(types, types[0], i);
 	}
 }
