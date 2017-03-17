@@ -368,13 +368,17 @@ int check_operator_priority(char* operator)
 //Function witch find the operator with the highest priority (if it exist)
 int highest_priority_operator(char** elements, int* types) //return the index of the highest operator and return 0 if there is no highest
 {
-	int i = 0, secondHighestOp = 1;
+	int i = 0;
 
 	for(i = 1; i <= types[0]; i++)
 	{
-		if(types[i] == 4 && check_operator_priority(elements[i]) > secondHighestOp)
+		if(types[i] == 4 && check_operator_priority(elements[i]) > 1)
 		{
-			return check_operator_priority(elements[]i);
+			return 2;
+		}
+		else if(types[i] == 4 && check_operator_priority(elements[i]) == 1)
+		{
+			return 1;
 		}
 	}
 
@@ -389,23 +393,23 @@ void compute__int_operation(char*** elements, int* types)
 	while(i = highest_priority_operator(elements, types) ==  2)
 	{
 		if(strcmp(elements[i], "*") == 0)
-			(*elements)[i + 1] = int_multiplication((*elements)[i - 1], (*elements)[i + 1]);
+			sprintf((*elements)[i + 1], "%d", int_multiplication((*elements)[i - 1], (*elements)[i + 1]));
 		if(strcmp(elements[i], "/") == 0)
-			res = int_division((*elements)[i - 1], (*elements)[i + 1]);
+			sprintf((*elements)[i + 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
 
-		shift_left(&elements, types, i+1);
-		shift_left(&elements, types, i);
+		shift_left__string_array (elements, types[0], i);
+		shift_left__string_array (elements, types[0], i);
 	}
 
 	while(i = highest_priority_operator(elements, types) ==  1)
 	{
 		if(strcmp(elements[i], "+") == 0)
-			(*elements)[i + 1] = int_addition((*elements)[i - 1], (*elements)[i + 1]);
+			sprintf((*elements)[i + 1], "%d", int_addition((*elements)[i - 1], (*elements)[i + 1]));
 		if(strcmp(elements[i], "-") == 0)
-			res = int_subbstraction((*elements)[i - 1], (*elements)[i + 1]);
+			sprintf((*elements)[i + 1], "%d", int_subbstraction((*elements)[i - 1], (*elements)[i + 1]));
 
-		shift_left(elements, types, i+1);
-		shift_left(elements, types, i);
+		shift_left__string_array (elements, types[0], i);
+		shift_left__string_array (elements, types[0], i);
 	}
 
 
