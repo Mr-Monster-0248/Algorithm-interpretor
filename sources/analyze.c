@@ -181,7 +181,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			(*types)[j++] = 9;
 		}
 
-		//If a "word" beginning by a number (1, 2, 3...) or by  was found
+		//If a "word" beginning by a number (1, 2, 3...) or by - was found
 		if ( (line[i] >= 48 && line[i] <= 57) || (line[i] == '-' && line[i + 1] != '\0' && line[i + 1] >= 48 && line[i + 1] <= 57) )
 		{
 			//Reallocating memory for the first dimension
