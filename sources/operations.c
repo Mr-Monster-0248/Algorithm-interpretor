@@ -348,6 +348,7 @@ int eval_bool_expr(char* lValue, const int lValueType, char* rValue, const int r
 	}
 }
 
+
 //Function witch give a value of priority for each operator
 int check_operator_priority(char* operator)
 {
@@ -365,6 +366,7 @@ int check_operator_priority(char* operator)
 		return 0;
 }
 
+
 //Function witch find the operator with the highest priority (if it exist)
 int highest_priority_operator(char** elements, int* types) //return the index of the highest operator and return 0 if there is no highest
 {
@@ -373,45 +375,45 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 	for(i = 1; i <= types[0]; i++)
 	{
 		if(types[i] == 4 && check_operator_priority(elements[i]) > 1)
-		{
 			return i;
-		}
 		else if(types[i] == 4 && check_operator_priority(elements[i]) == 1)
-		{
 			return i;
-		}
 	}
 
 	return 0;
 }
+
 
 //Function that finaly compute this f*** operation
 void compute__int_operation(char*** elements, int** types)
 {
 	int i = 0;
 
-	while((i = (highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  2))
+	//While there still are some * or / or % to perform, performing this highest priority operations
+	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  2)
 	{
+		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "*") == 0)
-			sprintf((*elements)[i + 1], "%d", int_multiplication((*elements)[i - 1], (*elements)[i + 1]));
+			sprintf((*elements)[i - 1], "%d", int_multiplication((*elements)[i - 1], (*elements)[i + 1]));
 		if(strcmp((*elements)[i], "/") == 0)
-			sprintf((*elements)[i + 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
+			sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
 
+		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_left__string_array (elements, types[0], i);
 		shift_left__string_array (elements, types[0], i);
 	}
 
+	//After that, performing the lowest priority operations
 	while((i = (highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  1))
 	{
+		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "+") == 0)
-			sprintf((*elements)[i + 1], "%d", int_addition((*elements)[i - 1], (*elements)[i + 1]));
+			sprintf((*elements)[i - 1], "%d", int_addition((*elements)[i - 1], (*elements)[i + 1]));
 		if(strcmp((*elements)[i], "-") == 0)
-			sprintf((*elements)[i + 1], "%d", int_subbstraction((*elements)[i - 1], (*elements)[i + 1]));
+			sprintf((*elements)[i - 1], "%d", int_subbstraction((*elements)[i - 1], (*elements)[i + 1]));
 
+		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_left__string_array (elements, types[0], i);
 		shift_left__string_array (elements, types[0], i);
 	}
-
-
-
 }
