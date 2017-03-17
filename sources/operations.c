@@ -370,7 +370,7 @@ int check_operator_priority(char* operator)
 //Function witch find the operator with the highest priority (if it exist)
 int highest_priority_operator(char** elements, int* types) //return the index of the highest operator and return 0 if there is no highest
 {
-	int i = 0;
+	int i;
 
 	for(i = 1; i <= types[0]; i++)
 	{
@@ -392,6 +392,8 @@ void compute__int_operation(char*** elements, int** types)
 	//While there still are some * or / or % to perform, performing this highest priority operations
 	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  2)
 	{
+		printf("%d\n", i);
+
 		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "*") == 0)
 			sprintf((*elements)[i - 1], "%d", int_multiplication((*elements)[i - 1], (*elements)[i + 1]));
@@ -399,15 +401,14 @@ void compute__int_operation(char*** elements, int** types)
 			sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
-		shift_left__string_array__number_not_changed(elements, types[0], i);
-		shift_left__string_array__number_not_changed(elements, types[0], i);
-		shift_left__int_array(types, types[0], i);
-		shift_left__int_array(types, types[0], i);
+		shift_elements(elements, types, i);
 	}
 
 	//After that, performing the lowest priority operations
 	while((i = (highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  1))
 	{
+		printf("%d\n", i);
+
 		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "+") == 0)
 			sprintf((*elements)[i - 1], "%d", int_addition((*elements)[i - 1], (*elements)[i + 1]));
@@ -415,9 +416,6 @@ void compute__int_operation(char*** elements, int** types)
 			sprintf((*elements)[i - 1], "%d", int_subbstraction((*elements)[i - 1], (*elements)[i + 1]));
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
-		shift_left__string_array__number_not_changed(elements, types[0], i);
-		shift_left__string_array__number_not_changed(elements, types[0], i);
-		shift_left__int_array(types, types[0], i);
-		shift_left__int_array(types, types[0], i);
+		shift_elements(elements, types, i);
 	}
 }
