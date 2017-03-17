@@ -172,7 +172,7 @@ void shift_left__string_array (char*** array, int* arraySize, int shiftFrom)
 {
 	int i = 0;
 
-	if (shiftFrom >= 0 && shiftFrom < arraySize)
+	if (shiftFrom >= 0 && shiftFrom < *arraySize)
 	{
 		for (i = shiftFrom; i < *arraySize - 1; i++)
 		{

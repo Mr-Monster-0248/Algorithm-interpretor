@@ -390,26 +390,26 @@ void compute__int_operation(char*** elements, int* types)
 {
 	int i, res;
 
-	while(i = highest_priority_operator(elements, types) ==  2)
+	while(i = highest_priority_operator(*elements, types) ==  2)
 	{
-		if(strcmp(elements[i], "*") == 0)
+		if(strcmp((*elements)[i], "*") == 0)
 			sprintf((*elements)[i + 1], "%d", int_multiplication((*elements)[i - 1], (*elements)[i + 1]));
-		if(strcmp(elements[i], "/") == 0)
+		if(strcmp((*elements)[i], "/") == 0)
 			sprintf((*elements)[i + 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
 
-		shift_left__string_array (elements, types[0], i);
-		shift_left__string_array (elements, types[0], i);
+		shift_left__string_array (elements, &types[0], i);
+		shift_left__string_array (elements, &types[0], i);
 	}
 
-	while(i = highest_priority_operator(elements, types) ==  1)
+	while(i = highest_priority_operator(*elements, types) ==  1)
 	{
-		if(strcmp(elements[i], "+") == 0)
+		if(strcmp((*elements)[i], "+") == 0)
 			sprintf((*elements)[i + 1], "%d", int_addition((*elements)[i - 1], (*elements)[i + 1]));
-		if(strcmp(elements[i], "-") == 0)
+		if(strcmp((*elements)[i], "-") == 0)
 			sprintf((*elements)[i + 1], "%d", int_subbstraction((*elements)[i - 1], (*elements)[i + 1]));
 
-		shift_left__string_array (elements, types[0], i);
-		shift_left__string_array (elements, types[0], i);
+		shift_left__string_array (elements, &types[0], i);
+		shift_left__string_array (elements, &types[0], i);
 	}
 
 
