@@ -374,7 +374,7 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 	{
 		if(types[i] == 4 && check_operator_priority(elements[i]) > 1)
 		{
-			return 2;
+			return i;
 		}
 		else if(types[i] == 4 && check_operator_priority(elements[i]) == 1)
 		{
@@ -388,9 +388,9 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 //Function that finaly compute this f*** operation
 void compute__int_operation(char*** elements, int* types)
 {
-	int i, res;
+	int i;
 
-	while(i = highest_priority_operator(*elements, types) ==  2)
+	while((i = (highest_priority_operator(*elements, types)) && check_operator_priority((*elements)[i]) ==  2))
 	{
 		if(strcmp((*elements)[i], "*") == 0)
 			sprintf((*elements)[i + 1], "%d", int_multiplication((*elements)[i - 1], (*elements)[i + 1]));
@@ -401,7 +401,7 @@ void compute__int_operation(char*** elements, int* types)
 		shift_left__string_array (elements, &types[0], i);
 	}
 
-	while(i = highest_priority_operator(*elements, types) ==  1)
+	while((i = (highest_priority_operator(*elements, types)) && check_operator_priority((*elements)[i]) ==  1))
 	{
 		if(strcmp((*elements)[i], "+") == 0)
 			sprintf((*elements)[i + 1], "%d", int_addition((*elements)[i - 1], (*elements)[i + 1]));
