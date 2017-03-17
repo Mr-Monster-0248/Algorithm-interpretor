@@ -400,20 +400,9 @@ void compute__int_operation(char*** elements, int** types)
 		if(strcmp((*elements)[i], "/") == 0)
 			sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
 
-		printf("RIZALTE: %s\n", (*elements)[i - 1]);
-
-		display_elements(*elements, *types);
-
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
-
-		
-
-		display_elements(*elements, *types);
-		printf("Non displayed: Element %d\t type id: %d\tread: %s\n", (*types)[0], (*types)[(*types)[0]], (*elements)[(*types)[0]]);
-
-		printf("\n\n\n\n\n\n\n");
 	}
 
 	//After that, performing the lowest priority operations
@@ -426,19 +415,8 @@ void compute__int_operation(char*** elements, int** types)
 		if(strcmp((*elements)[i], "-") == 0)
 			sprintf((*elements)[i - 1], "%d", int_subbstraction((*elements)[i - 1], (*elements)[i + 1]));
 
-		printf("RIZALTE: %s\n", (*elements)[i - 1]);
-
-		display_elements(*elements, *types);
-
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
-
-		
-
-		display_elements(*elements, *types);
-		printf("Non displayed: Element %d\t type id: %d\tread: %s\n", (*types)[0], (*types)[(*types)[0]], (*elements)[(*types)[0]]);
-
-		printf("\n\n\n\n\n\n\n");
 	}
 }
