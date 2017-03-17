@@ -5,6 +5,7 @@
 
 #include "../headers/constants.h"
 #include "../headers/load.h"
+#include "../headers/analyze.h"
 
 
 //Function that displays where the SYNTAX ERROR was made
@@ -372,13 +373,13 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 {
 	int i;
 
-	for(i = 1; i <= types[0]; i++)
-	{
-		if(types[i] == 4 && check_operator_priority(elements[i]) > 1)
+	for (i = 2; i <= types[0] - 1; i++)
+		if (types[i] == 4 && check_operator_priority(elements[i]) == 2)
 			return i;
-		else if(types[i] == 4 && check_operator_priority(elements[i]) == 1)
+
+	for (i = 2; i <= types[0] - 1; i++)
+		if (types[i] == 4)
 			return i;
-	}
 
 	return 0;
 }
@@ -392,30 +393,44 @@ void compute__int_operation(char*** elements, int** types)
 	//While there still are some * or / or % to perform, performing this highest priority operations
 	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  2)
 	{
-		printf("%d\n", i);
-
 		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "*") == 0)
 			sprintf((*elements)[i - 1], "%d", int_multiplication((*elements)[i - 1], (*elements)[i + 1]));
+
 		if(strcmp((*elements)[i], "/") == 0)
 			sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
 
+		printf("RIZALTE: %s\n", (*elements)[i - 1]);
+
+		display_elements(*elements, *types);
+
 		//Shifting the array to the left from the position of the operation to remove the performed operation
-		shift_elements(elements, types, i);
+		shift_elements(elements, types, i - 1);
+
+		display_elements(*elements, *types);
+
+		printf("\n\n\n\n\n\n\n");
 	}
 
 	//After that, performing the lowest priority operations
-	while((i = (highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  1))
+	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  1)
 	{
-		printf("%d\n", i);
-
 		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "+") == 0)
 			sprintf((*elements)[i - 1], "%d", int_addition((*elements)[i - 1], (*elements)[i + 1]));
+
 		if(strcmp((*elements)[i], "-") == 0)
 			sprintf((*elements)[i - 1], "%d", int_subbstraction((*elements)[i - 1], (*elements)[i + 1]));
 
+		printf("RIZALTE: %s\n", (*elements)[i - 1]);
+
+		display_elements(*elements, *types);
+
 		//Shifting the array to the left from the position of the operation to remove the performed operation
-		shift_elements(elements, types, i);
+		shift_elements(elements, types, i - 1);
+
+		display_elements(*elements, *types);
+
+		printf("\n\n\n\n\n\n\n");
 	}
 }

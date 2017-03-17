@@ -79,8 +79,8 @@ int main(int argc, char** argv)
 
 					if(is_operation(types) == 1)
 					{
-						printf("this is an int operation\n");
 						compute__int_operation(&elements, &types);
+						
 						display_elements(elements, types);
 					}
 					
