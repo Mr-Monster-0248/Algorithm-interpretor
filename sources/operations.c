@@ -15,7 +15,7 @@ void disp_error(const int position)
 	for (i = 0; i < position + 4; i++)
 		printf(" ");
 
-	printf("^\nSYNTAX ERROR\n\n");
+	printf("^\nERROR: SYNTAX ERROR\n\n");
 }
 
 
