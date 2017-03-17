@@ -168,7 +168,7 @@ void shift_left__int_array(int** array, int* arraySize, int shiftFrom)
 
 
 //Function that shifts all the value of an integer array to the left from a given subscript (which will be overwritten in the operation)
-void shift_left__string_array (char*** array, int* arraySize, int shiftFrom)
+void shift_left__string_array(char*** array, int* arraySize, int shiftFrom)
 {
 	int i = 0;
 
@@ -187,6 +187,30 @@ void shift_left__string_array (char*** array, int* arraySize, int shiftFrom)
 		free((*array)[--(*arraySize)]); //Freeing the last (and duplicated) string of the array
 
 		*array = (char**) realloc(*array, *arraySize * sizeof(char*));
+		check_alloc(*array);
+	}
+}
+
+//Function that shifts all the value of an integer array to the left from a given subscript (which will be overwritten in the operation)
+void shift_left__string_array__number_not_changed(char*** array, int* arraySize, int shiftFrom)
+{
+	int i = 0;
+
+	if (shiftFrom >= 0 && shiftFrom < *arraySize)
+	{
+		for (i = shiftFrom; i < *arraySize - 1; i++)
+		{
+			free((*array)[i]);
+
+			(*array)[i] = malloc( (strlen((*array)[i+1]) + 1) * sizeof(char) );
+			check_alloc((*array)[i]);
+
+			strcpy((*array)[i], (*array)[i+1]);
+		}
+
+		free((*array)[(*arraySize) - 1]); //Freeing the last (and duplicated) string of the array
+
+		*array = (char**) realloc(*array, (*arraySize - 1) * sizeof(char*));
 		check_alloc(*array);
 	}
 }
