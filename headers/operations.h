@@ -65,5 +65,12 @@
 
 	//Function witch give a value of priority for each operator
 	int check_operator_priority(char* operator);
+
+	//Function that finaly compute this f*** operation
+	void compute__int_operation(char*** elements, int** types);
+
+	//Function witch find the operator with the highest priority (if it exist)
+	int highest_priority_operator(char** elements, int* types); //return the index of the highest operator and return 0 if there is no highest
+
 	
 #endif
