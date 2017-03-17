@@ -405,7 +405,7 @@ void compute__int_operation(char*** elements, int** types)
 		display_elements(*elements, *types);
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
-		shift_elements(elements, types, i - 1);
+		shift_elements(elements, types, i);
 
 		display_elements(*elements, *types);
 
@@ -427,7 +427,7 @@ void compute__int_operation(char*** elements, int** types)
 		display_elements(*elements, *types);
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
-		shift_elements(elements, types, i - 1);
+		shift_elements(elements, types, i);
 
 		display_elements(*elements, *types);
 
