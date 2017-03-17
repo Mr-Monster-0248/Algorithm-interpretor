@@ -158,12 +158,13 @@ void shift_elements(char*** elements, int** types, int subscript)
 	int i = 0;
 
 	//Checking the validity of the given subscript
-	if (subscript >= 0 && subscript < (*types)[0] - 1)
+	if (subscript >= 0 && subscript <= (*types)[0] - 1)
 	{
 		//Shifting to the left twice in elements and types from the subscript right after the given one
-			for (i = subscript; i < (*types)[0] - 1; i++)
+			for (i = subscript; i <= (*types)[0] - 1; i++)
 			{
 				free( (*elements)[i] );
+				(*elements)[i] = NULL;
 
 				(*elements)[i] = (char*) malloc( (strlen((*elements)[i + 1]) + 1) * sizeof(char));
 				check_alloc((*elements)[i]);
@@ -171,8 +172,9 @@ void shift_elements(char*** elements, int** types, int subscript)
 				strcpy((*elements)[i], (*elements)[i + 1]);
 				(*types)[i] = (*types)[i + 1];
 			}
-			
 
-			(*types)[0] -= 2;
+			free((*elements)[i]);
+
+			(*types)[0]--;
 	}
 }
