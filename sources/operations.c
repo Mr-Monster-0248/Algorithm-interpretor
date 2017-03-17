@@ -374,7 +374,7 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 	{
 		if(types[i] == 4 && check_operator_priority(elements[i]) > secondHighestOp)
 		{
-			return i;
+			return check_operator_priority(elements[]i);
 		}
 	}
 
@@ -382,7 +382,7 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 }
 
 //Function that finaly compute this f*** operation
-int compute__int_operation(char*** elements, int* types)
+void compute__int_operation(char*** elements, int* types)
 {
 	int i, res;
 
@@ -404,8 +404,8 @@ int compute__int_operation(char*** elements, int* types)
 		if(strcmp(elements[i], "-") == 0)
 			res = int_subbstraction((*elements)[i - 1], (*elements)[i + 1]);
 
-		shift_left(&elements, types, i+1);
-		shift_left(&elements, types, i);
+		shift_left(elements, types, i+1);
+		shift_left(elements, types, i);
 	}
 
 
