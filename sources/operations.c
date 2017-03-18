@@ -428,7 +428,7 @@ void compute__int_operation(char*** elements, int** types)
 			else
 			{
 				free((*elements)[i - 1]);
-				(*elements)[i - 1] = malloc(36 * sizeof(char));
+				(*elements)[i - 1] = (char*) malloc(36 * sizeof(char));
 				check_alloc((*elements)[i - 1]);
 
 				sprintf((*elements)[i - 1], "ERROR: cannot perform division by 0");
@@ -477,7 +477,7 @@ void compute__float_operation(char*** elements, int** types)
 			else
 			{
 				free((*elements)[i - 1]);
-				(*elements)[i - 1] = malloc(36 * sizeof(char));
+				(*elements)[i - 1] = (char*) malloc(36 * sizeof(char));
 				check_alloc((*elements)[i - 1]);
 
 				sprintf((*elements)[i - 1], "ERROR: cannot perform division by 0");
@@ -507,5 +507,88 @@ void compute__float_operation(char*** elements, int** types)
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
+	}
+}
+
+
+//Recursive function that computes the entered line (recursive because of potential parentheses)
+/* RETURN VALUES:
+	0 = ERROR
+	1 = NO ERROR
+*/
+int compute_numbers_line(char*** elements, int** types)
+{
+	int i = 0, errorParentheses = -1, errorType = -1, computeFinished = 0, toPerform = 1;
+	char** parenthesesElements = NULL;
+	int* parenthesesTypes = NULL;
+
+	//Looking for elements between parentheses
+	for (i = 1; i <= (*types)[0]; i++)
+	{
+		//If an element between parentheses was found, computing its value
+		if ((*types)[i] == 10) //If the entered line contains at least one parentheses element
+		{
+			errorType = get_line_elements((*elements)[i], &parenthesesElements, &parenthesesTypes, &errorParentheses);
+
+			if (errorType == 0) //If syntax error
+			{
+				free((*elements)[0]);
+
+				(*elements)[0] = (char*) malloc(38 * sizeof(char));
+				check_alloc((*elements)[0]);
+
+				sprintf((*elements)[0], "ERROR: SYNTAX ERROR, unknow position\n");
+
+				//Freeing temporary 				
+				free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
+				free(parenthesesTypes);
+
+				break;
+
+			} else if (errorType == 2) //If structural error
+			{
+				free((*elements)[0]);
+
+				(*elements)[0] = (char*) malloc(42 * sizeof(char));
+				check_alloc((*elements)[0]);
+
+				sprintf((*elements)[0], "ERROR: STRUCTURAL ERROR, unknow position\n");
+
+				//Freeing temporary 				
+				free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
+				free(parenthesesTypes);
+
+				break;
+			}
+
+
+			compute_line(&parenthesesElements, &parenthesesTypes); //Recursive call
+		}
+	}
+
+	//Checking if the program already found an error in the line
+	if ( strstr((*elements)[0], "ERROR: S") != NULL) //If the program has already found an error in the line, interrupting the function here
+		return 0;
+
+
+	//Determining and performing operations
+	switch(is_operation(*types))
+	{
+		case 1: //int operation
+			compute__int_operation(elements, types); //Computing the operation
+			printf("%s\n", (*elements)[1]); //Displaying the result
+			return 1;
+			break;
+
+		case 2: //float operation
+			compute__float_operation(elements, types); //Computing the operation
+			printf("%s\n", (*elements)[1]);
+			return 1;
+			break;
+
+		default: //Any other not handled operation
+			printf("Type of operation not handled!\n\n");
+			return 0;
+			break;
 	}
 }
