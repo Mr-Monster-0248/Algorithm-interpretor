@@ -128,28 +128,29 @@ float float_division(const char* lValue, const char* rValue)
 
 
 //Function that check if the line is an operation 
-int is_operation(int* types) //Return 1 if it's an int operation 2 if it's a float operation
+int is_operation(int* types) //Return 1 if it's an int operation 2 if it's a float operation 3 if it is a string operation
 {
-	int i, test = 0;
-	int isAFloat = FALSE;
+	int i, isAFloat = FALSE, isAInt = TRUE; 
 
-	for(i = 1; i <= types[0]; i++)
-		if( (i % 2 == 1 && ((types[i] == 1) || (types[i] == 2))) || (i % 2 == 0 && types[i] == 4) )
-		{
-			test++;
-			if(types[i] == 2)
-				isAFloat = TRUE;
-		}
-
-	if(test >= types[0] && ((types[types[0]] == 1) || (types[types[0]] == 2)) && test > 2)
+	//Exploring the types 2 by 2 (so that we skip the operators)
+	for(i = 1; i <= types[0]; i += 2)
 	{
-		if(isAFloat == TRUE)
-			return 2;
-		else
-			return 1;
+		if (types[i] == 2)
+		{
+			isAFloat = TRUE;
+			continue;
+		}
+		if (types[i] == 3) //If string
+			return 3;
 	}
-	else
-		return 0;
+		
+	if (isAFloat) //If float
+		return 2;
+
+	if (isAInt) //If integer
+		return 1;
+
+	return 0; //ERROR
 }
 
 
@@ -516,9 +517,9 @@ void compute__float_operation(char*** elements, int** types)
 	0 = ERROR
 	1 = NO ERROR
 */
-int compute_numbers_line(char*** elements, int** types)
+int compute_numeric_line(char*** elements, int** types)
 {
-	int i = 0, errorParentheses = -1, errorType = -1, computeFinished = 0, toPerform = 1;
+	int i = 0, errorParentheses = -1, errorType = -1;
 	char** parenthesesElements = NULL;
 	int* parenthesesTypes = NULL;
 
@@ -534,10 +535,10 @@ int compute_numbers_line(char*** elements, int** types)
 			{
 				free((*elements)[0]);
 
-				(*elements)[0] = (char*) malloc(38 * sizeof(char));
+				(*elements)[0] = (char*) malloc(39 * sizeof(char));
 				check_alloc((*elements)[0]);
 
-				sprintf((*elements)[0], "ERROR: SYNTAX ERROR, unknow position\n");
+				sprintf((*elements)[0], "ERROR: SYNTAX ERROR, unknown position\n");
 
 				//Freeing temporary 				
 				free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
@@ -562,7 +563,20 @@ int compute_numbers_line(char*** elements, int** types)
 			}
 
 
-			compute_line(&parenthesesElements, &parenthesesTypes); //Recursive call
+			compute_numeric_line(&parenthesesElements, &parenthesesTypes); //Recursive call
+
+			free((*elements)[i]);
+
+			(*elements)[i] = (char*) malloc(( strlen(parenthesesElements[0]) + 1) * sizeof(char));
+			check_alloc((*elements)[i]);
+
+			strcpy((*elements)[i], parenthesesElements[1]);
+
+			(*types)[i] = parenthesesTypes[1];
+
+			free(parenthesesTypes);
+
+			free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
 		}
 	}
 
@@ -576,13 +590,11 @@ int compute_numbers_line(char*** elements, int** types)
 	{
 		case 1: //int operation
 			compute__int_operation(elements, types); //Computing the operation
-			printf("%s\n", (*elements)[1]); //Displaying the result
 			return 1;
 			break;
 
 		case 2: //float operation
 			compute__float_operation(elements, types); //Computing the operation
-			printf("%s\n", (*elements)[1]);
 			return 1;
 			break;
 

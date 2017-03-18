@@ -75,5 +75,12 @@
 	//Function that computes operations on floats
 	void compute__float_operation(char*** elements, int** types);
 
+	//Recursive function that computes the entered line (recursive because of potential parentheses)
+	/* RETURN VALUES:
+		0 = ERROR
+		1 = NO ERROR
+	*/
+	int compute_numeric_line(char*** elements, int** types);
+
 	
 #endif
