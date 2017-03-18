@@ -91,8 +91,8 @@ float float_addition(const char* lValue, const char* rValue)
 	return convertTo_float(lValue) + convertTo_float(rValue);
 }
 
-//Function that performs an subbstraction of integers values (formatted to string)
-int int_subbstraction(const char* lValue, const char* rValue)
+//Function that performs an subtraction of integers values (formatted to string)
+int int_subtraction(const char* lValue, const char* rValue)
 {
 	return convertTo_int(lValue) - convertTo_int(rValue);
 }
@@ -100,11 +100,31 @@ int int_subbstraction(const char* lValue, const char* rValue)
 //Function that performs a division of integers values (formatted to string)
 int int_division(const char* lValue, const char* rValue)
 {
-	if(rValue == 0)
-		return -1;
+	if( convertTo_int(rValue) == 0)
+		return convertTo_int(rValue) + convertTo_int(lValue);
 
 	return convertTo_int(lValue) / convertTo_int(rValue);
 }
+
+
+//Function that performs a subtraction of floats
+float float_subtraction(const char* lValue, const char* rValue)
+{
+	return convertTo_float(lValue) - convertTo_float(rValue);
+}
+
+
+//Function that performs a division of floats
+float float_division(const char* lValue, const char* rValue)
+{
+	float f = convertTo_float(rValue);
+
+	if (f != 0)
+		return convertTo_float(lValue) / f;
+
+	return convertTo_float(lValue) + convertTo_float(rValue);
+}
+
 
 
 //Function that check if the line is an operation 
@@ -385,7 +405,7 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 }
 
 
-//Function that finaly compute this f*** operation
+//Function that computes operations on integers
 void compute__int_operation(char*** elements, int** types)
 {
 	int i = 0;
@@ -398,22 +418,24 @@ void compute__int_operation(char*** elements, int** types)
 			sprintf((*elements)[i - 1], "%d", int_multiplication((*elements)[i - 1], (*elements)[i + 1]));
 
 		if(strcmp((*elements)[i], "/") == 0)
-			sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
+		{
+			if ( convertTo_int((*elements)[i + 1]) != 0 )
+				sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
+			else
+			{
+				free((*elements)[i - 1]);
+				(*elements)[i - 1] = malloc(36 * sizeof(char));
+				check_alloc((*elements)[i - 1]);
 
-		printf("RIZALTE: %s\n", (*elements)[i - 1]);
+				sprintf((*elements)[i - 1], "ERROR: cannot perform division by 0");
 
-		display_elements(*elements, *types);
+				break;
+			}
+		}
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
-
-		
-
-		display_elements(*elements, *types);
-		printf("Non displayed: Element %d\t type id: %d\tread: %s\n", (*types)[0], (*types)[(*types)[0]], (*elements)[(*types)[0]]);
-
-		printf("\n\n\n\n\n\n\n");
 	}
 
 	//After that, performing the lowest priority operations
@@ -424,21 +446,59 @@ void compute__int_operation(char*** elements, int** types)
 			sprintf((*elements)[i - 1], "%d", int_addition((*elements)[i - 1], (*elements)[i + 1]));
 
 		if(strcmp((*elements)[i], "-") == 0)
-			sprintf((*elements)[i - 1], "%d", int_subbstraction((*elements)[i - 1], (*elements)[i + 1]));
-
-		printf("RIZALTE: %s\n", (*elements)[i - 1]);
-
-		display_elements(*elements, *types);
+			sprintf((*elements)[i - 1], "%d", int_subtraction((*elements)[i - 1], (*elements)[i + 1]));
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
+	}
+}
 
-		
 
-		display_elements(*elements, *types);
-		printf("Non displayed: Element %d\t type id: %d\tread: %s\n", (*types)[0], (*types)[(*types)[0]], (*elements)[(*types)[0]]);
+//Function that computes operations on floats
+void compute__float_operation(char*** elements, int** types)
+{
+	int i = 0;
 
-		printf("\n\n\n\n\n\n\n");
+	//While there still are some * or / or % to perform, performing this highest priority operations
+	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  2)
+	{
+		//Analyzing the operator, computing, and storing the result in a substring of elements
+		if(strcmp((*elements)[i], "*") == 0)
+			sprintf((*elements)[i - 1], "%f", float_multiplication((*elements)[i - 1], (*elements)[i + 1]));
+
+		if(strcmp((*elements)[i], "/") == 0)
+		{
+			if ( convertTo_int((*elements)[i + 1]) != 0 )
+				sprintf((*elements)[i - 1], "%f", float_division((*elements)[i - 1], (*elements)[i + 1]));
+			else
+			{
+				free((*elements)[i - 1]);
+				(*elements)[i - 1] = malloc(36 * sizeof(char));
+				check_alloc((*elements)[i - 1]);
+
+				sprintf((*elements)[i - 1], "ERROR: cannot perform division by 0");
+				break;
+			}
+		}
+
+		//Shifting the array to the left from the position of the operation to remove the performed operation
+		shift_elements(elements, types, i);
+		shift_elements(elements, types, i);
+	}
+
+	//After that, performing the lowest priority operations
+	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  1)
+	{
+		//Analyzing the operator, computing, and storing the result in a substring of elements
+		if(strcmp((*elements)[i], "+") == 0)
+			sprintf((*elements)[i - 1], "%f", float_addition((*elements)[i - 1], (*elements)[i + 1]));
+
+		if(strcmp((*elements)[i], "-") == 0)
+			sprintf((*elements)[i - 1], "%f", float_subtraction((*elements)[i - 1], (*elements)[i + 1]));
+
+		//Shifting the array to the left from the position of the operation to remove the performed operation
+		shift_elements(elements, types, i);
+		shift_elements(elements, types, i);
 	}
 }

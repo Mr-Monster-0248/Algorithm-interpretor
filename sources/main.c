@@ -81,20 +81,22 @@ int main(int argc, char** argv)
 					{
 						compute__int_operation(&elements, &types);
 						
-						display_elements(elements, types);
+						printf("%s\n", elements[1]);
 					}
 					
 					if(is_operation(types) == 2)
-						printf("this is a float operation\n");
+					{
+						compute__float_operation(&elements, &types);
 
-					
-
-					display_elements(elements, types);
+						printf("%s\n", elements[1]);
+					}
 
 
 					//Freeing memory previously allocated before exiting or starting a new lap
 					free_2D_char_array(&elements, types[0]);
 					free(types);
+
+					printf("\n");
 
 				} while (TRUE);
 

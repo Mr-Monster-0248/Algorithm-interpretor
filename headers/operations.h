@@ -28,8 +28,8 @@
 	//Function that performs an addition of float values (formatted to string)
 	float float_addition(const char* lValue, const char* rValue);
 
-	//Function that performs an subbstraction of integers values (formatted to string)
-	int int_subbstraction(const char* lValue, const char* rValue);
+	//Function that performs an subtraction of integers values (formatted to string)
+	int int_subtraction(const char* lValue, const char* rValue);
 
 	//Function that performs a division of integers values (formatted to string)
 	int int_division(const char* lValue, const char* rValue);
@@ -66,11 +66,14 @@
 	//Function witch give a value of priority for each operator
 	int check_operator_priority(char* operator);
 
-	//Function that finaly compute this f*** operation
+	//Function that computes operations on integers
 	void compute__int_operation(char*** elements, int** types);
 
 	//Function witch find the operator with the highest priority (if it exist)
 	int highest_priority_operator(char** elements, int* types); //return the index of the highest operator and return 0 if there is no highest
+
+	//Function that computes operations on floats
+	void compute__float_operation(char*** elements, int** types);
 
 	
 #endif
