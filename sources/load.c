@@ -89,8 +89,9 @@ void read_file(const char* pathToFile)
 	FILE* file = fopen(pathToFile, "r");
 	check_alloc(file);
 
-	while(!feof(file))
+	do
 		printf("%c", fgetc(file));
+	while(!feof(file));
 
 	fclose(file);
 

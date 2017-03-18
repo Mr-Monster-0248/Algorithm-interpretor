@@ -420,7 +420,11 @@ void compute__int_operation(char*** elements, int** types)
 		if(strcmp((*elements)[i], "/") == 0)
 		{
 			if ( convertTo_int((*elements)[i + 1]) != 0 )
+			{
 				sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
+
+				display_elements(*elements, *types);
+			}
 			else
 			{
 				free((*elements)[i - 1]);
@@ -432,7 +436,6 @@ void compute__int_operation(char*** elements, int** types)
 				break;
 			}
 		}
-			sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
@@ -500,7 +503,7 @@ void compute__float_operation(char*** elements, int** types)
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
-		
+
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);

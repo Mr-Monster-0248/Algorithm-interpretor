@@ -19,8 +19,7 @@
 	Special commands:
 		- "help": display this help window
 		- "exit": quit the interpreter
-		- "clear" or "cls": clear the screen
-
+		- "clear" or "cls": clear the screen.
 
 
 
