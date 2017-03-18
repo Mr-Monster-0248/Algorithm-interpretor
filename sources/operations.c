@@ -432,6 +432,7 @@ void compute__int_operation(char*** elements, int** types)
 				break;
 			}
 		}
+			sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
@@ -447,7 +448,6 @@ void compute__int_operation(char*** elements, int** types)
 
 		if(strcmp((*elements)[i], "-") == 0)
 			sprintf((*elements)[i - 1], "%d", int_subtraction((*elements)[i - 1], (*elements)[i + 1]));
-
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
@@ -497,6 +497,10 @@ void compute__float_operation(char*** elements, int** types)
 		if(strcmp((*elements)[i], "-") == 0)
 			sprintf((*elements)[i - 1], "%f", float_subtraction((*elements)[i - 1], (*elements)[i + 1]));
 
+		//Shifting the array to the left from the position of the operation to remove the performed operation
+		shift_elements(elements, types, i);
+		shift_elements(elements, types, i);
+		
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
