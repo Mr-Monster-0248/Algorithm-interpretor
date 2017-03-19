@@ -534,13 +534,11 @@ int compute_numeric_line(char*** elements, int** types)
 			if (errorType == 0) //If syntax error
 			{
 				free((*elements)[0]);
-
 				(*elements)[0] = (char*) malloc(39 * sizeof(char));
 				check_alloc((*elements)[0]);
-
 				sprintf((*elements)[0], "ERROR: SYNTAX ERROR, unknown position\n");
 
-				//Freeing temporary 				
+				//Freeing temporary arrays			
 				free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
 				free(parenthesesTypes);
 
@@ -555,7 +553,7 @@ int compute_numeric_line(char*** elements, int** types)
 
 				sprintf((*elements)[0], "ERROR: STRUCTURAL ERROR, unknow position\n");
 
-				//Freeing temporary 				
+				//Freeing temporary arrays				
 				free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
 				free(parenthesesTypes);
 
@@ -563,19 +561,18 @@ int compute_numeric_line(char*** elements, int** types)
 			}
 
 
-			compute_numeric_line(&parenthesesElements, &parenthesesTypes); //Recursive call
+			compute_numeric_line(&parenthesesElements, &parenthesesTypes); //Recursive call of the function if not error
 
+			//Saving the result at subscript of parenthese element
 			free((*elements)[i]);
-
 			(*elements)[i] = (char*) malloc(( strlen(parenthesesElements[0]) + 1) * sizeof(char));
 			check_alloc((*elements)[i]);
-
 			strcpy((*elements)[i], parenthesesElements[1]);
-
 			(*types)[i] = parenthesesTypes[1];
 
-			free(parenthesesTypes);
 
+			//Freeing temporary arrays
+			free(parenthesesTypes);
 			free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
 		}
 	}

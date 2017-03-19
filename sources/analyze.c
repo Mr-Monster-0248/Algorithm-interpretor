@@ -5,6 +5,7 @@
 
 #include "../headers/constants.h"
 #include "../headers/load.h"
+#include "../headers/operations.h"
 
 
 //Check if the word is the name of a type
@@ -120,7 +121,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 	while (line[i] != '\0')
 	{
-
 		//If an operator was found
 		if ( ( (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%') && line[i+1] == ' ' && line[i+2] != '\0'))
 		{
@@ -426,4 +426,102 @@ void display_elements(char** elements, int* types)
 	}
 
 	printf("\n");
+}
+
+
+//Function that checks the entry of the user and stores a new variable is asked (returns 0 if no new variable, 1 if a new variable is stored)
+int check_variable_declaration(char** elements, int* types, Variable** var_table)
+{
+	int i = 0;
+
+	if (types[0] >= 2)
+	{
+		if (strcmp(elements[1], "integer") == 0) //New integer variable was asked
+		{
+			if (check_if_usable(elements[2], *var_table) == 2) //If the name given is available
+			{
+				if (types[0] == 3) //If the user tried to initialize a variable with a value without giving this value
+				{
+					printf("ERROR: missing initialization value\n");
+					return 0;
+				}
+
+				if (types[0] == 2)
+				{
+					store_variable(var_table, elements[2], "uninitialized", 1); //Storing a new uninitialized integer variable
+
+				} else if (types[0] == 4 && strcmp(elements[3], "<-") == 0) {
+
+					store_variable(var_table, elements[2], elements[4], 1); //Storing a new initialized integer variable
+
+				}
+			} else {
+				return 0;
+			}
+		}
+
+
+		if (strcmp(elements[1], "float") == 0) //New float variable was asked
+		{
+			if (check_if_usable(elements[2], *var_table) == 2) //If the name given is available
+			{
+				if (types[0] == 3) //If the user tried to initialize a variable with a value without giving this value
+				{
+					printf("ERROR: missing initialization value\n");
+					return 0;
+				}
+
+				if (types[0] == 2)
+				{
+					store_variable(var_table, elements[2], "uninitialized", 2); //Storing a new uninitialized float variable
+
+				} else if (types[0] == 4 && strcmp(elements[3], "<-") == 0) {
+
+					store_variable(var_table, elements[2], elements[4], 2); //Storing a new initialized float variable
+
+				}
+			} else {
+				return 0;
+			}
+		}
+
+
+		if (strcmp(elements[1], "string") == 0) //New string variable was asked
+		{
+			if (check_if_usable(elements[2], *var_table) == 2) //If the name given is available
+			{
+				if (types[0] == 3) //If the user tried to initialize a variable with a value without giving this value
+				{
+					printf("ERROR: missing initialization value\n");
+					return 0;
+				}
+
+				if (types[0] == 2)
+				{
+					store_variable(var_table, elements[2], "uninitialized", 3); //Storing a new uninitialized string variable
+
+				} else if (types[0] == 4 && strcmp(elements[3], "<-") == 0) {
+
+					store_variable(var_table, elements[2], elements[4], 3); //Storing a new initialized string variable
+
+				}
+			} else {
+				return 0;
+			}
+		}
+	}
+
+	if (types[0] == 1)
+	{
+		for (i = 0; strcmp((*var_table)[i].name, NAME__END_VARTABLE) != 0; i++)
+			if (strcmp((*var_table)[i].name, elements[2]) == 0)
+			{
+				printf("%s\n", (*var_table)[i].value); //Displaying the value of the variable
+				return 0;
+			}
+
+		printf("Variable %s not found, maybe it has not been created yet\n", elements[2]);
+	}
+
+	return 0;
 }

@@ -80,29 +80,12 @@ int main(int argc, char** argv)
 					
 
 
-					if (is_operation(types) != 0 && is_operation(types) != 3)
+					if (types[0] >= 3 && is_operation(types) != 0 && is_operation(types) != 3)
 					{
 						compute_numeric_line(&elements, &types);
 
 						printf("%s\n", elements[1]);
 					}
-
-
-
-
-					/*if(is_operation(types) == 1)
-					{
-						compute__int_operation(&elements, &types);
-						
-						printf("%s\n", elements[1]);
-					}
-					
-					if(is_operation(types) == 2)
-					{
-						compute__float_operation(&elements, &types);
-
-						printf("%s\n", elements[1]);
-					}*/
 
 
 					//Freeing memory previously allocated before exiting or starting a new lap
