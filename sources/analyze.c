@@ -124,12 +124,8 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		//If an operator was found
 		if ( ( (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%') && line[i+1] == ' ' && line[i+2] != '\0'))
 		{
-
 			if (i < 2)
-			{
-				*position = i;
-				return 0;
-			}
+				return 2;
 
 			(*types)[0]++; //Incrementing the number of elements
 
@@ -397,6 +393,8 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		i++;
 	}
 
+	*position = i;
+
 	if((*types)[j-1] == 8 && j > 2 && strcmp((*elements)[j-2], ":") == 0)
 		check_variable_type(*elements, types, j);
 
@@ -407,7 +405,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			if ((*types)[i] == (*types)[i+1])
 				return 2;
 		if ((*types)[j-1] == 4)
-			return 2;
+			return 0;
 	}
 
 	return 1;
