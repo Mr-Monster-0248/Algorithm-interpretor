@@ -35,7 +35,7 @@
 	int int_division(const char* lValue, const char* rValue);
 
 	//Function that check if the line is an operation 
-	int is_operation(int* types); //return 1 if it's an operation
+	int is_operation(int* types, char** elements); //return 1 if it's an operation
 
 	//Function that stores a new variable in the array of all variables
 	void store_variable(Variable** var_table, char* varName, char* varValue, const int varType);
@@ -81,6 +81,12 @@
 		1 = NO ERROR
 	*/
 	int compute_numeric_line(char*** elements, int** types);
+
+	//Check if the operation of strings only contain "+"
+	int check_string_operation(char** elements, int* types); //return 0 if the operation only contain + else it return 1
+
+	//Function that computes operations on strings
+	void compute_strings_operations(char*** elements, int** types);
 
 	
 #endif

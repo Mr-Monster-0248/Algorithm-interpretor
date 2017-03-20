@@ -4,6 +4,7 @@
 
 
 #include "../headers/constants.h"
+#include "../headers/operations.h"
 #include "../headers/load.h"
 #include "../headers/analyze.h"
 
@@ -128,7 +129,7 @@ float float_division(const char* lValue, const char* rValue)
 
 
 //Function that check if the line is an operation 
-int is_operation(int* types) //Return 1 if it's an int operation 2 if it's a float operation 3 if it is a string operation
+int is_operation(int* types, char** elements) //Return 1 if it's an int operation 2 if it's a float operation 3 if it is a string operation
 {
 	int i, isAFloat = FALSE, isAInt = TRUE; 
 
@@ -140,7 +141,7 @@ int is_operation(int* types) //Return 1 if it's an int operation 2 if it's a flo
 			isAFloat = TRUE;
 			continue;
 		}
-		if (types[i] == 3) //If string
+		if (types[i] == 3 && check_string_operation(elements, types)) //If string
 			return 3;
 	}
 		
@@ -583,7 +584,7 @@ int compute_numeric_line(char*** elements, int** types)
 
 
 	//Determining and performing operations
-	switch(is_operation(*types))
+	switch(is_operation(*types, *elements))
 	{
 		case 1: //int operation
 			compute__int_operation(elements, types); //Computing the operation
@@ -601,3 +602,29 @@ int compute_numeric_line(char*** elements, int** types)
 			break;
 	}
 }
+
+//Check if the operation of strings only contain "+"
+int check_string_operation(char** elements, int* types) //return 0 if the operation only contain + else it return 1
+{
+	int i;
+
+	//Exploring the types 2 by 2 (so that we skip the elements)
+	for(i = 2; i <= types[0]; i += 2)
+		if(strcmp(elements[1], "+") != 0)
+			return 1;
+
+	return 0;
+}
+
+//Function that computes operations on strings
+void compute_strings_operations(char*** elements, int** types)
+{
+	while((*types)[0] >= 3)
+	{
+		strcat((*elements)[1], (*elements)[3]);
+
+		shift_elements(elements, types, 2);
+		shift_elements(elements, types, 2);
+	}
+}
+

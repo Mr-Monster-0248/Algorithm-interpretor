@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 
 
 						continue;
-					} else if (getLineError == 2)
+					} /*else if (getLineError == 2)
 					{
 						printf("ERROR: STRUCTURAL ERROR\n\n");
 
@@ -68,7 +68,7 @@ int main(int argc, char** argv)
 						free(types);
 
 						continue;
-					}
+					}*/
 
 					
 					for(i = 1; i < types[0]; i++)
@@ -78,9 +78,16 @@ int main(int argc, char** argv)
 					
 
 
-					if (types[0] >= 3 && is_operation(types) != 0 && is_operation(types) != 3)
+					if (types[0] >= 3 && is_operation(types, elements) != 0 && is_operation(types, elements) != 3)
 					{
 						compute_numeric_line(&elements, &types);
+
+						printf("%s\n", elements[1]);
+					}
+
+					if (types[0] >= 3 && is_operation(types, elements) == 3)
+					{
+						compute_strings_operations(&elements, &types);
 
 						printf("%s\n", elements[1]);
 					}
