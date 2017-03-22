@@ -534,6 +534,7 @@ int compute_numeric_line(char*** elements, int** types)
 
 			if (errorType == 0) //If syntax error
 			{
+
 				free((*elements)[0]);
 				(*elements)[0] = (char*) malloc(39 * sizeof(char));
 				check_alloc((*elements)[0]);
@@ -542,11 +543,11 @@ int compute_numeric_line(char*** elements, int** types)
 				//Freeing temporary arrays			
 				free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
 				free(parenthesesTypes);
-
 				break;
 
 			} else if (errorType == 2) //If structural error
 			{
+
 				free((*elements)[0]);
 
 				(*elements)[0] = (char*) malloc(42 * sizeof(char));
@@ -561,7 +562,6 @@ int compute_numeric_line(char*** elements, int** types)
 				break;
 			}
 
-
 			compute_numeric_line(&parenthesesElements, &parenthesesTypes); //Recursive call of the function if not error
 
 			//Saving the result at subscript of parenthese element
@@ -571,10 +571,9 @@ int compute_numeric_line(char*** elements, int** types)
 			strcpy((*elements)[i], parenthesesElements[1]);
 			(*types)[i] = parenthesesTypes[1];
 
-
 			//Freeing temporary arrays
-			free(parenthesesTypes);
 			free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
+			free(parenthesesTypes);
 		}
 	}
 
@@ -627,4 +626,3 @@ void compute_strings_operations(char*** elements, int** types)
 		shift_elements(elements, types, 2);
 	}
 }
-
