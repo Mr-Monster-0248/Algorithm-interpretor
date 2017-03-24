@@ -401,7 +401,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	//Checking if the structure of the line is correct
 	if (j >= 2) //If at least two elements
 	{
-		for (i = 0; i < j - 1; i++)
+		for (i = 1; i < j - 1; i++)
 			if ((*types)[i] == (*types)[i+1])
 				return 2;
 		if ((*types)[j-1] == 4)

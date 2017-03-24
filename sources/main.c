@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 
 
 						continue;
-					} /*else if (getLineError == 2)
+					} else if (getLineError == 2)
 					{
 						printf("ERROR: STRUCTURAL ERROR\n\n");
 
@@ -68,7 +68,7 @@ int main(int argc, char** argv)
 						free(types);
 
 						continue;
-					}*/
+					}
 
 					
 					for(i = 1; i < types[0]; i++)
