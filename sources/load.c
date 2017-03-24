@@ -137,6 +137,12 @@ int check_special_command(const char* line)
 		return 1;
 	}
 
+	if (strcmp(line, "bite") == 0 || strcmp(line, "bite ") == 0 || strcmp(line, "Bite") == 0 || strcmp(line, "Bite ") == 0)
+	{
+		printf("ERROR: too small to be handled\n\n");
+		return 1;
+	}
+
 	return 0;
 }
 
