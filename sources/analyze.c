@@ -126,7 +126,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		{
 			if (i < 2)
 				return 2;
-
+			
 			(*types)[0]++; //Incrementing the number of elements
 
 			//Reallocating memory for the first dimension

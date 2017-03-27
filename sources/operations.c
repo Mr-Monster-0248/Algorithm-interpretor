@@ -102,7 +102,7 @@ int int_subtraction(const char* lValue, const char* rValue)
 int int_division(const char* lValue, const char* rValue)
 {
 	if( convertTo_int(rValue) == 0)
-		return convertTo_int(rValue) + convertTo_int(lValue);
+		return convertTo_int(lValue) + 1;
 
 	return convertTo_int(lValue) / convertTo_int(rValue);
 }
@@ -123,9 +123,18 @@ float float_division(const char* lValue, const char* rValue)
 	if (f != 0)
 		return convertTo_float(lValue) / f;
 
-	return convertTo_float(lValue) + convertTo_float(rValue);
+	return convertTo_float(lValue) + 1;
 }
 
+
+//Function that performs the modulo of integers
+int int_modulo(const char* lValue, const char* rValue)
+{
+	if (convertTo_int(rValue) == 0) //If cannot perform operation
+		return convertTo_int(lValue) + 1;
+
+	return convertTo_int(lValue) % convertTo_int(rValue);
+}
 
 
 //Function that check if the line is an operation 
@@ -376,14 +385,16 @@ int eval_bool_expr(char* lValue, const int lValueType, char* rValue, const int r
 int check_operator_priority(char* operator)
 {
 	if(strcmp(operator, "*") == 0)
-		return 2;
+		return 3;
 	else if (strcmp(operator, "/") == 0)
-		return 2;
+		return 3;
 	else if(operator[0] == '%')
 		return 2;
 	else if (strcmp(operator, "+") == 0)
-		return 1;
+		return 2;
 	else if (strcmp(operator, "-") == 0)
+		return 2;
+	else if (strcmp(operator, "<-") == 0)
 		return 1;
 	else
 		return 0;
@@ -413,7 +424,7 @@ void compute__int_operation(char*** elements, int** types)
 	int i = 0;
 
 	//While there still are some * or / or % to perform, performing this highest priority operations
-	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  2)
+	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  3)
 	{
 		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "*") == 0)
@@ -421,12 +432,8 @@ void compute__int_operation(char*** elements, int** types)
 
 		if(strcmp((*elements)[i], "/") == 0)
 		{
-			if ( convertTo_int((*elements)[i + 1]) != 0 )
-			{
+			if ( convertTo_int((*elements)[i + 1]) != 0 ) //Checking if division is possible (no division by 0 is allowed)
 				sprintf((*elements)[i - 1], "%d", int_division((*elements)[i - 1], (*elements)[i + 1]));
-
-				display_elements(*elements, *types);
-			}
 			else
 			{
 				free((*elements)[i - 1]);
@@ -442,10 +449,12 @@ void compute__int_operation(char*** elements, int** types)
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
+
+		display_elements(*elements, *types);
 	}
 
 	//After that, performing the lowest priority operations
-	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  1)
+	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  2)
 	{
 		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "+") == 0)
@@ -453,9 +462,16 @@ void compute__int_operation(char*** elements, int** types)
 
 		if(strcmp((*elements)[i], "-") == 0)
 			sprintf((*elements)[i - 1], "%d", int_subtraction((*elements)[i - 1], (*elements)[i + 1]));
+
+
+		if(strcmp((*elements)[i], "%") == 0)
+			sprintf((*elements)[i - 1], "%d", int_modulo((*elements)[i - 1], (*elements)[i + 1]));
+
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
+
+		display_elements(*elements, *types);
 	}
 }
 
@@ -466,7 +482,7 @@ void compute__float_operation(char*** elements, int** types)
 	int i = 0;
 
 	//While there still are some * or / or % to perform, performing this highest priority operations
-	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  2)
+	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  3)
 	{
 		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "*") == 0)
@@ -493,7 +509,7 @@ void compute__float_operation(char*** elements, int** types)
 	}
 
 	//After that, performing the lowest priority operations
-	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  1)
+	while( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) ==  2)
 	{
 		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "+") == 0)
@@ -502,9 +518,26 @@ void compute__float_operation(char*** elements, int** types)
 		if(strcmp((*elements)[i], "-") == 0)
 			sprintf((*elements)[i - 1], "%f", float_subtraction((*elements)[i - 1], (*elements)[i + 1]));
 
+		if(strcmp((*elements)[i], "%") == 0)
+		{
+			//Freeing (*elements)[1] and allocating enough space to store the error message
+			free((*elements)[1]);
+			(*elements)[1] = (char*) malloc(50 * sizeof(char));
+			check_alloc((*elements)[1]);
+
+			//The result which will be displayed at the end of this line will be this error message, the calculus is suposed to stop there
+			sprintf((*elements)[1], "ERROR: illegal operation (%%) on floats operands\n");
+			break;
+		}
+
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
+
+
+		/*###############################################################################################
+		#	Why is the shift_elements() function called 4 times here, rather than twice just above?		#
+		###############################################################################################*/
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);

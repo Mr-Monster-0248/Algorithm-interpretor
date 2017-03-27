@@ -27,4 +27,7 @@
 	//Function that shifts the values to the left in elements after an operation
 	void shift_elements(char*** elements, int** types, int subscript);
 
+	//Function that overwrites a message with a new one at a given location
+	void overwrite_message(char** storage, const char* message);
+
 #endif
