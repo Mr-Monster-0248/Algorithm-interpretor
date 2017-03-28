@@ -34,6 +34,15 @@
 	//Function that performs a division of integers values (formatted to string)
 	int int_division(const char* lValue, const char* rValue);
 
+	//Function that performs a subtraction of floats
+	float float_subtraction(const char* lValue, const char* rValue);
+
+	//Function that performs a division of floats
+	float float_division(const char* lValue, const char* rValue);
+
+	//Function that performs the modulo of integers
+	int int_modulo(const char* lValue, const char* rValue);
+
 	//Function that check if the line is an operation 
 	int is_operation(int* types, char** elements); //return 1 if it's an operation
 
@@ -54,7 +63,6 @@
 
 	//Function that check if the line is a comparison
 	int is_comparison(int* types); //return 1 if yes, 0 for no
-
 
 	//Function to evaluate a boolean expression
 	/* RETURN VALUES:

@@ -6,13 +6,12 @@
 
 
 	//Variable structure to store different data about each variable
-	typedef struct Variable Variable;
-	struct Variable
+	typedef struct Variable
 	{
 		char* name;
 		int type;
 		char* value;
-	};
+	} Variable;
 	
 
 	#ifdef WINDOWS

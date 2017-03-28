@@ -185,3 +185,15 @@ void shift_elements(char*** elements, int** types, int subscript)
 			(*types)[0]--;
 	}
 }
+
+
+//Function that overwrites a message with a new one at a given location
+void overwrite_message(char** storage, const char* message)
+{
+	free(*storage);
+
+	*storage = (char*) malloc(strlen(message) * sizeof(char));
+	check_alloc(*storage);
+
+	strcpy(*storage, message);
+}
