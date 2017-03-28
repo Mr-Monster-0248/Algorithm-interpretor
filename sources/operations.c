@@ -50,7 +50,7 @@ float convertTo_float(const char* value)
 
 	return val;
 }
-
+/*
 
 //Function that converts a boolean string to its associated int value
 int bool_to_int(const char* value)
@@ -63,7 +63,7 @@ int bool_to_int(const char* value)
 
 	return BOOLEAN_ERROR_CODE;
 }
-
+*/
 
 //Function that performs an multiplication of integers values (formatted to string)
 int int_multiplication(const char* lValue, const char* rValue)
@@ -193,125 +193,100 @@ void store_variable(Variable** var_table, char* varName, char* varValue, const i
 }
 
 
-//Function that performs the boolean comparison between two integers
-static int eval_bool_int(const int lValue, const int rValue, const int comparator)
+//Function that check if the line is a comparison
+int is_comparison(int* types) //return 1 if yes, 0 for no
 {
-	switch(comparator)
-	{
-		case 0: // =
-			if (lValue == rValue)
-				return TRUE;
-			return FALSE;
-			break;
+	int i;
 
-		case 1: // !=
-			if (lValue != rValue)
-				return TRUE;
-			return FALSE;
-			break;
+	for(i = 2; i <= types[0]; i += 2)
+		if(types[i] != 9)
+			return 0;
 
-		case 2: // <=
-			if (lValue <= rValue)
-				return TRUE;
-			return FALSE;
-			break;
-
-		case 3: // >=
-			if (lValue >= rValue)
-				return TRUE;
-			return FALSE;
-			break;
-
-		case 4: // <
-			if (lValue < rValue)
-				return TRUE;
-			return FALSE;
-			break;
-
-		case 5: // >
-			if (lValue > rValue)
-				return TRUE;
-			return FALSE;
-			break;
-
-		default:
-			return BOOLEAN_ERROR_CODE;
-			break;
-	}
+	return 1;
 }
 
 
-//Function that performs the boolean comparison between two floats
-static int eval_bool_float(const float lValue, const float rValue, const int comparator)
+
+//Function that performs the boolean comparison between two integers/float
+int eval_bool_int(char* lValue, char* rValue, char* comparator)
 {
-	switch(comparator)
+	float val1 = convertTo_float(lValue), val2 = convertTo_float(rValue);
+
+	if(strcmp(comparator, "=") == 0)
 	{
-		case 0: // =
-			if (lValue == rValue)
-				return TRUE;
-			return FALSE;
-			break;
-
-		case 1: // !=
-			if (lValue != rValue)
-				return TRUE;
-			return FALSE;
-			break;
-
-		case 2: // <=
-			if (lValue <= rValue)
-				return TRUE;
-			return FALSE;
-			break;
-
-		case 3: // >=
-			if (lValue >= rValue)
-				return TRUE;
-			return FALSE;
-			break;
-
-		case 4: // <
-			if (lValue < rValue)
-				return TRUE;
-			return FALSE;
-			break;
-
-		case 5: // >
-			if (lValue > rValue)
-				return TRUE;
-			return FALSE;
-			break;
-
-		default:
-			return BOOLEAN_ERROR_CODE;
-			break;
+		if(val1 == val2)
+			return TRUE;
+		return FALSE;
 	}
+	else if(strcmp(comparator, "<") == 0)
+	{
+		if(val1 < val2)
+			return TRUE;
+		return FALSE;
+	}
+	else if(strcmp(comparator, "<=") == 0 || strcmp(comparator, "=<") == 0)
+	{
+		if(val1 <= val2)
+			return TRUE;
+		return FALSE;
+	}
+	else if(strcmp(comparator, ">") == 0 )
+	{
+		if(val1 > val2)
+			return TRUE;
+		return FALSE;
+	}
+	else if(strcmp(comparator, ">=") == 0 || strcmp(comparator, "=>") == 0)
+	{
+		if(val1 >= val2)
+			return TRUE;
+		return FALSE;
+	}
+	else if(strcmp(comparator, "!=") == 0)
+	{
+		if(val1 != val2)
+			return TRUE;
+		return FALSE;
+	}
+	else if (strcmp(comparator, "AND") == 0 || strcmp(comparator, "and") == 0)
+	{
+		if(val1 && val2)
+			return TRUE;
+		return FALSE;
+	}
+	else if (strcmp(comparator, "OR") == 0 || strcmp(comparator, "or") == 0)
+	{
+		if(val1 || val2)
+			return TRUE;
+		return FALSE;
+	}
+	else
+		return BOOLEAN_ERROR_CODE;
 }
+
 
 
 //Function that performs the boolean comparison between two strings
-static int eval_bool_string(char* lString, char* rString, const int comparator)
+static int eval_bool_string(const char* lString, const char* rString, const char* comparator)
 {
-	switch(comparator)
+	if(strcmp(comparator, "="))
 	{
-		case 0: // =
-			if (strcmp(lString, rString) == 0)
-				return TRUE;
-			return FALSE;
-			break;
-
-		case 1: // !=
-			if (strcmp(lString, rString) != 0)
-				return TRUE;
-			return FALSE;
-			break;
-
-		default:
-			return BOOLEAN_ERROR_CODE;
-			break;
+		if(strcmp(lString, rString) == 0)
+			return TRUE;
+		return FALSE;
 	}
+	else if(strcmp(comparator, "!="))
+	{
+		if(strcmp(lString, rString) != 0)
+			return TRUE;
+		return FALSE;
+	}
+	else
+		return BOOLEAN_ERROR_CODE;
 }
 
+
+/*
 
 //Function that performs the boolean comparison between two booleans
 static int eval_bool(const int lBool, const int rBool, const int comparator)
@@ -341,9 +316,9 @@ static int eval_bool(const int lBool, const int rBool, const int comparator)
 //Function to evaluate a boolean expression
 /* RETURN VALUES:
 	BOOLEAN_ERROR_CODE = ERROR
-	0 = FALSE
-	1 = TRUE
-*/
+	FALSE = 0
+	TRUE = 1
+
 int eval_bool_expr(char* lValue, const int lValueType, char* rValue, const int rValueType, const int comparatorID)
 {
 
@@ -370,7 +345,7 @@ int eval_bool_expr(char* lValue, const int lValueType, char* rValue, const int r
 			break;
 	}
 }
-
+*/
 
 //Function witch give a value of priority for each operator
 int check_operator_priority(char* operator)
@@ -626,3 +601,4 @@ void compute_strings_operations(char*** elements, int** types)
 		shift_elements(elements, types, 2);
 	}
 }
+

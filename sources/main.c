@@ -92,6 +92,11 @@ int main(int argc, char** argv)
 						printf("%s\n", elements[1]);
 					}
 
+					if (types[0] >= 3 && is_comparison(types) == 1)
+					{
+						printf("it's a comparison\n");
+					}
+
 
 					//Freeing memory previously allocated before exiting or starting a new lap
 					free_2D_char_array(&elements, types[0]);
