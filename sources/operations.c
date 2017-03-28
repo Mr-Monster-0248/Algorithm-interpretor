@@ -323,7 +323,7 @@ static int eval_bool(const int lBool, const int rBool, const int comparator)
 
 
 //Function to evaluate a boolean expression
-/* RETURN VALUES:
+RETURN VALUES:
 	BOOLEAN_ERROR_CODE = ERROR
 	FALSE = 0
 	TRUE = 1
@@ -434,8 +434,6 @@ void compute__int_operation(char*** elements, int** types)
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
-
-		display_elements(*elements, *types);
 	}
 
 	//After that, performing the lowest priority operations
@@ -451,8 +449,6 @@ void compute__int_operation(char*** elements, int** types)
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
-
-		display_elements(*elements, *types);
 	}
 }
 
