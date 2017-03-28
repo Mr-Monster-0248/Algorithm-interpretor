@@ -364,7 +364,7 @@ int check_operator_priority(char* operator)
 	else if (strcmp(operator, "/") == 0)
 		return 3;
 	else if(operator[0] == '%')
-		return 2;
+		return 3;
 	else if (strcmp(operator, "+") == 0)
 		return 2;
 	else if (strcmp(operator, "-") == 0)
@@ -380,6 +380,13 @@ int check_operator_priority(char* operator)
 int highest_priority_operator(char** elements, int* types) //return the index of the highest operator and return 0 if there is no highest
 {
 	int i;
+
+	for (i = 2; i <= types[0] - 1; i++)
+		if (types[i] == 4 && check_operator_priority(elements[i]) == 3)
+		{
+			printf("bite\n");
+			return i;
+		}
 
 	for (i = 2; i <= types[0] - 1; i++)
 		if (types[i] == 4 && check_operator_priority(elements[i]) == 2)
@@ -404,6 +411,9 @@ void compute__int_operation(char*** elements, int** types)
 		//Analyzing the operator, computing, and storing the result in a substring of elements
 		if(strcmp((*elements)[i], "*") == 0)
 			sprintf((*elements)[i - 1], "%d", int_multiplication((*elements)[i - 1], (*elements)[i + 1]));
+
+		if(strcmp((*elements)[i], "%") == 0)
+			sprintf((*elements)[i - 1], "%d", int_modulo((*elements)[i - 1], (*elements)[i + 1]));
 
 		if(strcmp((*elements)[i], "/") == 0)
 		{
@@ -437,10 +447,6 @@ void compute__int_operation(char*** elements, int** types)
 
 		if(strcmp((*elements)[i], "-") == 0)
 			sprintf((*elements)[i - 1], "%d", int_subtraction((*elements)[i - 1], (*elements)[i + 1]));
-
-
-		if(strcmp((*elements)[i], "%") == 0)
-			sprintf((*elements)[i - 1], "%d", int_modulo((*elements)[i - 1], (*elements)[i + 1]));
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
@@ -504,15 +510,6 @@ void compute__float_operation(char*** elements, int** types)
 			sprintf((*elements)[1], "ERROR: illegal operation (%%) on floats operands\n");
 			break;
 		}
-
-		//Shifting the array to the left from the position of the operation to remove the performed operation
-		shift_elements(elements, types, i);
-		shift_elements(elements, types, i);
-
-
-		/*###############################################################################################
-		#	Why is the shift_elements() function called 4 times here, rather than twice just above?		#
-		###############################################################################################*/
 
 		//Shifting the array to the left from the position of the operation to remove the performed operation
 		shift_elements(elements, types, i);
