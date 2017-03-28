@@ -383,10 +383,7 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 
 	for (i = 2; i <= types[0] - 1; i++)
 		if (types[i] == 4 && check_operator_priority(elements[i]) == 3)
-		{
-			printf("bite\n");
 			return i;
-		}
 
 	for (i = 2; i <= types[0] - 1; i++)
 		if (types[i] == 4 && check_operator_priority(elements[i]) == 2)
