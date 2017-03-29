@@ -88,6 +88,8 @@ int main(int argc, char** argv)
 					{
 						compute_numeric_line(&elements, &types);
 
+						printf("test\n");
+
 						printf("%s\n", elements[1]);
 					}
 
@@ -95,12 +97,29 @@ int main(int argc, char** argv)
 					{
 						compute_strings_operations(&elements, &types);
 
+						printf("test\n");
+
 						printf("%s\n", elements[1]);
 					}
 
-					if (types[0] >= 3 && is_comparison(types) == 1)
+					if (types[0] >= 3 && is_comparison(types) == 0)
 					{
-						printf("it's a comparison\n");
+						printf("ERROR: COMPARISON ERROR\n");
+					}
+					else
+					{
+						switch(is_comparison(types))
+						{
+							case 1:
+								printf("is't a number comparison\n");
+								break;
+							case 2:
+								printf("it's a string comparison\n");
+								break;
+							default:
+								printf("ERROR\n");
+								break;
+						}
 					}
 
 

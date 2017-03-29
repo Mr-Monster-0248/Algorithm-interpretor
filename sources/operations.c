@@ -203,15 +203,27 @@ void store_variable(Variable** var_table, char* varName, char* varValue, const i
 
 
 //Function that check if the line is a comparison
-int is_comparison(int* types) //return 1 if yes, 0 for no
+int is_comparison(int* types) //return 1 if it's a numerical comparison and 2 for a string comparison, 0 for an error
 {
-	int i;
+	int i, testNum = 0, testString = 0;
 
-	for(i = 2; i <= types[0]; i += 2)
-		if(types[i] != 9)
-			return 0;
+	for(i = 1; i <= types[0]; i++)
+	{
+		if(i % 2)
+			if(types[i] == 1 || types[i] == 2)
+				testNum++;
+			else
+				testString++;
+		else
+			if(types[i] != 9)
+				return 0;
+	}
 
-	return 1;
+	if(testString > 0 && testNum == 0)
+		return 2;
+	if(testNum > 0 && testString == 0)
+		return 1;
+
 }
 
 
