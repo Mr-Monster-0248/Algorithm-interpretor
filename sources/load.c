@@ -187,13 +187,41 @@ void shift_elements(char*** elements, int** types, int subscript)
 }
 
 
-//Function that overwrites a message with a new one at a given location
-void overwrite_message(char** storage, const char* message)
+//Function that return the line read in the given file
+char* read_file_line(FILE* file)
 {
-	free(*storage);
+	char c[2], *line = (char*) malloc(sizeof(char));
+	int i = 1;
 
-	*storage = (char*) malloc(strlen(message) * sizeof(char));
-	check_alloc(*storage);
+	check_alloc(line);
 
-	strcpy(*storage, message);
+	c[1] = '\0';
+
+	//While we do not reach the end of the line or of the file, reading a single character at the time
+	do
+	{
+		//Reallocating enough space to store the whole line
+		line = (char*) realloc(line, i++ * sizeof(char));
+		check_alloc(line);
+
+		//Reading a single character at the time from the file
+		c[0] = fgetc(file);
+
+		//If the reached the end of the line or the end of the file
+		if (feof(file) || c[0] == '\n')
+		{
+			c[0] = '\0';
+
+			strcat(line, c);
+
+			return line;
+		}
+
+		//Addind the read character to the line to return
+		strcat(line, c);
+
+	} while (1);
+
+	//The function is not supposed to reach this point, but we need to avoid compilation warnings
+	return line;
 }

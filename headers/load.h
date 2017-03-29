@@ -15,6 +15,7 @@
 
 	//Function that checks whether the user entered a special command or not
 	/* RETURN VALUES
+
 		0 = no special command
 		1 = continue
 		2 = exit
@@ -27,7 +28,7 @@
 	//Function that shifts the values to the left in elements after an operation
 	void shift_elements(char*** elements, int** types, int subscript);
 
-	//Function that overwrites a message with a new one at a given location
-	void overwrite_message(char** storage, const char* message);
+	//Function that return the line read in the given file
+	char* read_file_line(FILE* file);
 
 #endif

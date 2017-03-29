@@ -1,0 +1,62 @@
+Hello, this file is here to help you to write your own algorithms in algorithmic language so that our interpretor will be able to understand and run them.
+
+There are a few rules to follow:
+	- On each line, separate each "element" by spaces (do not write "1+2*3" but "1 + 2 * 3"), the only exception is for parentheses (you can write both "2 + ( 2 + 2 )" and "2 + (2 + 2)").
+	- Every good developper wants his code to be understandable so you may use comments to explain your algorithm, here is how:
+		Simply use the '#' character AT THE BEGINNING of the line you want to comment, the interpreter will ignore it.
+	- You may use variables, so please declare all of them at the top of the program distinctly between "$ VARS" and "$ ENDVARS", one per line.
+
+	Here is a template of what your algorithm file must looks like:
+
+		#ALGORITHM: TEMPLATE
+		@ VARS
+			var1 : integer
+			var2 : float
+			var3 : string
+			...
+			varN : type
+		@ ENDVARS
+		@ BEGIN
+
+			# Assigning value 2 to variable var1
+			var1 <- 2
+
+			# Assigning value 42.42 to variable var2
+			var2 <- 42.42
+
+			# Assigning value "Hello world!" to variable var3
+			var3 <- "Hello world!"
+
+			# Displaying the current value of variable var1
+			write ("The current value of var1 is " + var1)
+
+			# Asking for a new value for variable var1
+			write ("Please enter a new value for variable var1: > ")
+			read (var1)
+
+			# Displaying the new stored value for variable var1
+			write ("The new value of var1 is " + var1)
+
+			var3 <- var3 + var1
+
+			write (var3)
+
+			$ if ( CONDITION1 AND CONDITION2 )
+				$ then
+					# statements
+			$ endif
+
+			$ while ( CONDITION1 OR CONDITION2 )
+				# statements
+			$ endwhile
+
+		@ END
+
+
+The expected output for this algorithm is:
+"""
+The current value of var1 is 2
+Please enter a new value for variable var1: > (here you type a value, in our case 1337)
+The nue value of var1 is 1337
+Hello world!1337
+"""

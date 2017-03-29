@@ -523,3 +523,40 @@ int check_variable_declaration(char** elements, int* types, Variable** var_table
 
 	return 0;
 }
+
+
+//Function that returns the type of line read in a file
+/* RETURN VALUES
+   -1 = line not allocated
+	0 = Commented line
+	1 = Empty line
+	2 = File structure indicator line (@ VARS, @ ENDVARS, @ BEGIN, @ END)
+	3 = Special statements line ($ if, $ else, $ for, $ while, $ endif, $ endfor, $ endwhile)
+	4 = Classic line (assignation of value to a variable)
+*/
+int check_file_line_comment(char* line)
+{
+	int i = 0;
+
+	if (line != NULL)
+	{
+		//Skipping the '\t' at the beginning of each line
+		for (i = 0; line[i] != '\0' && line[i] == '\t'; i++);
+
+		if (line[i] == '#') //If the program encounters a commented line
+			return 0;
+
+		if (line[i] == '\0') //If the program encounters an empty line
+			return 1;
+
+		if (line[i] == '@') //If the program encounters a file structure indicator (@ VARS, @ ENDVARS, @ BEGIN, @ END)
+			return 2;
+
+		if (line[i] == '$')
+			return 3;
+
+		return 4;
+	}
+
+	return -1;
+}

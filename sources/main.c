@@ -46,6 +46,12 @@ int main(int argc, char** argv)
 						continue;
 					if (exitProgram == 2)
 						break;
+					if (exitProgram == 3)
+					{
+						free(line);
+						free(var_table);
+						continue;
+					}
 				
 
 					//Getting the elements and their types in the line, continue processing only if no syntax error
