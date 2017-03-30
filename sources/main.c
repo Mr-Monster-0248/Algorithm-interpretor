@@ -124,6 +124,8 @@ int main(int argc, char** argv)
 								compute__string_comparison(&elements, &types);
 								printf("%s\n", elements[1]);
 								break;
+							case -1:
+								printf("ERROR: CANNOT COMPARE DIFFERENT TYPES\n");
 						}
 					} else if (types[0] == 1){
 

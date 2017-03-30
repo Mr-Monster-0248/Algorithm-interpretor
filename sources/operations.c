@@ -138,7 +138,7 @@ int int_modulo(const char* lValue, const char* rValue)
 
 
 //Function that check if the line is an operation 
-int is_operation(int* types, char** elements) //Return 1 if it's an int operation 2 if it's a float operation 3 if it is a string operation
+int is_operation(int* types, char** elements) //Return 1 if it's an int operation 2 if it's a float operation 3 if it is a string operation, -1 for error
 {
 	int i, testInt = 0, testString = 0, testFloat = 0;
 
@@ -158,7 +158,7 @@ int is_operation(int* types, char** elements) //Return 1 if it's an int operatio
 				return 0;
 	}
 
-	if(testString > 0 && testInt == 0 && testFloat == 0)
+	if(testString > 0)
 		return 3;
 	else if(testInt > 0 && testString == 0 && testFloat == 0)
 		return 1;
@@ -208,7 +208,7 @@ void store_variable(Variable** var_table, char* varName, const int varType)
 
 
 //Function that check if the line is a comparison
-int is_comparison(int* types) //return 1 if it's a numerical comparison and 2 for a string comparison, 0 for an error
+int is_comparison(int* types) //return 1 if it's a numerical comparison and 2 for a string comparison, -1 for an error
 {
 	int i, testNum = 0, testString = 0;
 
@@ -228,6 +228,8 @@ int is_comparison(int* types) //return 1 if it's a numerical comparison and 2 fo
 		return 2;
 	if(testNum > 0 && testString == 0)
 		return 1;
+	if(testNum > 0 && testString > 0)
+		return -1;
 
 	return 0;
 }
