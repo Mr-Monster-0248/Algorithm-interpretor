@@ -6,6 +6,7 @@
 #include "../headers/constants.h"
 #include "../headers/load.h"
 #include "../headers/operations.h"
+#include "../headers/analyze.h"
 
 
 //Check if the word is the name of a type
@@ -124,7 +125,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	{
 
 		//If an operator was found (works also for the assignation operator ':')
-		if ( ( (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%' || line[i] == ':') && line[i+1] == ' ' && line[i+2] != '\0'))
+		if ( line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%' || line[i] == ':' )
 		{
 			if (i < 2)
 				return 2;
@@ -150,7 +151,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		}
 
 		//If a comparator was found OR if the assignation operator was found
-		if ( ( (line[i] == ':' || line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
+		if ( ( ( line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
 		{
 
 			if (i < 2)
@@ -406,7 +407,8 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		for (i = 1; i < j - 1; i++)
 			if ((*types)[i] == (*types)[i+1])
 				return 2;
-		if ((*types)[j - 1] == 4)
+
+		if ((*types)[(*types)[0]] == 4)
 			return 0;
 	}
 
