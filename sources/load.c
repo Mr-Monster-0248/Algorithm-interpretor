@@ -224,3 +224,21 @@ char* read_file_line(FILE* file)
 	//The function is not supposed to reach this point, but we need to avoid compilation warnings
 	return line;
 }
+
+
+//Function to free all memory allocated to all elements of all variables
+void free__var_table(Variable** var_table)
+{
+	int i = 0;
+
+	do
+	{
+	 	free((*var_table)[i].name);
+	 	free((*var_table)[i++].value);
+	} while (strcmp((*var_table)[i].name, NAME__END_VARTABLE) != 0);
+
+	free((*var_table)[i].name);
+	free((*var_table)[i].value);
+
+	free(*var_table);
+}

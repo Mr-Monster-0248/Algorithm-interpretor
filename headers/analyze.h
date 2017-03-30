@@ -71,4 +71,7 @@
 	*/
 	int replace_names_by_values(char*** elements, int** types, Variable* var_table);
 
+	//Function to free all memory allocated to all elements of all variables
+	void free__var_table(Variable** var_table);
+
 #endif

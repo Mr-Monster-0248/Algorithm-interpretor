@@ -142,8 +142,8 @@ int main(int argc, char** argv)
 					printf("\n");
 				} while (TRUE);
 
-				free(var_table);
 				free(line);
+
 			break;
 
 
@@ -242,5 +242,7 @@ int main(int argc, char** argv)
 			break; //To avoid compilation warnings
 	}
 
+	free__var_table(&var_table);
+	
 	return EXIT_SUCCESS;
 }
