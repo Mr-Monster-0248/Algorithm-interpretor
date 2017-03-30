@@ -178,7 +178,7 @@ void store_variable(Variable** var_table, char* varName, const int varType)
 	for (size = 0; strcmp((*var_table)[size].name, NAME__END_VARTABLE) != 0; size++);
 
 	//Reallocating memory for the array of variables
-	*var_table = realloc(*var_table, (size + 1) * sizeof(Variable));
+	*var_table = realloc(*var_table, (size + 2) * sizeof(Variable));
 	check_alloc(*var_table);
 
 	//Deleting the data of the last variable stored
@@ -417,7 +417,7 @@ int highest_priority_operator(char** elements, int* types) //return the index of
 
 
 //Function that computes operations on integers
-void compute__int_operation(char*** elements, int** types)
+void compute__int_operation(char*** elements, int** types, Variable** var_table)
 {
 	int i = 0;
 
@@ -466,11 +466,20 @@ void compute__int_operation(char*** elements, int** types)
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
 	}
+
+	//Variable assignation
+	while ( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) == 1)
+	{
+		assign_value_to_variable((*elements)[1], (*elements)[3], var_table);
+
+		shift_elements(elements, types, 2);
+		shift_elements(elements, types, 2);
+	}
 }
 
 
 //Function that computes operations on floats
-void compute__float_operation(char*** elements, int** types)
+void compute__float_operation(char*** elements, int** types, Variable** var_table)
 {
 	int i = 0;
 
@@ -527,6 +536,15 @@ void compute__float_operation(char*** elements, int** types)
 		shift_elements(elements, types, i);
 		shift_elements(elements, types, i);
 	}
+
+	//Variable assignation
+	while ( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) == 1)
+	{
+		assign_value_to_variable((*elements)[1], (*elements)[3], var_table);
+
+		shift_elements(elements, types, 2);
+		shift_elements(elements, types, 2);
+	}
 }
 
 
@@ -535,7 +553,7 @@ void compute__float_operation(char*** elements, int** types)
 	0 = ERROR
 	1 = NO ERROR
 */
-int compute_numeric_line(char*** elements, int** types)
+int compute_numeric_line(char*** elements, int** types, Variable** var_table)
 {
 	int i = 0, errorParentheses = -1, errorType = -1;
 	char** parenthesesElements = NULL;
@@ -579,7 +597,7 @@ int compute_numeric_line(char*** elements, int** types)
 				break;
 			}
 
-			compute_numeric_line(&parenthesesElements, &parenthesesTypes); //Recursive call of the function if not error
+			compute_numeric_line(&parenthesesElements, &parenthesesTypes, var_table); //Recursive call of the function if not error
 
 			//Saving the result at subscript of parenthese element
 			free((*elements)[i]);
@@ -603,12 +621,12 @@ int compute_numeric_line(char*** elements, int** types)
 	switch(is_operation(*types, *elements))
 	{
 		case 1: //int operation
-			compute__int_operation(elements, types); //Computing the operation
+			compute__int_operation(elements, types, var_table); //Computing the operation
 			return 1;
 			break;
 
 		case 2: //float operation
-			compute__float_operation(elements, types); //Computing the operation
+			compute__float_operation(elements, types, var_table); //Computing the operation
 			return 1;
 			break;
 
@@ -644,3 +662,31 @@ void compute_strings_operations(char*** elements, int** types)
 	}
 }
 
+
+//Function that assigns a value to a given variable knowing only its name, returns 1 if correctly done, 0 if not done
+int assign_value_to_variable(const char* varName, const char* valueToAssign, Variable** var_table)
+{
+	int i = 0;
+
+	//Looking for the subscript
+	do
+	{
+		//If we have found the subscript
+		if (strcmp((*var_table)[i].name, varName))
+			break;
+
+		if (strcmp((*var_table)[i].name, NAME__END_VARTABLE))
+			return 0;
+
+		i++;
+	} while (TRUE);
+
+	free((*var_table)[i].value);
+
+	(*var_table)[i].value = (char*) malloc((strlen(valueToAssign) + 1) * sizeof(char));
+	check_alloc((*var_table)[i].value);
+
+	strcpy((*var_table)[i].value, valueToAssign);
+
+	return 1;
+}

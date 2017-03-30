@@ -75,26 +75,29 @@
 	int check_operator_priority(char* operator);
 
 	//Function that computes operations on integers
-	void compute__int_operation(char*** elements, int** types);
+	void compute__int_operation(char*** elements, int** types, Variable** var_table);
 
 	//Function witch find the operator with the highest priority (if it exist)
 	int highest_priority_operator(char** elements, int* types); //return the index of the highest operator and return 0 if there is no highest
 
 	//Function that computes operations on floats
-	void compute__float_operation(char*** elements, int** types);
+	void compute__float_operation(char*** elements, int** types, Variable** var_table);
 
 	//Recursive function that computes the entered line (recursive because of potential parentheses)
 	/* RETURN VALUES:
 		0 = ERROR
 		1 = NO ERROR
 	*/
-	int compute_numeric_line(char*** elements, int** types);
+	int compute_numeric_line(char*** elements, int** types, Variable** var_table);
 
 	//Check if the operation of strings only contain "+"
 	int check_string_operation(char** elements, int* types); //return 0 if the operation only contain + else it return 1
 
 	//Function that computes operations on strings
 	void compute_strings_operations(char*** elements, int** types);
+
+	//Function that assigns a value to a given variable knowing only its name, returns 1 if correctly done, 0 if not done
+	int assign_value_to_variable(const char* varName, const char* valueToAssign, Variable** var_table);
 
 	
 #endif

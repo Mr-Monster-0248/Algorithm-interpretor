@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 {
 	int mode = 0, *types = NULL, i = 0, position = 0, exitProgram = 0, getLineError = 0, lineNumber = 0;
 	char *line = NULL, **elements = NULL;
-	Variable *var_table = malloc(10 * sizeof(Variable));
+	Variable* var_table = malloc(sizeof(Variable));
 	FILE* algFile = NULL;
 
 	check_alloc(var_table);
@@ -21,6 +21,14 @@ int main(int argc, char** argv)
 
 	mode = check_parameters(argc, argv);
 
+	//Initializing the variables array
+	var_table[0].name = (char*) malloc( (strlen(NAME__END_VARTABLE) + 1) * sizeof(char));
+	var_table[0].value = (char*) malloc( (strlen(VALUE__END_VARTABLE) + 1) * sizeof(char));
+	var_table[0].type = 0;
+	check_alloc(var_table[0].name);
+	check_alloc(var_table[0].value);
+	sprintf(var_table[0].name, "%s", NAME__END_VARTABLE);
+	sprintf(var_table[0].value, "%s", VALUE__END_VARTABLE);
 
 	switch(mode)
 	{
@@ -80,7 +88,7 @@ int main(int argc, char** argv)
 
 						continue;
 					}
-					
+
 					for( i = 1; i < types[0]; i++)
 						if(types[i] == 0)
 							printf("Declaration error on element %d\n\n", i);
@@ -88,14 +96,16 @@ int main(int argc, char** argv)
 					
 					if (types[0] >= 3)
 					{
+						check_variable_declaration(elements, types, &var_table);
+
 						switch(is_operation(types, elements))
 						{
 							case 1:
-								compute_numeric_line(&elements, &types);
+								compute_numeric_line(&elements, &types, &var_table);
 								printf("%s\n", elements[1]);
 								break;
 							case 2:
-								compute_numeric_line(&elements, &types);
+								compute_numeric_line(&elements, &types, &var_table);
 								printf("%s\n", elements[1]);
 								break;
 							case 3:
@@ -116,6 +126,9 @@ int main(int argc, char** argv)
 								break;
 						}
 					} else if (types[0] == 1){
+
+						replace_names_by_values(&elements, &types, var_table);
+
 						printf("%s\n", elements[1]);
 					}
 					
@@ -129,14 +142,15 @@ int main(int argc, char** argv)
 					printf("\n");
 				} while (TRUE);
 
+				free(var_table);
 				free(line);
 			break;
 
 
 
-		case 2: //C converter
+		/*case 2: //C converter
 			printf("The C converter is not available yet, it is a feature that will be soon implemented\n");
-			break;
+			break;*/
 
 
 
@@ -200,7 +214,7 @@ int main(int argc, char** argv)
 								printf("Declaration error on element %d\n\n", i);
 
 						if (types[0] >= 3 && is_operation(types, elements) != 0 && is_operation(types, elements) != 3)
-							compute_numeric_line(&elements, &types);
+							compute_numeric_line(&elements, &types, &var_table);
 
 						if (types[0] >= 3 && is_operation(types, elements) == 3)
 							compute_strings_operations(&elements, &types);
@@ -227,8 +241,6 @@ int main(int argc, char** argv)
 			return EXIT_FAILURE;
 			break; //To avoid compilation warnings
 	}
-
-	free(var_table);
 
 	return EXIT_SUCCESS;
 }

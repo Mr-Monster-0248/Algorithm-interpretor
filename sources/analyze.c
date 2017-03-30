@@ -53,11 +53,16 @@ int check_if_usable(const char* varName, Variable *var_table, int* sub)
 
 	//Checking if the given name is already attributed to a variable
 	for (i = 0; strcmp(var_table[i].name, NAME__END_VARTABLE) != 0; i++)
+	{
+		printf("Test de la boucle for\n");
+
 		if (strcmp(varName, var_table[i].name) == 0)
 		{
+			printf("Nom trouve\n");
 			*sub = i;
 			return 1;
 		}
+	}
 
 	return 2;
 }
@@ -453,98 +458,21 @@ void display_elements(char** elements, int* types)
 //Function that checks the entry of the user and stores a new variable is asked (returns 0 if no new variable, 1 if a new variable is stored)
 int check_variable_declaration(char** elements, int* types, Variable** var_table)
 {
-	int i = 0, sub = 0;
-
-	if (types[0] >= 2)
+	if (types[0] == 3)
 	{
-		if (strcmp(elements[1], "integer") == 0) //New integer variable was asked
+		//If type corresponding to new variable
+		if (types[1] >= 5 && types[1] <= 7)
 		{
-			if (check_if_usable(elements[2], *var_table, &sub) == 2) //If the name given is available
-			{
-				if (types[0] == 3) //If the user tried to initialize a variable with a value without giving this value
-				{
-					printf("ERROR: missing initialization value\n");
-					return 0;
-				}
-
-				if (types[0] == 2)
-				{
-					store_variable(var_table, elements[2], 1); //Storing a new uninitialized integer variable
-
-				} else if (types[0] == 4 && strcmp(elements[3], "<-") == 0) {
-
-					store_variable(var_table, elements[2], 1); //Storing a new initialized integer variable
-
-				}
-			} else {
-				return 0;
-			}
+			store_variable(var_table, elements[1], types[1] - 4); //Storing a new variable of asked type
+			return 1;
 		}
-
-
-		if (strcmp(elements[1], "float") == 0) //New float variable was asked
-		{
-			if (check_if_usable(elements[2], *var_table, &sub) == 2) //If the name given is available
-			{
-				if (types[0] == 3) //If the user tried to initialize a variable with a value without giving this value
-				{
-					printf("ERROR: missing initialization value\n");
-					return 0;
-				}
-
-				if (types[0] == 2)
-				{
-					store_variable(var_table, elements[2], 2); //Storing a new uninitialized float variable
-
-				} else if (types[0] == 4 && strcmp(elements[3], "<-") == 0) {
-
-					store_variable(var_table, elements[2], 2); //Storing a new initialized float variable
-
-				}
-			} else {
-				return 0;
-			}
-		}
-
-
-		if (strcmp(elements[1], "string") == 0) //New string variable was asked
-		{
-			if (check_if_usable(elements[2], *var_table, &sub) == 2) //If the name given is available
-			{
-				if (types[0] == 3) //If the user tried to initialize a variable with a value without giving this value
-				{
-					printf("ERROR: missing initialization value\n");
-					return 0;
-				}
-
-				if (types[0] == 2)
-				{
-					store_variable(var_table, elements[2], 3); //Storing a new uninitialized string variable
-
-				} else if (types[0] == 4 && strcmp(elements[3], "<-") == 0) {
-
-					store_variable(var_table, elements[2], 3); //Storing a new initialized string variable
-
-				}
-			} else {
-				return 0;
-			}
-		}
+		else
+			return 0;
 	}
-
-	if (types[0] == 1)
+	else
 	{
-		for (i = 0; strcmp((*var_table)[i].name, NAME__END_VARTABLE) != 0; i++)
-			if (strcmp((*var_table)[i].name, elements[2]) == 0)
-			{
-				printf("%s\n", (*var_table)[i].value); //Displaying the value of the variable
-				return 0;
-			}
-
-		printf("Variable %s not found, maybe it has not been created yet\n", elements[2]);
+		return 0;
 	}
-
-	return 0;
 }
 
 
@@ -608,6 +536,8 @@ int replace_names_by_values(char*** elements, int** types, Variable* var_table)
 		sub = 0;
 
 		if ( (*types)[i] == 8 ) //If a variable element was found
+		{
+
 			switch ( check_if_usable((*elements)[i], var_table, &sub) )
 			{
 				//Forbidden name
@@ -620,6 +550,7 @@ int replace_names_by_values(char*** elements, int** types, Variable* var_table)
 					//Checking variable initialization
 					if ( strcmp(var_table[sub].value, UNINITIALIZED_VAR_VALUE) == 0 )
 					{
+
 						fprintf(stderr, "ERROR: unitialized variable %s\n\n", (*elements)[i]);
 						return 2;
 					}
@@ -644,6 +575,7 @@ int replace_names_by_values(char*** elements, int** types, Variable* var_table)
 					exit(EXIT_FAILURE);
 					break;
 			}
+		}
 	}
 
 	return 3;

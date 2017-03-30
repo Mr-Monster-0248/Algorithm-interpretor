@@ -47,6 +47,9 @@
 	//Function that displays the elements (essential for testing)
 	void display_elements(char** elements, int* types);
 
+	//Function that checks the entry of the user and stores a new variable is asked (returns 0 if no new variable, 1 if a new variable is stored)
+	int check_variable_declaration(char** elements, int* types, Variable** var_table);
+
 	//Function that returns the type of line read in a file
 	/* RETURN VALUES
 	   -1 = line not allocated
