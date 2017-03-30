@@ -83,7 +83,13 @@ void check_variable_type(char** elements, int** types, int i)
 
 
 //Function that divides the string into substrings (one for each element of the line)
-/* Types:
+/* RETURN VALUES
+	0 = syntax error
+	1 = no error, continue to perform
+	2 = structural error
+	3 = assignation error
+
+	Types:
 	0 = declaration error
 	1 = int
 	2 = float
@@ -99,7 +105,7 @@ void check_variable_type(char** elements, int** types, int i)
 
 	The number of elements is stored in types at subscript 0 ( (*types)[0] = number of elements )
 */
-int get_line_elements(const char* line, char*** elements, int** types, int* position) //Returns 0 if syntax error
+int get_line_elements(const char* line, char*** elements, int** types, int* position)
 {
 	int i = 0, j = 1, k = 1, oParentheses = 0;
 
