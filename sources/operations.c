@@ -224,12 +224,13 @@ int is_comparison(int* types) //return 1 if it's a numerical comparison and 2 fo
 	if(testNum > 0 && testString == 0)
 		return 1;
 
+	return 0;
 }
 
 
 
 //Function that performs the boolean comparison between two integers/float
-int eval_bool_int(char* lValue, char* rValue, char* comparator)
+int eval_bool_int(const char* lValue, const char* rValue, const char* comparator)
 {
 	float val1 = convertTo_float(lValue), val2 = convertTo_float(rValue);
 
@@ -288,11 +289,37 @@ int eval_bool_int(char* lValue, char* rValue, char* comparator)
 
 
 //Function that performs the boolean comparison between two strings
-static int eval_bool_string(const char* lString, const char* rString, const char* comparator)
+int eval_bool_string(const char* lString, const char* rString, const char* comparator)
 {
+	printf("%s test = %d\n", comparator, strcmp(lString, rString));
+
 	if(strcmp(comparator, "="))
 	{
 		if(strcmp(lString, rString) == 0)
+			return TRUE;
+		return FALSE;
+	}
+	else if(strcmp(comparator, "<") == 0)
+	{
+		if(strlen(lString) < strlen(rString))
+			return TRUE;
+		return FALSE;
+	}
+	else if(strcmp(comparator, "<=") == 0 || strcmp(comparator, "=<") == 0)
+	{
+		if(strlen(lString) <= strlen(rString))
+			return TRUE;
+		return FALSE;
+	}
+	else if(strcmp(comparator, ">") == 0 )
+	{
+		if(strlen(lString) > strlen(rString))
+			return TRUE;
+		return FALSE;
+	}
+	else if(strcmp(comparator, ">=") == 0 || strcmp(comparator, "=>") == 0)
+	{
+		if(strlen(lString) >= strlen(rString))
 			return TRUE;
 		return FALSE;
 	}
@@ -306,67 +333,44 @@ static int eval_bool_string(const char* lString, const char* rString, const char
 		return BOOLEAN_ERROR_CODE;
 }
 
-
-/*
-
-//Function that performs the boolean comparison between two booleans
-static int eval_bool(const int lBool, const int rBool, const int comparator)
-{
-	switch(comparator)
-	{
-		case 6: // AND
-			if (lBool && rBool)
-				return TRUE;
-			return FALSE;
-			break;
-
-		case 7: // OR
-			if (lBool || rBool)
-				return TRUE;
-			return FALSE;
-			break;
-
-		default:
-			return BOOLEAN_ERROR_CODE;
-			break;
-
-	}
-}
-
-
-//Function to evaluate a boolean expression
-RETURN VALUES:
+/*  
+	RETURN VALUES:
 	BOOLEAN_ERROR_CODE = ERROR
 	FALSE = 0
 	TRUE = 1
+*/
 
-int eval_bool_expr(char* lValue, const int lValueType, char* rValue, const int rValueType, const int comparatorID)
+//Function that compute boolean comparison
+void compute__int_float_comparison(char*** elements, int** types)
 {
-
-	//Checking if the two elements are comparable
-	if ((lValueType != rValueType) || lValueType > 3 || rValueType > 3)
-		return BOOLEAN_ERROR_CODE; //ERROR: CANNOT PERFORM COMPARISON BETWEEN TWO ELEMENTS OF DIFFERENT TYPES
-
-	switch(lValueType)
+	while((*types)[0] >= 3)
 	{
-		case 1:
-			return eval_bool_int(convertTo_int(lValue), convertTo_int(rValue), comparatorID);
-			break;
+		if(eval_bool_int((*elements)[1], (*elements)[3], (*elements)[2]))
+			strcpy((*elements)[1], "true");
+		else
+			strcpy((*elements)[1], "false");
+		(*types)[1] = 11;
 
-		case 2:
-			return eval_bool_float(convertTo_float(lValue), convertTo_float(rValue), comparatorID);
-			break;
-
-		case 3:
-			return eval_bool_string(lValue, rValue, comparatorID);
-			break;
-
-		default:
-			return BOOLEAN_ERROR_CODE;
-			break;
+		shift_elements(elements, types, 2);
+		shift_elements(elements, types, 2);
 	}
 }
-*/
+
+//Function that compute boolean comparison
+void compute__string_comparison(char*** elements, int** types)
+{
+	while((*types)[0] >= 3)
+	{
+		if(eval_bool_string((*elements)[1], (*elements)[3], (*elements)[2]))
+			strcpy((*elements)[1], "true");
+		else
+			strcpy((*elements)[1], "false");
+		(*types)[1] = 11;
+
+		shift_elements(elements, types, 2);
+		shift_elements(elements, types, 2);
+	}
+}
 
 //Function witch give a value of priority for each operator
 int check_operator_priority(char* operator)

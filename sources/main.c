@@ -82,45 +82,49 @@ int main(int argc, char** argv)
 							printf("Declaration error on element %d\n\n", i);
 
 					
-
-
-					if (types[0] >= 3 && is_operation(types, elements) != 0 && is_operation(types, elements) != 3)
+					if(types[0] >= 3)
 					{
-						compute_numeric_line(&elements, &types);
+						/* I commented this to allow me to test comparison as there is an issues with is_operation
 
-						printf("test\n");
+						if (types[0] >= 3 && is_operation(types, elements) != 0 && is_operation(types, elements) != 3)
+						{
+							compute_numeric_line(&elements, &types);
 
-						printf("%s\n", elements[1]);
-					}
+							printf("test\n");
 
-					if (types[0] >= 3 && is_operation(types, elements) == 3)
-					{
-						compute_strings_operations(&elements, &types);
+							printf("%s\n", elements[1]);
+						}
 
-						printf("test\n");
+						if (types[0] >= 3 && is_operation(types, elements) == 3)
+						{
+							compute_strings_operations(&elements, &types);
 
-						printf("%s\n", elements[1]);
-					}
-
-					if (types[0] >= 3 && is_comparison(types) == 0)
-					{
-						printf("ERROR: COMPARISON ERROR\n");
-					}
-					else
-					{
+							printf("%s\n", elements[1]);
+						}
+						*/
 						switch(is_comparison(types))
 						{
 							case 1:
-								printf("is't a number comparison\n");
+								display_elements(elements, types);
+
+								compute__int_float_comparison(&elements, &types);
+
+								display_elements(elements, types);
+
+								printf("%s\n", elements[1]);
 								break;
 							case 2:
-								printf("it's a string comparison\n");
-								break;
-							default:
-								printf("ERROR\n");
+								display_elements(elements, types);
+
+								compute__string_comparison(&elements, &types);
+
+								display_elements(elements, types);
+
+								printf("%s\n", elements[1]);
 								break;
 						}
 					}
+					
 
 
 					//Freeing memory previously allocated before exiting or starting a new lap

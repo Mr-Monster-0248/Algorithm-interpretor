@@ -94,6 +94,7 @@ void check_variable_type(char** elements, int** types, int i)
 	8 = variable
 	9 = comparator
    10 = element between parentheses
+   11 = boolean
 
 	The number of elements is stored in types at subscript 0 ( (*types)[0] = number of elements )
 */
