@@ -47,7 +47,7 @@
 	int is_operation(int* types, char** elements); //return 1 if it's an operation
 
 	//Function that stores a new variable in the array of all variables
-	void store_variable(Variable** var_table, char* varName, char* varValue, const int varType);
+	void store_variable(Variable** var_table, char* varName, const int varType);
 
 	//Function that performs the boolean comparison between two integers/float
 	int eval_bool_int(const char* lValue, const char* rValue, const char* comparator);

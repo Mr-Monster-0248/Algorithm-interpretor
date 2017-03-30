@@ -43,7 +43,7 @@ int is_forbidden(const char* instruction) //Return 1 if allowed
 	1 = usable, a variable has already this name
 	2 = usable, no variable has already this name
 */
-int check_if_usable(const char* varName, Variable *var_table)
+int check_if_usable(const char* varName, Variable *var_table, int* sub)
 {
 	int i = 0;
 
@@ -54,7 +54,10 @@ int check_if_usable(const char* varName, Variable *var_table)
 	//Checking if the given name is already attributed to a variable
 	for (i = 0; strcmp(var_table[i].name, NAME__END_VARTABLE) != 0; i++)
 		if (strcmp(varName, var_table[i].name) == 0)
+		{
+			*sub = i;
 			return 1;
+		}
 
 	return 2;
 }
@@ -454,13 +457,13 @@ void display_elements(char** elements, int* types)
 //Function that checks the entry of the user and stores a new variable is asked (returns 0 if no new variable, 1 if a new variable is stored)
 int check_variable_declaration(char** elements, int* types, Variable** var_table)
 {
-	int i = 0;
+	int i = 0, sub = 0;
 
 	if (types[0] >= 2)
 	{
 		if (strcmp(elements[1], "integer") == 0) //New integer variable was asked
 		{
-			if (check_if_usable(elements[2], *var_table) == 2) //If the name given is available
+			if (check_if_usable(elements[2], *var_table, &sub) == 2) //If the name given is available
 			{
 				if (types[0] == 3) //If the user tried to initialize a variable with a value without giving this value
 				{
@@ -470,11 +473,11 @@ int check_variable_declaration(char** elements, int* types, Variable** var_table
 
 				if (types[0] == 2)
 				{
-					store_variable(var_table, elements[2], "uninitialized", 1); //Storing a new uninitialized integer variable
+					store_variable(var_table, elements[2], 1); //Storing a new uninitialized integer variable
 
 				} else if (types[0] == 4 && strcmp(elements[3], "<-") == 0) {
 
-					store_variable(var_table, elements[2], elements[4], 1); //Storing a new initialized integer variable
+					store_variable(var_table, elements[2], 1); //Storing a new initialized integer variable
 
 				}
 			} else {
@@ -485,7 +488,7 @@ int check_variable_declaration(char** elements, int* types, Variable** var_table
 
 		if (strcmp(elements[1], "float") == 0) //New float variable was asked
 		{
-			if (check_if_usable(elements[2], *var_table) == 2) //If the name given is available
+			if (check_if_usable(elements[2], *var_table, &sub) == 2) //If the name given is available
 			{
 				if (types[0] == 3) //If the user tried to initialize a variable with a value without giving this value
 				{
@@ -495,11 +498,11 @@ int check_variable_declaration(char** elements, int* types, Variable** var_table
 
 				if (types[0] == 2)
 				{
-					store_variable(var_table, elements[2], "uninitialized", 2); //Storing a new uninitialized float variable
+					store_variable(var_table, elements[2], 2); //Storing a new uninitialized float variable
 
 				} else if (types[0] == 4 && strcmp(elements[3], "<-") == 0) {
 
-					store_variable(var_table, elements[2], elements[4], 2); //Storing a new initialized float variable
+					store_variable(var_table, elements[2], 2); //Storing a new initialized float variable
 
 				}
 			} else {
@@ -510,7 +513,7 @@ int check_variable_declaration(char** elements, int* types, Variable** var_table
 
 		if (strcmp(elements[1], "string") == 0) //New string variable was asked
 		{
-			if (check_if_usable(elements[2], *var_table) == 2) //If the name given is available
+			if (check_if_usable(elements[2], *var_table, &sub) == 2) //If the name given is available
 			{
 				if (types[0] == 3) //If the user tried to initialize a variable with a value without giving this value
 				{
@@ -520,11 +523,11 @@ int check_variable_declaration(char** elements, int* types, Variable** var_table
 
 				if (types[0] == 2)
 				{
-					store_variable(var_table, elements[2], "uninitialized", 3); //Storing a new uninitialized string variable
+					store_variable(var_table, elements[2], 3); //Storing a new uninitialized string variable
 
 				} else if (types[0] == 4 && strcmp(elements[3], "<-") == 0) {
 
-					store_variable(var_table, elements[2], elements[4], 3); //Storing a new initialized string variable
+					store_variable(var_table, elements[2], 3); //Storing a new initialized string variable
 
 				}
 			} else {
@@ -589,4 +592,63 @@ int check_file_line_comment(char** line)
 	}
 
 	return -1;
+}
+
+
+//Function that replaces variables names in elements by their values
+/* RETURN VALUES
+	0 = ERROR: undeclared variable
+	1 = ERROR: forbidden variable name
+	2 = ERROR: uninitialized variable
+	3 = no error, continue to perform
+*/
+int replace_names_by_values(char*** elements, int** types, Variable* var_table)
+{
+	int i = 1, sub = 0;
+
+	//Eploring the different elements
+	for (i = 1; i <= (*types)[0]; i++)
+	{
+		sub = 0;
+
+		if ( (*types)[i] == 8 ) //If a variable element was found
+			switch ( check_if_usable((*elements)[i], var_table, &sub) )
+			{
+				//Forbidden name
+				case 0:
+					fprintf(stderr, "ERROR: forbidden variable name\n\n");
+					return 1;
+					break; //To avoid compilation warnings
+
+				case 1:
+					//Checking variable initialization
+					if ( strcmp(var_table[sub].value, UNINITIALIZED_VAR_VALUE) == 0 )
+					{
+						fprintf(stderr, "ERROR: unitialized variable %s\n\n", (*elements)[i]);
+						return 2;
+					}
+
+					free ( (*elements)[i] );
+
+					(*elements)[i] = (char*) malloc( (strlen(var_table[sub].value) + 1) * sizeof(char) );
+					check_alloc((*elements)[i]);
+
+					strcpy((*elements)[i], var_table[sub].value);
+
+					(*types)[i] = var_table[sub].type;
+					break;
+
+				case 2:
+					fprintf(stderr, "ERROR: cannot found variable %s\n\n", (*elements)[i]);
+					return 0; 
+					break; //To avoid compilation warnings
+
+				default:
+					fprintf(stderr, "ERROR: the program is not supposed to reacj this point, please turn it on again\n\n");
+					exit(EXIT_FAILURE);
+					break;
+			}
+	}
+
+	return 3;
 }

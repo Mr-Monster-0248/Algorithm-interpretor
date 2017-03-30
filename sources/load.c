@@ -8,28 +8,27 @@
 int check_parameters(int argc, char** argv)
 {
 	FILE* testFile = NULL;
-	char filePath[30] = "IO/", convert;
+	char convert;
 
 	//Checking if a command line argument was given
 	if (argc >= 2)
 	{
-		strcat(filePath, argv[1]); //Building file path
 
-		testFile = fopen(filePath, "r"); //Attempting to open the file
+		testFile = fopen(argv[1], "r"); //Attempting to open the file
 
 		if (testFile == NULL) //If file has not been oppened
 		{
-			printf("The program cannot manage to open the file %s in the folder IO\nQuit the program? (y/n)\t> ", argv[1]);
+			printf("The program cannot manage to open the file %s\nQuit the program? (y/n)\t> ", argv[1]);
 
 			//Asking the user whether to quit the program or not
 			do
 			{
 				fflush(stdin);
-				filePath[0] = '\n';
-				filePath[0] = getchar();
-			} while (filePath[0] != 'y' && filePath[0] != 'Y' && filePath[0] != 'n' && filePath[0] != 'N');
+				convert = '\n';
+				convert = getchar();
+			} while (convert != 'y' && convert != 'Y' && convert != 'n' && convert != 'N');
 
-			if (filePath[0] == 'y' || filePath[0] == 'Y')
+			if (convert == 'y' || convert == 'Y')
 			{
 				//Exiting the program
 				system(CLEAR);
@@ -41,11 +40,11 @@ int check_parameters(int argc, char** argv)
 
 		fclose(testFile);
 
-		do
+		/*do
 		{
 			convert = 'a';
 			system(CLEAR);
-			printf("Type 1 to convert %s to C language (.c file)\nType 2 to execute %s directly\nYour choice: ", argv[1], argv[1]);
+			//printf("Type 1 to convert %s to C language (.c file)\nType 2 to execute %s directly\nYour choice: ", argv[1], argv[1]);
 			
 			convert = getchar();
 			fflush(stdin);
@@ -53,7 +52,7 @@ int check_parameters(int argc, char** argv)
 
 
 		if (convert == '1')
-			return 2; //Launching the C converter
+			return 2; //Launching the C converter*/
 
 		return 3; //Executing the program directly
 	}

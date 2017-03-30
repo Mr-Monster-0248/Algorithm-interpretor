@@ -170,7 +170,7 @@ int is_operation(int* types, char** elements) //Return 1 if it's an int operatio
 
 
 //Function that stores a new variable in the array of all variables
-void store_variable(Variable** var_table, char* varName, char* varValue, const int varType)
+void store_variable(Variable** var_table, char* varName, const int varType)
 {
 	int size = 0;
 
@@ -187,14 +187,14 @@ void store_variable(Variable** var_table, char* varName, char* varValue, const i
 
 	//Allocating memory for the name and value of the new variable
 	(*var_table)[size].name = (char*) malloc( (strlen(varName) + 1) * sizeof(char));
-	(*var_table)[size].value = (char*) malloc( (strlen(varValue) + 1) * sizeof(char));
+	(*var_table)[size].value = (char*) malloc( (strlen(UNINITIALIZED_VAR_VALUE) + 1) * sizeof(char));
 	check_alloc((*var_table)[size].name);
 	check_alloc((*var_table)[size].value);
 
 	//Storing the new name, value and type
 	(*var_table)[size].type = varType;
 	sprintf((*var_table)[size].name, "%s", varName);
-	sprintf((*var_table)[size++].value, "%s", varValue);
+	sprintf((*var_table)[size++].value, "%s", UNINITIALIZED_VAR_VALUE);
 
 	//Creating a "end variable" to mark the end of the array of variables
 	(*var_table)[size].name	= (char*) malloc( (strlen(NAME__END_VARTABLE) + 1) * sizeof(char));

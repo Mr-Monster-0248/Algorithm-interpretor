@@ -70,15 +70,23 @@ int main(int argc, char** argv)
 						free(types);
 
 						continue;
+					} else if (getLineError == 3)
+					{
+						printf("ERROR: CANNOT ASSIGN VALUE TO A NON VARIABLE OBJECT\n\n");
+
+						free_2D_char_array(&elements, types[0]);
+
+						free(types);
+
+						continue;
 					}
 					
-					for(i = 1; i < types[0]; i++)
+					for( i = 1; i < types[0]; i++)
 						if(types[i] == 0)
 							printf("Declaration error on element %d\n\n", i);
 
 					
-
-					if(types[0] >= 3)
+					if (types[0] >= 3)
 					{
 						switch(is_operation(types, elements))
 						{
@@ -107,7 +115,10 @@ int main(int argc, char** argv)
 								printf("%s\n", elements[1]);
 								break;
 						}
+					} else if (types[0] == 1){
+						printf("%s\n", elements[1]);
 					}
+					
 					
 
 

@@ -14,16 +14,19 @@
 		1 = usable, a variable has already this name
 		2 = usable, no variable has already this name
 	*/
-	int check_if_usable(const char* varName, Variable *var_table);
-
-	//Function that checks whether a name is already taken by an existing variable or not, if yes, returning the subscript of var_table on which this variable is stored, else returning -1
-	int check_existance(const char* varName, Variable *var_table);
+	int check_if_usable(const char* varName, Variable *var_table, int* sub);
 
 	//Function that checks the type of a variable (used when declaration of a new variable)
 	void check_variable_type(char** element, int** types, int i);
 
 	//Function that divides the string into substrings (one for each element of the line)
-	/* Types:
+	/* RETURN VALUES
+		0 = syntax error
+		1 = no error, continue to perform
+		2 = structural error
+		3 = assignation error
+
+		Types:
 		0 = declaration error
 		1 = int
 		2 = float
@@ -35,6 +38,7 @@
 		8 = variable
 		9 = comparator
 	   10 = element between parentheses
+	   11 = boolean
 
 		The number of elements is stored in types at subscript 0 ( (*types)[0] = number of elements )
 	*/
@@ -53,5 +57,15 @@
 		4 = Classic line (assignation of value to a variable)
 	*/
 	int check_file_line_comment(char** line);
+
+
+	//Function that replaces variables names in elements by their values
+	/* RETURN VALUES
+		0 = ERROR: undeclared variable
+		1 = ERROR: forbidden variable name
+		2 = ERROR: uninitialized variable
+		3 = no error, continue to perform
+	*/
+	int replace_names_by_values(char*** elements, int** types, Variable* var_table);
 
 #endif

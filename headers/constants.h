@@ -34,6 +34,8 @@
 	#define EXISTS 1
 	#define DOESNT_EXISTS 0
 
+	#define UNINITIALIZED_VAR_VALUE "~undefined~"
+
 	#define NAME__END_VARTABLE "end of var_table"
 	#define VALUE__END_VARTABLE "end of var_table" 
 	#define TYPE__END_VARTABLE 33663 //"END" on a alphanumeric keyboard/pad (Nokia 3310 type)
