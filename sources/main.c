@@ -90,8 +90,6 @@ int main(int argc, char** argv)
 						{
 							compute_numeric_line(&elements, &types);
 
-							printf("test\n");
-
 							printf("%s\n", elements[1]);
 						}
 
@@ -105,21 +103,11 @@ int main(int argc, char** argv)
 						switch(is_comparison(types))
 						{
 							case 1:
-								display_elements(elements, types);
-
 								compute__int_float_comparison(&elements, &types);
-
-								display_elements(elements, types);
-
 								printf("%s\n", elements[1]);
 								break;
 							case 2:
-								display_elements(elements, types);
-
 								compute__string_comparison(&elements, &types);
-
-								display_elements(elements, types);
-
 								printf("%s\n", elements[1]);
 								break;
 						}
