@@ -6,6 +6,7 @@
 #include "../headers/constants.h"
 #include "../headers/load.h"
 #include "../headers/operations.h"
+#include "../headers/analyze.h"
 
 
 //Check if the word is the name of a type
@@ -124,10 +125,18 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	{
 
 		//If an operator was found (works also for the assignation operator ':')
-		if ( ( (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%' || line[i] == ':') && line[i+1] == ' ' && line[i+2] != '\0'))
+		if ( line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%' || line[i] == ':' )
 		{
 			if (i < 2)
 				return 2;
+
+			if (line[i + 1] == '\0' || line[i - 1] != ' ')
+				return 0;
+			if (line[i + 1] != ' ')
+			{
+				*position = i;
+				return 0;
+			}
 			
 			(*types)[0]++; //Incrementing the number of elements
 
@@ -150,7 +159,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		}
 
 		//If a comparator was found OR if the assignation operator was found
-		if ( ( (line[i] == ':' || line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
+		if ( ( ( line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
 		{
 
 			if (i < 2)
@@ -219,7 +228,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 				(*elements)[j][k - 3] = line[i++];
 			}
 
-
 			//Determining the type of the element
 			if (line[i] == ' ' || line[i] == '\0') //If the element is of type int
 				(*types)[j] = 1;
@@ -263,7 +271,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 				*position = i + 1;
 				return 0;
 			}
-
 
 			j++;
 		}
@@ -403,12 +410,15 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	//Checking if the structure of the line is correct
 	if (j >= 2) //If at least two elements
 	{
+		if ((*types)[(*types)[0]] == 4)
+			return 0;
+
 		for (i = 1; i < j - 1; i++)
 			if ((*types)[i] == (*types)[i+1])
 				return 2;
-		if ((*types)[j - 1] == 4)
-			return 0;
 	}
+
+	display_elements(*elements, *types);
 
 	return 1;
 }
