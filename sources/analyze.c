@@ -121,8 +121,9 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 	while (line[i] != '\0')
 	{
-		//If an operator was found
-		if ( ( (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%') && line[i+1] == ' ' && line[i+2] != '\0'))
+
+		//If an operator was found (works also for the assignation operator ':')
+		if ( ( (line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%' || line[i] == ':') && line[i+1] == ' ' && line[i+2] != '\0'))
 		{
 			if (i < 2)
 				return 2;
@@ -147,7 +148,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			(*types)[j++] = 4;
 		}
 
-		//If a comparator was found
+		//If a comparator was found OR if the assignation operator was found
 		if ( ( (line[i] == ':' || line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
 		{
 
@@ -173,7 +174,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			(*elements)[j][0] = line[i];
 			(*elements)[j][1] = '\0';
 
-			//Setting type of element to 5 (operator)
+			//Setting type of element to 9 (comparator)
 			(*types)[j++] = 9;
 		}
 
@@ -404,7 +405,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 		for (i = 1; i < j - 1; i++)
 			if ((*types)[i] == (*types)[i+1])
 				return 2;
-		if ((*types)[j-1] == 4)
+		if ((*types)[j - 1] == 4)
 			return 0;
 	}
 
@@ -534,25 +535,31 @@ int check_variable_declaration(char** elements, int* types, Variable** var_table
 	3 = Special statements line ($ if, $ else, $ for, $ while, $ endif, $ endfor, $ endwhile)
 	4 = Classic line (assignation of value to a variable)
 */
-int check_file_line_comment(char* line)
+int check_file_line_comment(char** line)
 {
 	int i = 0;
 
-	if (line != NULL)
+	if (*line != NULL)
 	{
 		//Skipping the '\t' at the beginning of each line
-		for (i = 0; line[i] != '\0' && line[i] == '\t'; i++);
+		for (i = 0; (*line)[i] != '\0' && (*line)[i] == '\t'; i++);
 
-		if (line[i] == '#') //If the program encounters a commented line
+		if ((*line)[i] == '#') //If the program encounters a commented line
+		{
+			free(*line);
 			return 0;
+		}
 
-		if (line[i] == '\0') //If the program encounters an empty line
+		if ((*line)[i] == '\0') //If the program encounters an empty line
+		{
+			free(*line);
 			return 1;
+		}
 
-		if (line[i] == '@') //If the program encounters a file structure indicator (@ VARS, @ ENDVARS, @ BEGIN, @ END)
+		if ((*line)[i] == '@') //If the program encounters a file structure indicator (@ VARS, @ ENDVARS, @ BEGIN, @ END)
 			return 2;
 
-		if (line[i] == '$')
+		if ((*line)[i] == '$')
 			return 3;
 
 		return 4;

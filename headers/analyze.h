@@ -52,6 +52,6 @@
 		3 = Special statements line ($ if, $ else, $ for, $ while, $ endif, $ endfor, $ endwhile)
 		4 = Classic line (assignation of value to a variable)
 	*/
-	int check_file_line_comment(char* line);
+	int check_file_line_comment(char** line);
 
 #endif

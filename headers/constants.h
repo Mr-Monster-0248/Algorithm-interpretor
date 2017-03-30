@@ -22,7 +22,7 @@
 		#endif
 	#endif
 
-	#define LINE_SIZE 150 //The number of characters which will be read on a line
+	#define LINE_SIZE 300 //The number of characters which will be read on a line
 
 	#define HELPFILE "help.txt" //Path to help.txt
 

@@ -10,9 +10,11 @@
 
 int main(int argc, char** argv)
 {
-	int mode = 0, *types = NULL, i = 0, position = 0, exitProgram = 0, getLineError = 0;
+	int mode = 0, *types = NULL, i = 0, position = 0, exitProgram = 0, getLineError = 0, lineNumber = 0;
 	char *line = NULL, **elements = NULL;
 	Variable *var_table = malloc(10 * sizeof(Variable));
+	FILE* algFile = NULL;
+
 	check_alloc(var_table);
 
 	system(CLEAR);
@@ -46,12 +48,6 @@ int main(int argc, char** argv)
 						continue;
 					if (exitProgram == 2)
 						break;
-					if (exitProgram == 3)
-					{
-						free(line);
-						free(var_table);
-						continue;
-					}
 				
 
 					//Getting the elements and their types in the line, continue processing only if no syntax error
@@ -75,13 +71,13 @@ int main(int argc, char** argv)
 
 						continue;
 					}
-
 					
 					for(i = 1; i < types[0]; i++)
 						if(types[i] == 0)
 							printf("Declaration error on element %d\n\n", i);
 
 					
+					display_elements(elements, types);
 
 
 					if (types[0] >= 3 && is_operation(types, elements) != 0 && is_operation(types, elements) != 3)
@@ -100,7 +96,7 @@ int main(int argc, char** argv)
 
 					if (types[0] >= 3 && is_comparison(types) == 1)
 					{
-						printf("it's a comparison\n");
+						printf("It's a comparison\n");
 					}
 
 
@@ -109,7 +105,6 @@ int main(int argc, char** argv)
 					free(types);
 
 					printf("\n");
-
 				} while (TRUE);
 
 				free(line);
@@ -118,11 +113,90 @@ int main(int argc, char** argv)
 
 
 		case 2: //C converter
+			printf("The C converter is not available yet, it is a feature that will be soon implemented\n");
 			break;
 
 
 
 		case 3: //Program interpreter
+			printf("Welcome to the algorithmic interpreter:\nHint: if your program runs into a problem, hit Ctrl + C to stop the interpreter\n\"\"\"\n");
+
+			//Opening the file
+			algFile = fopen(argv[1], "r");
+			check_alloc(algFile);
+
+			do
+			{
+				lineNumber++;
+				getLineError = 0;
+
+				//Reading the line in the file
+				line = read_file_line(algFile);
+
+				switch(check_file_line_comment(&line))
+				{
+					//Line not allocated
+					case -1:
+						fclose(algFile);
+						return EXIT_FAILURE;
+						break; //To avoid compilation warnings
+
+					case 0:
+						continue;
+						break; //To avoid compilation warnings
+
+					case 1:
+						continue;
+						break; //To avoid compilation warnings
+
+					//Need to compute something
+					case 4:
+						//Getting the elements and their types in the line, continue processing only if no syntax error
+						if ((getLineError = get_line_elements(line, &elements, &types, &position)) == 0)
+						{
+							disp_error_line(line, position, lineNumber);
+
+							free_2D_char_array(&elements, types[0]);
+
+							free(types);
+
+
+							continue;
+						} else if (getLineError == 2)
+						{
+							printf("ERROR: STRUCTURAL ERROR\n\n");
+
+							free_2D_char_array(&elements, types[0]);
+
+							free(types);
+
+							continue;
+						}
+
+						for(i = 1; i < types[0]; i++)
+							if(types[i] == 0)
+								printf("Declaration error on element %d\n\n", i);
+
+						if (types[0] >= 3 && is_operation(types, elements) != 0 && is_operation(types, elements) != 3)
+							compute_numeric_line(&elements, &types);
+
+						if (types[0] >= 3 && is_operation(types, elements) == 3)
+							compute_strings_operations(&elements, &types);
+
+						if (types[0] >= 3 && is_comparison(types) == 1)
+							printf("It's a comparison\n");
+
+						break;
+
+
+					default:
+						printf("Type of line not handled yet!\n");
+						break;
+				}
+
+			} while (TRUE);
+
+			printf("\n\"\"\"\n");
 			break;
 
 		default: //Error
