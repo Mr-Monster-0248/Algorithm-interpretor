@@ -50,16 +50,10 @@
 	void store_variable(Variable** var_table, char* varName, char* varValue, const int varType);
 
 	//Function that performs the boolean comparison between two integers/float
-	int eval_bool_int(char* lValue, char* rValue, char* comparator);
+	int eval_bool_int(const char* lValue, const char* rValue, const char* comparator);
 
-	/*
-
-		//Function that performs the boolean comparison between two strings
-		static int eval_bool_string(char* lString, char* rString, const int comparator);
-
-		//Function that performs the boolean comparison between two booleans
-		static int eval_bool(const int lBool, const int rBool, const int comparator);
-	*/
+	//Function that performs the boolean comparison between two strings
+	int eval_bool_string(const char* lString, const char* rString, const char* comparator);
 
 	//Function that check if the line is a comparison
 	int is_comparison(int* types); //return 1 if yes, 0 for no
@@ -70,7 +64,12 @@
 		0 = FALSE
 		1 = TRUE
 	*/
-	int eval_bool_expr(char* lValue, const int lValueType, char* rValue, const int rValueType, const int comparatorID);
+
+	//Function that compute boolean comparison
+	void compute__int_float_comparison(char*** elements, int** types);
+
+	//Function that compute boolean comparison
+	void compute__string_comparison(char*** elements, int** types);
 
 	//Function witch give a value of priority for each operator
 	int check_operator_priority(char* operator);
