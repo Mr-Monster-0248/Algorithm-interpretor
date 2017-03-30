@@ -53,16 +53,11 @@ int check_if_usable(const char* varName, Variable *var_table, int* sub)
 
 	//Checking if the given name is already attributed to a variable
 	for (i = 0; strcmp(var_table[i].name, NAME__END_VARTABLE) != 0; i++)
-	{
-		printf("Test de la boucle for\n");
-
 		if (strcmp(varName, var_table[i].name) == 0)
 		{
-			printf("Nom trouve\n");
 			*sub = i;
 			return 1;
 		}
-	}
 
 	return 2;
 }
@@ -74,13 +69,22 @@ void check_variable_type(char** elements, int** types, int i)
 	if(strcmp(elements[i - 2], ":") == 0 && is_typeword(elements[i - 1]) == 0)
 	{
 		if(strcmp(elements[i - 1], "integer") == 0)
+		{
 			(*types)[i - 3] = 5;
+			(*types)[i - 1] = 42;
+		}
 
 		else if(strcmp(elements[i - 1], "float") == 0)
+		{
 			(*types)[i - 3] = 6;
+			(*types)[i - 1] = 42;
+		}
 		
 		else if(strcmp(elements[i - 1], "string") == 0)
+		{
 			(*types)[i - 3] = 7;
+			(*types)[i - 1] = 42;
+		}
 	}
 	else
 	{
@@ -420,7 +424,12 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 	*position = i;
 
-	if((*types)[j-1] == 8 && j > 2 && strcmp((*elements)[j-2], ":") == 0)
+	//Checking for wrong assignation
+	if ( (*types)[1] != 8 && strcmp((*elements)[2], ":") == 0)
+		return 3;
+
+	//Checking if the line is a variable declaration
+	if((*types)[1] == 8 && j == 4 && strcmp((*elements)[2], ":") == 0)
 		check_variable_type(*elements, types, j);
 
 	//Checking if the structure of the line is correct
@@ -526,57 +535,44 @@ int check_file_line_comment(char** line)
 	2 = ERROR: uninitialized variable
 	3 = no error, continue to perform
 */
-int replace_names_by_values(char*** elements, int** types, Variable* var_table)
+int replace_name_by_value(char*** elements, int** types, const int sub, Variable* var_table)
 {
-	int i = 1, sub = 0;
+	int i = 0;
 
-	//Eploring the different elements
-	for (i = 1; i <= (*types)[0]; i++)
-	{
-		sub = 0;
+	while (strcmp(var_table[i].name, NAME__END_VARTABLE) != 0 && strcmp(var_table[i].name, (*elements)[sub]) != 0)
+		i++;
 
-		if ( (*types)[i] == 8 ) //If a variable element was found
-		{
+	//If reached the end of the var_table without finding the asked variable name
+	if (strcmp(var_table[i].name, NAME__END_VARTABLE) == 0)
+		return 0;
 
-			switch ( check_if_usable((*elements)[i], var_table, &sub) )
-			{
-				//Forbidden name
-				case 0:
-					fprintf(stderr, "ERROR: forbidden variable name\n\n");
-					return 1;
-					break; //To avoid compilation warnings
+	if (strcmp(var_table[i].value, UNINITIALIZED_VAR_VALUE) == 0)
+		return 2;
 
-				case 1:
-					//Checking variable initialization
-					if ( strcmp(var_table[sub].value, UNINITIALIZED_VAR_VALUE) == 0 )
-					{
+	free ((*elements)[sub]);
 
-						fprintf(stderr, "ERROR: unitialized variable %s\n\n", (*elements)[i]);
-						return 2;
-					}
+	(*elements)[sub] = (char*) malloc( (strlen(var_table[i].value) + 1) * sizeof(char));
+	check_alloc((*elements)[sub]);
 
-					free ( (*elements)[i] );
+	strcpy((*elements)[sub], var_table[i].value);
 
-					(*elements)[i] = (char*) malloc( (strlen(var_table[sub].value) + 1) * sizeof(char) );
-					check_alloc((*elements)[i]);
-
-					strcpy((*elements)[i], var_table[sub].value);
-
-					(*types)[i] = var_table[sub].type;
-					break;
-
-				case 2:
-					fprintf(stderr, "ERROR: cannot found variable %s\n\n", (*elements)[i]);
-					return 0; 
-					break; //To avoid compilation warnings
-
-				default:
-					fprintf(stderr, "ERROR: the program is not supposed to reacj this point, please turn it on again\n\n");
-					exit(EXIT_FAILURE);
-					break;
-			}
-		}
-	}
+	(*types)[sub] = var_table[i].type;
 
 	return 3;
+}
+
+//Function that replaces all variables in elements by their value except the assigned one in case of an assignation
+void get_var_values(char*** elements, int** types, Variable* var_table)
+{
+	int i = 1;
+
+	if ((*types)[0] >= 3 && strcmp((*elements)[2], ":"))
+		i = 3;
+
+
+	for (; i <= (*types)[0]; i++)
+	{
+		if ((*types)[i] == 8)
+			replace_name_by_value(elements, types, i, var_table);
+	}
 }

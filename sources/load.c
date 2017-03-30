@@ -231,11 +231,11 @@ void free__var_table(Variable** var_table)
 {
 	int i = 0;
 
-	do
+	while (strcmp((*var_table)[i].name, NAME__END_VARTABLE) != 0)
 	{
 	 	free((*var_table)[i].name);
 	 	free((*var_table)[i++].value);
-	} while (strcmp((*var_table)[i].name, NAME__END_VARTABLE) != 0);
+	}
 
 	free((*var_table)[i].name);
 	free((*var_table)[i].value);

@@ -31,4 +31,7 @@
 	//Function that return the line read in the given file
 	char* read_file_line(FILE* file);
 
+	//Function to free all memory allocated to all elements of all variables
+	void free__var_table(Variable** var_table);
+
 #endif

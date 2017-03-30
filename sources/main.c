@@ -80,7 +80,7 @@ int main(int argc, char** argv)
 						continue;
 					} else if (getLineError == 3)
 					{
-						printf("ERROR: CANNOT ASSIGN VALUE TO A NON VARIABLE OBJECT\n\n");
+						printf("ERROR: CANNOT ASSIGN VALUE TO SOMETHING NOT A VARIABLE\n\n");
 
 						free_2D_char_array(&elements, types[0]);
 
@@ -92,6 +92,11 @@ int main(int argc, char** argv)
 					for( i = 1; i < types[0]; i++)
 						if(types[i] == 0)
 							printf("Declaration error on element %d\n\n", i);
+
+
+					get_var_values(&elements, &types, var_table);
+
+					display_elements(elements, types);
 
 					
 					if (types[0] >= 3)
@@ -128,8 +133,6 @@ int main(int argc, char** argv)
 								printf("ERROR: CANNOT COMPARE DIFFERENT TYPES\n");
 						}
 					} else if (types[0] == 1){
-
-						replace_names_by_values(&elements, &types, var_table);
 
 						printf("%s\n", elements[1]);
 					}
