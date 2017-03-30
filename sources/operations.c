@@ -140,27 +140,32 @@ int int_modulo(const char* lValue, const char* rValue)
 //Function that check if the line is an operation 
 int is_operation(int* types, char** elements) //Return 1 if it's an int operation 2 if it's a float operation 3 if it is a string operation
 {
-	int i, isAFloat = FALSE, isAInt = TRUE; 
+	int i, testInt = 0, testString = 0, testFloat = 0;
 
-	//Exploring the types 2 by 2 (so that we skip the operators)
-	for(i = 1; i <= types[0]; i += 2)
+	for(i = 1; i <= types[0]; i++)
 	{
-		if (types[i] == 2)
+		if(i % 2 == 1)
 		{
-			isAFloat = TRUE;
-			continue;
+			if(types[i] == 1)
+				testInt++;
+			if(types[i] == 2)
+				testFloat++;
+			if(types[i] == 3)
+				testString++;
 		}
-		if (types[i] == 3 && check_string_operation(elements, types)) //If string
-			return 3;
+		else
+			if(types[i] != 4)
+				return 0;
 	}
-		
-	if (isAFloat) //If float
-		return 2;
 
-	if (isAInt) //If integer
+	if(testString > 0 && testInt == 0 && testFloat == 0)
+		return 3;
+	else if(testInt > 0 && testString == 0 && testFloat == 0)
 		return 1;
-
-	return 0; //ERROR
+	else if(testFloat > 0 && testString == 0)
+		return 2;
+	else
+		return 0;
 }
 
 
