@@ -132,77 +132,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 	while (line[i] != '\0')
 	{
-
-		//If an operator was found (works also for the assignation operator ':')
-		if ( line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%' || line[i] == ':' )
-		{
-			if (i < 2)
-				return 2;
-
-			if (line[i + 1] == '\0' || line[i - 1] != ' ')
-				return 0;
-			if (line[i + 1] != ' ')
-			{
-				*position = i;
-				return 0;
-			}
-			
-			//If trying to assign value to undeclared variable
-			if (line[i] == ':' && (*types)[(*types)[0]] != 8)
-				return 3;
-
-
-
-			(*types)[0]++; //Incrementing the number of elements
-
-			//Reallocating memory for the first dimension
-			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
-			check_alloc(*elements);
-
-			(*elements)[j] = (char*) malloc(2 * sizeof(char));
-			check_alloc((*elements)[j]);
-
-			*types = (int*) realloc(*types, (j+1) * sizeof(int));
-			check_alloc(*types);
-
-			//Storing the character in a string
-			(*elements)[j][0] = line[i];
-			(*elements)[j][1] = '\0';
-
-			//Setting type of element to 5 (operator)
-			(*types)[j++] = 4;
-		}
-
-		//If a comparator was found OR if the assignation operator was found
-		if ( ( ( line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
-		{
-
-			if (i < 2)
-			{
-				*position = i;
-				return 0;
-			}
-
-			(*types)[0]++; //Incrementing the number of elements
-
-			//Reallocating memory for the first dimension
-			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
-			check_alloc(*elements);
-
-			(*elements)[j] = (char*) malloc(2 * sizeof(char));
-			check_alloc((*elements)[j]);
-
-			*types = (int*) realloc(*types, (j+1) * sizeof(int));
-			check_alloc(*types);
-
-			//Storing the character in a string
-			(*elements)[j][0] = line[i];
-			(*elements)[j][1] = '\0';
-
-			//Setting type of element to 9 (comparator)
-			(*types)[j++] = 9;
-		}
-
 		//If a "word" beginning by a number (1, 2, 3...) or by - was found
 		if ( (line[i] >= 48 && line[i] <= 57) || (line[i] == '-' && line[i + 1] != '\0' && line[i + 1] >= 48 && line[i + 1] <= 57) )
 		{
@@ -289,6 +218,73 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 			j++;
 		}
+
+
+		//If an operator was found (works also for the assignation operator ':')
+		if ( line[i] == '+' || line[i] == '-' || line[i] == '*' || line[i] == '/' || line[i] == '%' || line[i] == ':' )
+		{
+			if (i < 2)
+				return 2;
+
+			if (line[i + 1] == '\0' || line[i - 1] != ' ')
+				return 0;
+			if (line[i + 1] != ' ')
+			{
+				*position = i;
+				return 0;
+			}
+			
+			(*types)[0]++; //Incrementing the number of elements
+
+			//Reallocating memory for the first dimension
+			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
+			check_alloc(*elements);
+
+			(*elements)[j] = (char*) malloc(2 * sizeof(char));
+			check_alloc((*elements)[j]);
+
+			*types = (int*) realloc(*types, (j+1) * sizeof(int));
+			check_alloc(*types);
+
+			//Storing the character in a string
+			(*elements)[j][0] = line[i];
+			(*elements)[j][1] = '\0';
+
+			//Setting type of element to 5 (operator)
+			(*types)[j++] = 4;
+		}
+
+		//If a comparator was found OR if the assignation operator was found
+		if ( ( ( line[i] == '=' || line[i] == '<' || line[i] == '>') && line[i+1] == ' ' && line[i+2] != '\0') || ( ( (line[i] == '!' && line[i+1] == '=') || (line[i] == '<' && line[i+1] == '=') ) && line[i+2] == ' ' && line[i+3] != '\0'))
+		{
+
+			if (i < 2)
+			{
+				*position = i;
+				return 0;
+			}
+
+			(*types)[0]++; //Incrementing the number of elements
+
+			//Reallocating memory for the first dimension
+			*elements = (char**) realloc(*elements, (j+1) * sizeof(char*));
+			check_alloc(*elements);
+
+			(*elements)[j] = (char*) malloc(2 * sizeof(char));
+			check_alloc((*elements)[j]);
+
+			*types = (int*) realloc(*types, (j+1) * sizeof(int));
+			check_alloc(*types);
+
+			//Storing the character in a string
+			(*elements)[j][0] = line[i];
+			(*elements)[j][1] = '\0';
+
+			//Setting type of element to 9 (comparator)
+			(*types)[j++] = 9;
+		}
+
+		
 
 		//If a "word" beginning by a letter (a,b,c,...,A,B,C,...) was found
 		if ( ( (line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122) ) && line[i] != '\0')

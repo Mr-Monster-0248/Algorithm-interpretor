@@ -296,9 +296,7 @@ int eval_bool_int(const char* lValue, const char* rValue, const char* comparator
 //Function that performs the boolean comparison between two strings
 int eval_bool_string(const char* lString, const char* rString, const char* comparator)
 {
-	printf("%s test with \"%s\" and \"%s\"\n", comparator, lString, rString);
-
-	if(strcmp(comparator, "="))
+	if(strcmp(comparator, "=") == 0)
 	{
 		if(strcmp(lString, rString) == 0)
 			return TRUE;
