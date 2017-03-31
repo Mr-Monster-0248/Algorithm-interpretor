@@ -34,6 +34,8 @@ int main(int argc, char** argv)
 	{
 		case 1: //Direct line interpreter
 				printf("Welcome to the algorithmic interpreter\nType \"exit\" to exit the interpreter or \"help\" to see the manual\n\n");
+
+				printf("     _                         _\n    |_|                       |_|\n    | |         /^^^\\         | |\n   _| |_      (| \"o\" |)      _| |_\n _| | | | _    (_---_)    _ | | | |_\n| | | | |' |    _| |_    | `| | | | |\n|          |   /     \\   |          |\n \\        /  / /(. .)\\ \\  \\        /\n   \\    /  / /  | . |  \\ \\  \\    /\n     \\  \\/ /    ||Y||    \\ \\/  /\n      \\__/      || ||      \\__/\n                () ()\n                || ||\n               ooO Ooo\n\n");
 				
 				line = (char*) malloc(LINE_SIZE * sizeof(char));
 				check_alloc(line);
@@ -95,6 +97,8 @@ int main(int argc, char** argv)
 
 
 					get_var_values(&elements, &types, var_table);
+
+					display_elements(elements, types);
 
 
 					
