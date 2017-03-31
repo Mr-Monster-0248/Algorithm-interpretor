@@ -425,11 +425,11 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	*position = i;
 
 	//Checking for wrong assignation
-	if ( (*types)[1] != 8 && strcmp((*elements)[2], ":") == 0)
+	if ( (*types)[0] >= 3 && (*types)[1] != 8 && strcmp((*elements)[2], ":") == 0)
 		return 3;
 
 	//Checking if the line is a variable declaration
-	if((*types)[1] == 8 && j == 4 && strcmp((*elements)[2], ":") == 0)
+	if (*(types)[0] == 3 && (*types)[1] == 8 && j == 4 && strcmp((*elements)[2], ":") == 0)
 		check_variable_type(*elements, types, j);
 
 	//Checking if the structure of the line is correct
