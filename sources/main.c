@@ -11,7 +11,7 @@
 int main(int argc, char** argv)
 {
 	int mode = 0, *types = NULL, i = 0, position = 0, exitProgram = 0, getLineError = 0, lineNumber = 0;
-	char *line = NULL, **elements = NULL;
+	char *line = NULL, **elements = NULL, *singleParenthese = NULL;
 	Variable* var_table = malloc(sizeof(Variable));
 	FILE* algFile = NULL;
 
@@ -97,9 +97,64 @@ int main(int argc, char** argv)
 					get_var_values(&elements, &types, var_table);
 
 					
-					if (types[0] >= 3)
+					if (types[0] >= 3 || (types[0] == 1 && types[1] == 10))
 					{
 						check_variable_declaration(elements, types, &var_table);
+
+						//If only one parenthese element was entered, repeating the operation on the parenthese
+						if (types[0] == 1)
+						{
+							singleParenthese = (char*) malloc( (strlen(elements[1]) + 1) * sizeof(char));
+							check_alloc(singleParenthese);
+
+							strcpy(singleParenthese, elements[1]);
+
+							free_2D_char_array(&elements, types[0]);
+
+							free(types);
+
+							printf("read: \"%s\"\n", singleParenthese);
+
+							//Getting the elements and their types in the line, continue processing only if no syntax error
+							if ((getLineError = get_line_elements(singleParenthese, &elements, &types, &position)) == 0)
+							{
+								disp_error(position);
+
+								free_2D_char_array(&elements, types[0]);
+
+								free(types);
+
+
+								continue;
+							} else if (getLineError == 2)
+							{
+								printf("ERROR: STRUCTURAL ERROR\n\n");
+
+								free_2D_char_array(&elements, types[0]);
+
+								free(types);
+
+								continue;
+							} else if (getLineError == 3)
+							{
+								printf("ERROR: CANNOT ASSIGN VALUE TO SOMETHING NOT A VARIABLE\n\n");
+
+								free_2D_char_array(&elements, types[0]);
+
+								free(types);
+
+								continue;
+							}
+
+							for( i = 1; i < types[0]; i++)
+								if(types[i] == 0)
+									printf("Declaration error on element %d\n\n", i);
+
+
+							get_var_values(&elements, &types, var_table);
+
+							free(singleParenthese);
+						}
 
 						switch(is_operation(types, elements))
 						{
@@ -130,9 +185,10 @@ int main(int argc, char** argv)
 							case -1:
 								printf("ERROR: CANNOT COMPARE DIFFERENT TYPES\n");
 						}
-					} else if (types[0] == 1){
+					} else if (types[0] == 1 && types[0] != 10){
 
 						printf("%s\n", elements[1]);
+
 					}
 					
 					

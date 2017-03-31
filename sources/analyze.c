@@ -131,7 +131,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	*elements = (char**) malloc(sizeof(char*));
 	check_alloc(*elements);
 
-
 	//Initialising the number of elements to 0
 	(*types)[0] = 0;
 
