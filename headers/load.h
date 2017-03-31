@@ -34,4 +34,7 @@
 	//Function to free all memory allocated to all elements of all variables
 	void free__var_table(Variable** var_table);
 
+	//Function that displays all the variables stored
+	void disp_variables(Variable* var_table);
+
 #endif

@@ -235,7 +235,6 @@ int is_comparison(int* types) //return 1 if it's a numerical comparison and 2 fo
 }
 
 
-
 //Function that performs the boolean comparison between two integers/float
 int eval_bool_int(const char* lValue, const char* rValue, const char* comparator)
 {
@@ -294,8 +293,13 @@ int eval_bool_int(const char* lValue, const char* rValue, const char* comparator
 }
 
 
-
 //Function that performs the boolean comparison between two strings
+/*  
+	RETURN VALUES:
+	BOOLEAN_ERROR_CODE = ERROR
+	FALSE = 0
+	TRUE = 1
+*/
 int eval_bool_string(const char* lString, const char* rString, const char* comparator)
 {
 	if(strcmp(comparator, "=") == 0)
@@ -338,14 +342,14 @@ int eval_bool_string(const char* lString, const char* rString, const char* compa
 		return BOOLEAN_ERROR_CODE;
 }
 
+
+//Function that compute boolean comparison
 /*  
 	RETURN VALUES:
 	BOOLEAN_ERROR_CODE = ERROR
 	FALSE = 0
 	TRUE = 1
 */
-
-//Function that compute boolean comparison
 void compute__int_float_comparison(char*** elements, int** types)
 {
 	while((*types)[0] >= 3)
@@ -360,6 +364,7 @@ void compute__int_float_comparison(char*** elements, int** types)
 		shift_elements(elements, types, 2);
 	}
 }
+
 
 //Function that compute boolean comparison
 void compute__string_comparison(char*** elements, int** types)
@@ -376,6 +381,7 @@ void compute__string_comparison(char*** elements, int** types)
 		shift_elements(elements, types, 2);
 	}
 }
+
 
 //Function witch give a value of priority for each operator
 int check_operator_priority(char* operator)
@@ -640,6 +646,7 @@ int compute_numeric_line(char*** elements, int** types, Variable** var_table)
 	}
 }
 
+
 //Check if the operation of strings only contain "+"
 int check_string_operation(char** elements, int* types) //return 0 if the operation only contain + else it return 1
 {
@@ -652,6 +659,7 @@ int check_string_operation(char** elements, int* types) //return 0 if the operat
 
 	return 0;
 }
+
 
 //Function that computes operations on strings
 void compute_strings_operations(char*** elements, int** types)

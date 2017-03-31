@@ -242,3 +242,15 @@ void free__var_table(Variable** var_table)
 
 	free(*var_table);
 }
+
+
+//Function that displays all the variables stored
+void disp_variables(Variable* var_table)
+{
+	int i = 0;
+
+	for (i = 0; strcmp(var_table[i].name, NAME__END_VARTABLE); i++)
+		printf("Variable %d\n\tName: %s\n\tType: %d\n\tValue: %s\n\n", i + 1, var_table[i].name, var_table[i].type, var_table[i].value);
+
+	printf("\n");
+}

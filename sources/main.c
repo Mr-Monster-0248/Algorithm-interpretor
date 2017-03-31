@@ -113,8 +113,6 @@ int main(int argc, char** argv)
 
 							free(types);
 
-							printf("read: \"%s\"\n", singleParenthese);
-
 							//Getting the elements and their types in the line, continue processing only if no syntax error
 							if ((getLineError = get_line_elements(singleParenthese, &elements, &types, &position)) == 0)
 							{
@@ -187,12 +185,9 @@ int main(int argc, char** argv)
 						}
 					} else if (types[0] == 1 && types[0] != 10){
 
+						disp_variables(var_table);
 						printf("%s\n", elements[1]);
-
 					}
-					
-					
-
 
 					//Freeing memory previously allocated before exiting or starting a new lap
 					free_2D_char_array(&elements, types[0]);
