@@ -390,7 +390,7 @@ int check_operator_priority(char* operator)
 		return 2;
 	else if (strcmp(operator, "-") == 0)
 		return 2;
-	else if (strcmp(operator, "<-") == 0)
+	else if (strcmp(operator, ":") == 0)
 		return 1;
 	else
 		return 0;
@@ -473,6 +473,7 @@ void compute__int_operation(char*** elements, int** types, Variable** var_table)
 	while ( (i = highest_priority_operator(*elements, *types)) && check_operator_priority((*elements)[i]) == 1)
 	{
 		assign_value_to_variable((*elements)[1], (*elements)[3], var_table);
+
 
 		shift_elements(elements, types, 2);
 		shift_elements(elements, types, 2);

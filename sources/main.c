@@ -96,7 +96,6 @@ int main(int argc, char** argv)
 
 					get_var_values(&elements, &types, var_table);
 
-					display_elements(elements, types);
 
 					
 					if (types[0] >= 3)

@@ -66,30 +66,33 @@ int check_if_usable(const char* varName, Variable *var_table, int* sub)
 //Give a type to a variable when trying to declare a new variable
 void check_variable_type(char** elements, int** types, int i)
 {
-	if(strcmp(elements[i - 2], ":") == 0 && is_typeword(elements[i - 1]) == 0)
+	if((*types)[i - 1] == 8)
 	{
-		if(strcmp(elements[i - 1], "integer") == 0)
+		if(strcmp(elements[i - 2], ":") == 0 && is_typeword(elements[i - 1]) == 0)
 		{
-			(*types)[i - 3] = 5;
-			(*types)[i - 1] = 42;
-		}
+			if(strcmp(elements[i - 1], "integer") == 0)
+			{
+				(*types)[i - 3] = 5;
+				(*types)[i - 1] = 42;
+			}
 
-		else if(strcmp(elements[i - 1], "float") == 0)
-		{
-			(*types)[i - 3] = 6;
-			(*types)[i - 1] = 42;
+			else if(strcmp(elements[i - 1], "float") == 0)
+			{
+				(*types)[i - 3] = 6;
+				(*types)[i - 1] = 42;
+			}
+			
+			else if(strcmp(elements[i - 1], "string") == 0)
+			{
+				(*types)[i - 3] = 7;
+				(*types)[i - 1] = 42;
+			}
 		}
-		
-		else if(strcmp(elements[i - 1], "string") == 0)
+		else
 		{
-			(*types)[i - 3] = 7;
-			(*types)[i - 1] = 42;
+			(*types)[i - 3] = 0;
+			(*types)[i - 1] = 0;
 		}
-	}
-	else
-	{
-		(*types)[i - 3] = 0;
-		(*types)[i - 1] = 0;
 	}
 }
 
@@ -442,8 +445,6 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			if ((*types)[i] == (*types)[i+1])
 				return 2;
 	}
-
-	display_elements(*elements, *types);
 
 	return 1;
 }
