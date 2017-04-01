@@ -27,7 +27,7 @@ int is_typeword(const char* instruction) //Return 1 if allowed
 int is_forbidden(const char* instruction) //Return 1 if allowed
 {
     int i = 0;
-    char forbiddenWords[8][20] = {"true", "false", "exit", "help", "cls", "clear", "noam", "Noam"}; //array of forbidden words
+    char forbiddenWords[10][20] = {"true", "false", "exit", "help", "cls", "clear", "noam", "Noam", "bite", "Bite"}; //array of forbidden words
     
     for(i = 0; i < 4; i++)
         if(strcmp(forbiddenWords[i], instruction) == 0) //check if the instruction is in the forbbiden words array
