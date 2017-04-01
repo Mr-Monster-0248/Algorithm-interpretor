@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	{
 		case 1: //Direct line interpreter
 				printf("Welcome to the algorithmic interpreter\nType \"exit\" to exit the interpreter or \"help\" to see the manual\n\n");
-				
+
 				line = (char*) malloc(LINE_SIZE * sizeof(char));
 				check_alloc(line);
 
@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 				{
 					getLineError = 0;
 					exitProgram = 0;
-					
+
 					printf(">>> ");
 
 					fflush(stdin);
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 						continue;
 					if (exitProgram == 2)
 						break;
-				
+
 
 					//Getting the elements and their types in the line, continue processing only if no syntax error
 					if ((getLineError = get_line_elements(line, &elements, &types, &position)) == 0)
@@ -103,7 +103,7 @@ int main(int argc, char** argv)
 						continue;
 					}
 
-					
+
 					if (types[0] >= 3 || (types[0] == 1 && types[1] == 10))
 					{
 						check_variable_declaration(elements, types, &var_table);
@@ -184,7 +184,7 @@ int main(int argc, char** argv)
 								printf("%s\n", elements[1]);
 								break;
 						}
-						
+
 						switch(is_comparison(types))
 						{
 							case 1:
@@ -383,7 +383,7 @@ int main(int argc, char** argv)
 									printf("%s\n", elements[1]);
 									break;
 							}
-							
+
 							switch(is_comparison(types))
 							{
 								case 1:
@@ -424,6 +424,6 @@ int main(int argc, char** argv)
 	}
 
 	free__var_table(&var_table);
-	
+
 	return EXIT_SUCCESS;
 }
