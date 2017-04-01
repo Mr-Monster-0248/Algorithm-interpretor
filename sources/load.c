@@ -189,12 +189,12 @@ void shift_elements(char*** elements, int** types, int subscript)
 //Function that return the line read in the given file
 char* read_file_line(FILE* file)
 {
-	char c[2], *line = (char*) malloc(sizeof(char));
+	char c, *line = (char*) malloc(sizeof(char));
 	int i = 1;
 
 	check_alloc(line);
 
-	c[1] = '\0';
+	c = '\0';
 
 	//While we do not reach the end of the line or of the file, reading a single character at the time
 	do
@@ -204,20 +204,20 @@ char* read_file_line(FILE* file)
 		check_alloc(line);
 
 		//Reading a single character at the time from the file
-		c[0] = fgetc(file);
+		c = fgetc(file);
 
 		//If the reached the end of the line or the end of the file
-		if (feof(file) || c[0] == '\n')
+		if (feof(file) || c == '\n')
 		{
-			c[0] = '\0';
+			c = '\0';
 
-			strcat(line, c);
+			line[i - 2] = c;
 
 			return line;
 		}
 
-		//Addind the read character to the line to return
-		strcat(line, c);
+
+		line[i - 2] = c;
 
 	} while (1);
 

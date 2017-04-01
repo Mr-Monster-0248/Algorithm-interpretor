@@ -210,7 +210,6 @@ int main(int argc, char** argv)
 				} while (TRUE);
 
 				free(line);
-
 			break;
 
 
@@ -235,6 +234,12 @@ int main(int argc, char** argv)
 
 				//Reading the line in the file
 				line = read_file_line(algFile);
+
+				if (feof(algFile))
+				{
+					fclose(algFile);
+					break;
+				}
 
 				switch(check_file_line_comment(&line))
 				{
@@ -274,22 +279,131 @@ int main(int argc, char** argv)
 							free(types);
 
 							continue;
+						} else if (getLineError == 3)
+						{
+							printf("ERROR: CANNOT ASSIGN VALUE TO SOMETHING NOT A VARIABLE\n\n");
+
+							free_2D_char_array(&elements, types[0]);
+
+							free(types);
+
+							continue;
 						}
 
 						for(i = 1; i < types[0]; i++)
 							if(types[i] == 0)
 								printf("Declaration error on element %d\n\n", i);
 
-						if (types[0] >= 3 && is_operation(types, elements) != 0 && is_operation(types, elements) != 3)
-							compute_numeric_line(&elements, &types, &var_table);
+							//Checking for the variables in the line, and replacing their names by their values
+						if(!get_var_values(&elements, &types, var_table))
+						{
+							free_2D_char_array(&elements, types[0]);
+							free(types);
 
-						if (types[0] >= 3 && is_operation(types, elements) == 3)
-							compute_strings_operations(&elements, &types);
+							continue;
+						}
 
-						if (types[0] >= 3 && is_comparison(types) == 1)
-							printf("It's a comparison\n");
+						if (types[0] >= 3 || (types[0] == 1 && types[1] == 10))
+						{
+							check_variable_declaration(elements, types, &var_table);
 
-						break;
+							//If only one parenthese element was entered, repeating the operation on the parenthese
+							if (types[0] == 1)
+							{
+								singleParenthese = (char*) malloc( (strlen(elements[1]) + 1) * sizeof(char));
+								check_alloc(singleParenthese);
+
+								strcpy(singleParenthese, elements[1]);
+
+								free_2D_char_array(&elements, types[0]);
+
+								free(types);
+
+								//Getting the elements and their types in the line, continue processing only if no syntax error
+								if ((getLineError = get_line_elements(singleParenthese, &elements, &types, &position)) == 0)
+								{
+									disp_error(position);
+
+									free_2D_char_array(&elements, types[0]);
+
+									free(types);
+
+
+									continue;
+								} else if (getLineError == 2)
+								{
+									printf("ERROR: STRUCTURAL ERROR\n\n");
+
+									free_2D_char_array(&elements, types[0]);
+
+									free(types);
+
+									continue;
+								} else if (getLineError == 3)
+								{
+									printf("ERROR: CANNOT ASSIGN VALUE TO SOMETHING NOT A VARIABLE\n\n");
+
+									free_2D_char_array(&elements, types[0]);
+
+									free(types);
+
+									continue;
+								}
+
+								for( i = 1; i < types[0]; i++)
+									if(types[i] == 0)
+										printf("Declaration error on element %d\n\n", i);
+
+
+								if(!get_var_values(&elements, &types, var_table))
+								{
+									free_2D_char_array(&elements, types[0]);
+									free(types);
+
+									free(singleParenthese);
+
+									continue;
+								}
+
+								free(singleParenthese);
+							}
+
+							switch(is_operation(types, elements))
+							{
+								case 1:
+									compute_numeric_line(&elements, &types, &var_table);
+									printf("%s\n", elements[1]);
+									break;
+								case 2:
+									compute_numeric_line(&elements, &types, &var_table);
+									printf("%s\n", elements[1]);
+									break;
+								case 3:
+									compute_strings_operations(&elements, &types);
+									printf("%s\n", elements[1]);
+									break;
+							}
+							
+							switch(is_comparison(types))
+							{
+								case 1:
+									compute__int_float_comparison(&elements, &types);
+									printf("%s\n", elements[1]);
+									break;
+								case 2:
+									compute__string_comparison(&elements, &types);
+									printf("%s\n", elements[1]);
+									break;
+								case -1:
+									printf("ERROR: CANNOT COMPARE DIFFERENT TYPES\n");
+							}
+						} else if (types[0] == 1 && types[1] != 10){
+							printf("%s\n", elements[1]);
+						}
+
+							printf("%s\n", elements[1]);
+
+							break;
 
 
 					default:

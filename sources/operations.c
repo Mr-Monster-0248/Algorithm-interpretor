@@ -50,14 +50,14 @@ float convertTo_float(const char* value)
 
 	return val;
 }
-/*
 
+/*
 //Function that converts a boolean string to its associated int value
 int bool_to_int(const char* value)
 {
 	if (strcmp(value, "true") == 0 || strcmp(value, "TRUE") == 0)
 		return TRUE;
-	
+
 	if (strcmp(value, "false") == 0 || strcmp(value, "FALSE") == 0)
 		return FALSE;
 
@@ -137,7 +137,7 @@ int int_modulo(const char* lValue, const char* rValue)
 }
 
 
-//Function that check if the line is an operation 
+//Function that check if the line is an operation
 int is_operation(int* types, char** elements) //Return 1 if it's an int operation 2 if it's a float operation 3 if it is a string operation, -1 for error
 {
 	int i, testInt = 0, testString = 0, testFloat = 0;
@@ -294,7 +294,7 @@ int eval_bool_int(const char* lValue, const char* rValue, const char* comparator
 
 
 //Function that performs the boolean comparison between two strings
-/*  
+/*
 	RETURN VALUES:
 	BOOLEAN_ERROR_CODE = ERROR
 	FALSE = 0
@@ -344,7 +344,7 @@ int eval_bool_string(const char* lString, const char* rString, const char* compa
 
 
 //Function that compute boolean comparison
-/*  
+/*
 	RETURN VALUES:
 	BOOLEAN_ERROR_CODE = ERROR
 	FALSE = 0
@@ -482,6 +482,8 @@ void compute__int_operation(char*** elements, int** types, Variable** var_table)
 
 		shift_elements(elements, types, 2);
 		shift_elements(elements, types, 2);
+
+		(*elements)[1][0] = '\0';
 	}
 }
 
@@ -552,6 +554,8 @@ void compute__float_operation(char*** elements, int** types, Variable** var_tabl
 
 		shift_elements(elements, types, 2);
 		shift_elements(elements, types, 2);
+
+		(*elements)[1][0] = '\0';
 	}
 }
 
@@ -583,7 +587,7 @@ int compute_numeric_line(char*** elements, int** types, Variable** var_table)
 				check_alloc((*elements)[0]);
 				sprintf((*elements)[0], "ERROR: SYNTAX ERROR, unknown position\n");
 
-				//Freeing temporary arrays			
+				//Freeing temporary arrays
 				free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
 				free(parenthesesTypes);
 				break;
@@ -598,7 +602,7 @@ int compute_numeric_line(char*** elements, int** types, Variable** var_table)
 
 				sprintf((*elements)[0], "ERROR: STRUCTURAL ERROR, unknow position\n");
 
-				//Freeing temporary arrays				
+				//Freeing temporary arrays
 				free_2D_char_array(&parenthesesElements, parenthesesTypes[0]);
 				free(parenthesesTypes);
 
@@ -686,7 +690,10 @@ int assign_value_to_variable(const char* varName, const char* valueToAssign, Var
 			break;
 
 		if (strcmp((*var_table)[i].name, NAME__END_VARTABLE) == 0)
+		{
+			printf("ERROR: cannot assign value to something not a variable\n");
 			return 0;
+		}
 
 		i++;
 	} while (TRUE);

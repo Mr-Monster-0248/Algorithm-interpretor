@@ -14,7 +14,7 @@ int is_typeword(const char* instruction) //Return 1 if allowed
 {
     int i = 0;
     char allowedType[4][20] = {"integer", "float", "string", "char"}; //array of forbidden words
-    
+
     for(i = 0; i < 4; i++)
         if(strcmp(allowedType[i], instruction) == 0) //check if the instruction is in the allowed type array
 			return 0;
@@ -28,7 +28,7 @@ int is_forbidden(const char* instruction) //Return 1 if allowed
 {
     int i = 0;
     char forbiddenWords[10][20] = {"true", "false", "exit", "help", "cls", "clear", "noam", "Noam", "bite", "Bite"}; //array of forbidden words
-    
+
     for(i = 0; i < 4; i++)
         if(strcmp(forbiddenWords[i], instruction) == 0) //check if the instruction is in the forbbiden words array
 			return 0;
@@ -81,7 +81,7 @@ void check_variable_type(char** elements, int** types, int i)
 				(*types)[i - 3] = 6;
 				(*types)[i - 1] = 42;
 			}
-			
+
 			else if(strcmp(elements[i - 1], "string") == 0)
 			{
 				(*types)[i - 3] = 7;
@@ -137,7 +137,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 	//Initializing the first element to "<<<" since the first subscript (0) of types contains the total number of elements
 	(*elements)[0] = (char*) malloc(4 * sizeof(char));
 	check_alloc((*elements)[0]);
-	
+
 	strcpy((*elements)[0], "<<<");
 
 
@@ -200,7 +200,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 
 				(*elements)[j][k - 2] =  '\0';
 				(*elements)[j][k - 3] = line[i++];
-				
+
 				while (line[i] != ' ' && line[i] >= 48 && line[i] <= 57 && line[i] != '\0')
 				{
 
@@ -244,7 +244,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 				*position = i;
 				return 0;
 			}
-			
+
 			(*types)[0]++; //Incrementing the number of elements
 
 			//Reallocating memory for the first dimension
@@ -295,7 +295,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 			(*types)[j++] = 9;
 		}
 
-		
+
 
 		//If a "word" beginning by a letter (a,b,c,...,A,B,C,...) was found
 		if ( ( (line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122) ) && line[i] != '\0')
@@ -322,7 +322,7 @@ int get_line_elements(const char* line, char*** elements, int** types, int* posi
 				(*elements)[j] = (char*) realloc((*elements)[j], k++ * sizeof(char));
 				check_alloc((*elements)[j]);
 
-				(*elements)[j][k - 2] =  '\0'; 
+				(*elements)[j][k - 2] =  '\0';
 				(*elements)[j][k - 3] = line[i++];
 			}
 
@@ -455,7 +455,7 @@ void display_elements(char** elements, int* types)
 	int i = 1;
 
 	for (i = 1; i <= types[0]; i++)
-	{	
+	{
 		printf("Element %2d\tType id: %d\t", i, types[i]);
 		printf("read: %s\n", elements[i]);
 	}
@@ -564,6 +564,7 @@ int replace_name_by_value(char*** elements, int** types, const int sub, Variable
 
 	return 3;
 }
+
 
 //Function that replaces all variables in elements by their value except the assigned one in case of an assignation
 int get_var_values(char*** elements, int** types, Variable* var_table) //Returns 0 if cannot replace a variable
