@@ -1,9 +1,6 @@
 #ifndef DEF_CONSTANTS
 	#define DEF_CONSTANTS
 
-	//Replace #define WINDOWS by #define LINUX if you are working with linux
-	#define LINUX
-
 
 	//Variable structure to store different data about each variable
 	typedef struct Variable
@@ -14,10 +11,10 @@
 	} Variable;
 	
 
-	#ifdef WINDOWS
+	#ifdef __WIN32__
 		#define CLEAR "cls"
 	#else
-		#ifdef LINUX
+		#ifdef __unix__
 			#define CLEAR "clear"
 		#endif
 	#endif

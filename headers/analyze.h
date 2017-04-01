@@ -72,6 +72,6 @@
 	int replace_name_by_value(char*** elements, int** types, const int sub, Variable* var_table);
 
 	//Function that replaces all variables in elements by their value except the assigned one in case of an assignation
-	void get_var_values(char*** elements, int** types, Variable* var_table);
+	int get_var_values(char*** elements, int** types, Variable* var_table);
 
 #endif
