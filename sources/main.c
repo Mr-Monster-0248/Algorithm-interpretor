@@ -184,8 +184,6 @@ int main(int argc, char** argv)
 								printf("ERROR: CANNOT COMPARE DIFFERENT TYPES\n");
 						}
 					} else if (types[0] == 1 && types[0] != 10){
-
-						disp_variables(var_table);
 						printf("%s\n", elements[1]);
 					}
 

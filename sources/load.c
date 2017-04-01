@@ -66,7 +66,7 @@ void check_alloc(void* pointer)
 {
 	if (pointer == NULL)
 	{
-		printf("A memory error occured, please launch the program again\n");
+		fprintf(stderr, "A memory error occured, please launch the program again\n");
 		exit(EXIT_FAILURE);
 	}
 }

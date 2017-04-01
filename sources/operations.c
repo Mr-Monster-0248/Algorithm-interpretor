@@ -480,7 +480,6 @@ void compute__int_operation(char*** elements, int** types, Variable** var_table)
 	{
 		assign_value_to_variable((*elements)[1], (*elements)[3], var_table);
 
-
 		shift_elements(elements, types, 2);
 		shift_elements(elements, types, 2);
 	}
@@ -683,10 +682,10 @@ int assign_value_to_variable(const char* varName, const char* valueToAssign, Var
 	do
 	{
 		//If we have found the subscript
-		if (strcmp((*var_table)[i].name, varName))
+		if (strcmp((*var_table)[i].name, varName) == 0)
 			break;
 
-		if (strcmp((*var_table)[i].name, NAME__END_VARTABLE))
+		if (strcmp((*var_table)[i].name, NAME__END_VARTABLE) == 0)
 			return 0;
 
 		i++;
