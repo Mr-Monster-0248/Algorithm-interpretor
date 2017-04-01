@@ -94,7 +94,14 @@ int main(int argc, char** argv)
 							printf("Declaration error on element %d\n\n", i);
 
 
-					get_var_values(&elements, &types, var_table);
+					//Checking for the variables in the line, and replacing their names by their values
+					if(!get_var_values(&elements, &types, var_table))
+					{
+						free_2D_char_array(&elements, types[0]);
+						free(types);
+
+						continue;
+					}
 
 					
 					if (types[0] >= 3 || (types[0] == 1 && types[1] == 10))
@@ -149,7 +156,15 @@ int main(int argc, char** argv)
 									printf("Declaration error on element %d\n\n", i);
 
 
-							get_var_values(&elements, &types, var_table);
+							if(!get_var_values(&elements, &types, var_table))
+							{
+								free_2D_char_array(&elements, types[0]);
+								free(types);
+
+								free(singleParenthese);
+
+								continue;
+							}
 
 							free(singleParenthese);
 						}

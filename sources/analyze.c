@@ -539,6 +539,7 @@ int replace_name_by_value(char*** elements, int** types, const int sub, Variable
 {
 	int i = 0;
 
+	//Trying to reach the subscript of the variable asked, or at least reaching the end of the variables array
 	while (strcmp(var_table[i].name, NAME__END_VARTABLE) != 0 && strcmp(var_table[i].name, (*elements)[sub]) != 0)
 		i++;
 
@@ -546,33 +547,56 @@ int replace_name_by_value(char*** elements, int** types, const int sub, Variable
 	if (strcmp(var_table[i].name, NAME__END_VARTABLE) == 0)
 		return 0;
 
+	//If variable found, but uninitialized
 	if (strcmp(var_table[i].value, UNINITIALIZED_VAR_VALUE) == 0)
 		return 2;
 
+	//Freeing the location where to store the variable
 	free ((*elements)[sub]);
 
+	//Allocating enoug memory for storing the value of the variable
 	(*elements)[sub] = (char*) malloc( (strlen(var_table[i].value) + 1) * sizeof(char));
 	check_alloc((*elements)[sub]);
 
+	//Storing the informations of the variable
 	strcpy((*elements)[sub], var_table[i].value);
-
 	(*types)[sub] = var_table[i].type;
 
 	return 3;
 }
 
 //Function that replaces all variables in elements by their value except the assigned one in case of an assignation
-void get_var_values(char*** elements, int** types, Variable* var_table)
+int get_var_values(char*** elements, int** types, Variable* var_table) //Returns 0 if cannot replace a variable
 {
 	int i = 1;
 
-	if ((*types)[0] >= 3 && strcmp((*elements)[2], ":"))
+	if ((*types)[0] >= 3 && !strcmp((*elements)[2], ":"))
 		i = 3;
-
 
 	for (; i <= (*types)[0]; i++)
 	{
 		if ((*types)[i] == 8)
-			replace_name_by_value(elements, types, i, var_table);
+			switch(replace_name_by_value(elements, types, i, var_table))
+			{
+				case 0:
+					fprintf(stderr, "ERROR: undeclared variable %s\n\n", (*elements)[i]);
+					return 0;
+					break; //To avoid compilation warnings
+
+				case 1:
+					fprintf(stderr, "ERROR: forbidden variable name %s\n\n", (*elements)[i]);
+					return 0;
+					break; //To avoid compilation warnings
+
+				case 2:
+					fprintf(stderr, "ERROR: uninitialized variable %s\n\n", (*elements)[i]);
+					return 0;
+					break; //To avoid compilation warnings
+
+				default:
+					break;
+			}
 	}
+
+	return 1; //Everything is fine
 }
