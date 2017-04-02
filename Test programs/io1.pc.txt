@@ -1,11 +1,12 @@
-var 
+§ VARS
 	integer p
 	string message
 	boolean isOk
-begin
+§ ENDVARS
+§ BEGIN
 	p <- 10
 	message <- "Hello"
-	isOk <- true	
+	isOk <- true
 
 	write(p)
 	write(message)
@@ -16,4 +17,4 @@ begin
 	write(isOK and false)
 
 	write(message + ": p = " + p + ", isOk = " + isOk)
-end
+§ END

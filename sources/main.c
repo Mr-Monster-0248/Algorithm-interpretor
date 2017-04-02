@@ -216,7 +216,7 @@ int main(int argc, char** argv)
 
 		/*case 2: //C converter
 			printf("The C converter is not available yet, it is a feature that will be soon implemented\n");
-			break;*/
+			break;*/ //Not implemented yet
 
 
 
@@ -265,29 +265,38 @@ int main(int argc, char** argv)
 							disp_error_line(line, position, lineNumber);
 
 							free_2D_char_array(&elements, types[0]);
-
 							free(types);
+							free(line);
+							fclose(algFile);
+							free__var_table(&var_table);
 
-
-							continue;
+							return EXIT_SUCCESS;
 						} else if (getLineError == 2)
 						{
 							printf("ERROR: STRUCTURAL ERROR\n\n");
 
+							printf("Line %d\n\t==>\tHaving two elements of same type side by side is forbidden\n\n", lineNumber);
+
 							free_2D_char_array(&elements, types[0]);
-
 							free(types);
+							free(line);
+							fclose(algFile);
+							free__var_table(&var_table);
 
-							continue;
+							return EXIT_SUCCESS;
 						} else if (getLineError == 3)
 						{
 							printf("ERROR: CANNOT ASSIGN VALUE TO SOMETHING NOT A VARIABLE\n\n");
 
+							printf("Line %d\n\t==>\t%s is not a variable\n\n", lineNumber, elements[1]);
+
 							free_2D_char_array(&elements, types[0]);
-
 							free(types);
+							free(line);
+							fclose(algFile);
+							free__var_table(&var_table);
 
-							continue;
+							return EXIT_SUCCESS;
 						}
 
 						for(i = 1; i < types[0]; i++)
@@ -402,6 +411,10 @@ int main(int argc, char** argv)
 						}
 
 							printf("%s\n", elements[1]);
+
+							free_2D_char_array(&elements, types[0]);
+							free(types);
+							free(line);
 
 							break;
 

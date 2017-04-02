@@ -5,11 +5,9 @@
 10 % (5 - 3)
 ((2 + 3) * 4) - (5 * 6)
 
-(false)
-(true or false) and false
-true and (false or false)
-(true and false) or true and (false or true)
-true and not (true or false)
-((true or false) and true) or (true and false)
-
-
+#(false)
+#(true or false) and false
+#true and (false or false)
+#(true and false) or true and (false or true)
+#true and not (true or false)
+#((true or false) and true) or (true and false)

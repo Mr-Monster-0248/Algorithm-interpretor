@@ -3,7 +3,6 @@
 2 * 3 + 4 * 5 - 6 / 7
 2 * 3 % 2
 
-true or false and false
-true and false or false
-true and not false
-
+#true or false and false
+#true and false or false
+#true and not false

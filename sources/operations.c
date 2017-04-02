@@ -30,8 +30,6 @@ void disp_error_line(const char* line, const int position, const int lineNumber)
 	for (i = 0; i < position + 4; i++)
 		printf(" ");
 	printf("^\n\n");
-
-	exit(EXIT_SUCCESS);
 }
 
 
