@@ -18,7 +18,7 @@ The executable ExeTest which is provided was obtained by compiling all the sourc
 * The exact command used to debug out program (with *valgrind*) was:
 <br />`valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./ExeTest`
 
----------------------------------------
+------------------------------------------
 _If you see any mistake on our code, or a more efficient way to do it, please feel free to leave a message in the "Issues" or "Projects" sections._
 
 

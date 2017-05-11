@@ -32,7 +32,7 @@ int check_parameters(int argc, char** argv)
 			{
 				//Exiting the program
 				system(CLEAR);
-				exit(EXIT_SUCCESS);	
+				exit(EXIT_SUCCESS);
 			}
 
 			return 1; //Launching the direct line interpreter
@@ -45,7 +45,7 @@ int check_parameters(int argc, char** argv)
 			convert = 'a';
 			system(CLEAR);
 			//printf("Type 1 to convert %s to C language (.c file)\nType 2 to execute %s directly\nYour choice: ", argv[1], argv[1]);
-			
+
 			convert = getchar();
 			fflush(stdin);
 		} while (convert != '1' && convert != '2');
